@@ -332,7 +332,7 @@ footer{position:relative;border-top:1px solid rgba(255,255,255,.08);padding-top:
 <button class="cta" id="run-fx">احسب ▶</button><button class="solution-toggle" id="reset-fx">🔄 امسح السجل والـ Measures</button><button class="solution-toggle" id="reset-lab">مسح تقدم التحديات</button>
 <div><button class="fx-example" data-fx="Total Sales = SUM(Sales[revenue])">Total Sales</button><button class="fx-example" data-fx="Profit = SUMX(Sales, Sales[revenue] - Sales[cost])">Profit</button><button class="fx-example" data-fx="DIVIDE([Profit], [Total Sales])">Margin</button><button class="fx-example" data-fx='CALCULATE(SUM(Sales[revenue]), Sales[city] = "Cairo")'>إيراد القاهرة</button><button class="fx-example" data-fx="CALCULATE(SUM(Sales[revenue]), Products[supplier] = &quot;TechLine&quot;)">TechLine</button><button class="fx-example" data-fx="TOTALYTD(SUM(Sales[revenue]), 'Calendar'[Date])">YTD</button></div>
 <div id="dx-measures" class="small"></div><div id="fx-output" aria-live="polite"></div>
-<p class="small">المعمل بيشتغل على جهازك ومفيش حاجة بتتبعت لأي سيرفر. الدوال المدعومة: SUM AVERAGE MIN MAX COUNT COUNTA DISTINCTCOUNT COUNTROWS SUMX AVERAGEX MINX MAXX RELATED CALCULATE FILTER ALL DIVIDE IF SWITCH AND OR NOT TRUE FALSE BLANK ISBLANK ROUND ABS DATE YEAR MONTH DAY DATESBETWEEN DATESYTD TOTALYTD DATEADD SAMEPERIODLASTYEAR، وكمان VAR/RETURN والعمليات والمقارنات وIN. ALL جوه CALCULATE بتشيل فلتر الجدول أو العمود، وفي Power BI الحقيقي فيه دوال وإمكانيات أكتر بكتير.</p></section>
+<p class="small">المعمل بيشتغل على جهازك ومفيش حاجة بتتبعت لأي سيرفر. الدوال المدعومة: SUM AVERAGE MIN MAX COUNT COUNTA DISTINCTCOUNT COUNTROWS SUMX AVERAGEX MINX MAXX RELATED CALCULATE FILTER ALL DIVIDE IF SWITCH AND OR NOT TRUE FALSE BLANK ISBLANK ROUND ABS DATE YEAR MONTH DAY DATESBETWEEN DATESYTD TOTALYTD DATEADD SAMEPERIODLASTYEAR، وكمان VAR/RETURN والعمليات والمقارنات و IN. ALL جوه CALCULATE بتشيل فلتر الجدول أو العمود، وفي Power BI الحقيقي فيه دوال وإمكانيات أكتر بكتير.</p></section>
   <footer class="small" style="text-align:center;margin:30px 0">من أسرة Infinity University Activity<br><a href="https://learn.microsoft.com/en-us/power-bi/">شرح مايكروسوفت الرسمي لـ Power BI</a> · <a href="https://powerbi.microsoft.com/en-us/desktop/">Power BI Desktop (مجاني)</a> · <a href="https://learn.microsoft.com/en-us/dax/">مرجع DAX</a><p>معمل DAX محاكي تدريبي مكتوب خصيصاً للموقع: بيحسب صيغ DAX على داتا الكورس، مش Power BI نفسه. Power Query والـ Visuals والنشر بتتطبق في Power BI Desktop.</p><div class="contact-footer" aria-label="بيانات التواصل">
       <div class="contact-name">Ahmed Wael Othman</div>
       <nav class="contact-links" aria-label="روابط التواصل">
@@ -390,11 +390,11 @@ CURRICULUM.push({
       '`Report view`: الصفحة الفاضية اللي بترسم عليها الـ Visuals (أول أيقونة على الشمال).',
       '`Table view`: بتشوف فيها الجداول كأنها شيت.',
       '`Model view`: بتشوف فيها الجداول والعلاقات بينها.',
-      '`Ribbon`: الشريط العلوي (Home وInsert وModeling وView).',
+      '`Ribbon`: الشريط العلوي (Home و Insert و Modeling و View).',
       'ثلاث لوحات على اليمين: `Filters` و`Visualizations` و`Data` (أو Fields) اللي فيها الجداول والأعمدة.'
     ]),
     H('الداتا اللي هنشتغل عليها'),
-    P('هنستخدم نفس جدول المبيعات اللي في موقعي SQL وExcel: 12 طلب في 4 شهور من 2025، بس زودنا عمودين: `quantity` و`cost` عشان نحسب الربح. وفي جدول تاني للمنتجات. الملفين `sales_data.csv` و`products.csv` موجودين في الـ GitHub repo بتاع الموقع ده.'),
+    P('هنستخدم نفس جدول المبيعات اللي في موقعي SQL و Excel: 12 طلب في 4 شهور من 2025، بس زودنا عمودين: `quantity` و`cost` عشان نحسب الربح. وفي جدول تاني للمنتجات. الملفين `sales_data.csv` و`products.csv` موجودين في الـ GitHub repo بتاع الموقع ده.'),
     T(['order_id','order_date','product_name','category','city','customer','quantity','revenue','cost'],[
       ['1','2025-01-03','Laptop','Tech','Cairo','Aya','1','12000','9500'],
       ['2','2025-01-15','Chair','Furniture','Giza','Ali','1','2000','1400'],
@@ -409,9 +409,9 @@ CURRICULUM.push({
     Q('أنهي View بتشوف فيه العلاقات بين الجداول؟',['Report view','Table view','Model view'],2,'Model view بيعرض الجداول كمربعات والعلاقات كخطوط بينها.')
   ],
   exercises:[
-    X('نزّل Power BI Desktop (لو معاك ويندوز) وافتحه. اكتب أسماء الـ 3 Views اللي على الشمال بالترتيب.','','Report وTable وModel (وفي نسخ أحدث ممكن يظهر View رابع للـ DAX query). لو معاك ماك: سجل دخول على app.powerbi.com بحساب شغل أو دراسة وشوف واجهة الـ Service.'),
+    X('نزّل Power BI Desktop (لو معاك ويندوز) وافتحه. اكتب أسماء الـ 3 Views اللي على الشمال بالترتيب.','','Report و Table و Model (وفي نسخ أحدث ممكن يظهر View رابع للـ DAX query). لو معاك ماك: سجل دخول على app.powerbi.com بحساب شغل أو دراسة وشوف واجهة الـ Service.'),
     X('نزّل الملفين `sales_data.csv` و`products.csv` من الـ GitHub repo بتاع الموقع، وافتح الأول بأي برنامج. عدد الصفوف والأعمدة.','','12 صف و9 أعمدة في sales_data، و4 صفوف في products. المهم تفهم الداتا قبل ما تحطها في Power BI.'),
-    X('اكتب بجملة واحدة الفرق بين Power BI Desktop وPower BI Service.','','Desktop برنامج على جهازك لبناء التقرير، والـ Service موقع أونلاين لنشر ومشاركة التقرير وجدولة التحديث.'),
+    X('اكتب بجملة واحدة الفرق بين Power BI Desktop و Power BI Service.','','Desktop برنامج على جهازك لبناء التقرير، والـ Service موقع أونلاين لنشر ومشاركة التقرير وجدولة التحديث.'),
     X('اكتب 3 تقارير ممكن تبنيها في شغلك أو دراستك باستخدام Power BI.','','أي إجابة منطقية تقبل، مثلاً: تقرير مبيعات شهري، تقرير حضور وغياب، ومتابعة مصاريف. الفكرة إنك تفكر في داتا بتتحدث بشكل متكرر.')
   ]
 });
@@ -422,14 +422,14 @@ CURRICULUM.push({
   title:'الدرس 2: Get Data: توصيل الداتا من مصادرها',
   subtitle:'مصدر واحد أو عشرة، Power BI بيوصل كلهم',
   blocks:[
-    P('أول خطوة في أي تقرير هي إنك تجيب الداتا. من تبويب `Home` اضغط `Get data` وهتلاقي عشرات المصادر: ملفات (Excel وText/CSV وJSON وFolder)، قواعد بيانات (SQL Server وPostgreSQL وغيرهم)، خدمات أونلاين، وحتى Web.'),
+    P('أول خطوة في أي تقرير هي إنك تجيب الداتا. من تبويب `Home` اضغط `Get data` وهتلاقي عشرات المصادر: ملفات (Excel و Text/CSV و JSON و Folder)، قواعد بيانات (SQL Server و PostgreSQL وغيرهم)، خدمات أونلاين، وحتى Web.'),
     H('أشهر المصادر'),
     L([
-      '`Text/CSV`: أبسط مصدر. بتختار الملف وPower BI بيخمن الفاصل (comma) والـ encoding.',
+      '`Text/CSV`: أبسط مصدر. بتختار الملف و Power BI بيخمن الفاصل (comma) والـ encoding.',
       '`Excel workbook`: بتختار الشيتات أو الـ Tables اللي عايزها.',
       '`Folder`: بتوصل فولدر فيه ملفات كتير بنفس الشكل (مبيعات كل شهر في ملف) وبتدمجهم في جدول واحد.',
       '`SQL Server / Database`: بتكتب اسم السيرفر والداتابيز، وممكن تكتب SQL query جاهزة.',
-      '`Web`: بتلزق رابط صفحة فيها جدول وPower BI بيسحبه.'
+      '`Web`: بتلزق رابط صفحة فيها جدول و Power BI بيسحبه.'
     ]),
     H('نافذة Navigator والـ Preview'),
     P('بعد ما تختار المصدر بتظهرلك نافذة `Navigator` فيها قايمة الجداول وعينة منها. عندك زرارين مهمين:'),
@@ -438,7 +438,7 @@ CURRICULUM.push({
       '`Transform Data`: بيفتح Power Query عشان تنضف الداتا قبل التحميل. ده الاختيار الأحسن في الشغل الحقيقي.'
     ]),
     H('Import مقابل DirectQuery'),
-    P('لما بتوصل قاعدة بيانات بيسألك عن وضع الاتصال (Connectivity mode). `Import` بيحمل نسخة من الداتا جوه ملف التقرير، وده الأسرع وده اللي هنستخدمه. `DirectQuery` بيسيب الداتا في مصدرها وبيبعت استعلام في كل مرة بتتفاعل مع التقرير. في الملفات زي CSV وExcel بنستخدم Import دايماً.'),
+    P('لما بتوصل قاعدة بيانات بيسألك عن وضع الاتصال (Connectivity mode). `Import` بيحمل نسخة من الداتا جوه ملف التقرير، وده الأسرع وده اللي هنستخدمه. `DirectQuery` بيسيب الداتا في مصدرها وبيبعت استعلام في كل مرة بتتفاعل مع التقرير. في الملفات زي CSV و Excel بنستخدم Import دايماً.'),
     N('Import معناه إن التقرير بيشتغل على نسخة من الداتا وقت آخر Refresh. لو الملف الأصلي اتغير لازم تعمل `Refresh` عشان تشوف التغيير.'),
     H('خطوات توصيل sales_data.csv'),
     L([
@@ -457,9 +457,9 @@ CURRICULUM.push({
     Q('نقلت ملف الـ CSV لفولدر تاني وعملت Refresh فظهر Error. السبب الأرجح؟',['Power BI معطل','مسار المصدر القديم بقى غلط','الداتا كبيرة'],1,'التقرير بيفتكر مسار الملف القديم. تعدله من Data source settings.')
   ],
   exercises:[
-    X('وصّل `sales_data.csv` في Power BI Desktop عن طريق Get data ثم Text/CSV، واضغط Transform Data. كام عمود ظهر في Power Query؟','','9 أعمدة: order_id وorder_date وproduct_name وcategory وcity وcustomer وquantity وrevenue وcost.'),
+    X('وصّل `sales_data.csv` في Power BI Desktop عن طريق Get data ثم Text/CSV، واضغط Transform Data. كام عمود ظهر في Power Query؟','','9 أعمدة: order_id و order_date و product_name و category و city و customer و quantity و revenue و cost.'),
     X('وصّل `products.csv` بنفس الطريقة. اسم الجدول اللي ظهر في Queries pane إيه؟','','اسمه بيتاخد من اسم الملف: products. تقدر تغيره بـ F2 أو من Properties.'),
-    X('اذكر الفرق بين Import وDirectQuery في جملتين.','','Import ينسخ الداتا للتقرير ويشتغل بسرعة لحد آخر Refresh. DirectQuery يسيب الداتا في المصدر ويستعلم عنها مباشرة كل مرة.'),
+    X('اذكر الفرق بين Import و DirectQuery في جملتين.','','Import ينسخ الداتا للتقرير ويشتغل بسرعة لحد آخر Refresh. DirectQuery يسيب الداتا في المصدر ويستعلم عنها مباشرة كل مرة.'),
     X('ليه الأحسن تضغط Transform Data بدل Load في الشغل الحقيقي؟','','عشان الداتا الحقيقية دايماً فيها مشاكل (أنواع غلط، فاضي، مكرر). تنضيفها قبل التحميل بيمنع أخطاء في الحسابات بعدين.')
   ]
 });
@@ -502,7 +502,7 @@ CURRICULUM.push({
   ],
   quiz:[
     Q('فين Power Query بيسجل الخطوات اللي بتعملها؟',['في Formula bar بس','في Applied Steps','في Data view'],1,'Applied Steps هي قايمة الخطوات اللي بتتعاد تلقائياً في كل Refresh.'),
-    Q('عمود `order_date` نوعه Text. المشكلة؟',['مفيش مشكلة','مش هتقدر تستخدمه كتاريخ في الفلاتر وTime intelligence','هيتمسح'],1,'لازم يكون Date عشان تتعامل معاه كتاريخ في الرسوم وDAX.'),
+    Q('عمود `order_date` نوعه Text. المشكلة؟',['مفيش مشكلة','مش هتقدر تستخدمه كتاريخ في الفلاتر و Time intelligence','هيتمسح'],1,'لازم يكون Date عشان تتعامل معاه كتاريخ في الرسوم و DAX.'),
     Q('إيه الأمر اللي بيطبق التنضيف على الموديل وبيقفل Power Query؟',['Close & Apply','Refresh Preview','Data source settings'],0,'Close & Apply بيطبق الخطوات ويحمل الداتا للموديل.'),
     Q('عايز تشيل عمود مش محتاجه. تستخدم؟',['Remove Columns','Remove Duplicates','Group By'],0,'Remove Columns بيشيل الأعمدة المحددة من الـ Query.')
   ],
@@ -538,24 +538,24 @@ CURRICULUM.push({
     H('Group By'),
     P('`Group By` بيلخص الجدول: تختار عمود للتجميع (city) وعملية (Sum على revenue)، وبيطلع جدول جديد فيه صف لكل مدينة. استخدمه لو الموديل محتاج جدول ملخص، لكن في أغلب الحالات بنسيب الجدول التفصيلي ونعمل التلخيص في الرسم أو في DAX.'),
     H('Unpivot Columns'),
-    P('لو الداتا جاية بأعمدة شهور (Jan وFeb وMar) في عرض الصفحة، تحدد الأعمدة دي وتعمل `Unpivot Columns` فتتحول لعمودين: Month وValue. ده من أهم التحويلات لأن Power BI بيحب الجداول الطويلة (long) مش العريضة.'),
+    P('لو الداتا جاية بأعمدة شهور (Jan و Feb و Mar) في عرض الصفحة، تحدد الأعمدة دي وتعمل `Unpivot Columns` فتتحول لعمودين: Month و Value. ده من أهم التحويلات لأن Power BI بيحب الجداول الطويلة (long) مش العريضة.'),
     L([
       'Append: تزود صفوف.',
       'Merge: تزود أعمدة.',
       'Unpivot: تحول أعمدة لصفوف.',
       'Group By: تلخص الصفوف.'
     ]),
-    W('Merge بيعتمد على مطابقة النصوص بالظبط، فمسافة زيادة أو اختلاف حروف (cairo وCairo) هيخلي المطابقة تفشل وتطلع null. نضف الأعمدة بـ Trim وحالة الحروف قبل الـ Merge.')
+    W('Merge بيعتمد على مطابقة النصوص بالظبط، فمسافة زيادة أو اختلاف حروف (cairo و Cairo) هيخلي المطابقة تفشل وتطلع null. نضف الأعمدة بـ Trim وحالة الحروف قبل الـ Merge.')
   ],
   quiz:[
     Q('عندك مبيعات كل شهر في جدول منفصل بنفس الأعمدة وعايزهم في جدول واحد. تستخدم؟',['Merge Queries','Append Queries','Unpivot'],1,'Append بيرص الجداول فوق بعض، مناسب لنفس الأعمدة.'),
     Q('إيه أقرب أمر في SQL لـ Merge Queries؟',['UNION','JOIN','GROUP BY'],1,'Merge بيضم أعمدة بناء على عمود مشترك، يعني JOIN.'),
-    Q('الداتا جاية بأعمدة Jan وFeb وMar وعايزها في عمودين Month وValue. الأمر؟',['Split Column','Pivot','Unpivot Columns'],2,'Unpivot بيحول الأعمدة لصفوف.'),
+    Q('الداتا جاية بأعمدة Jan و Feb و Mar وعايزها في عمودين Month و Value. الأمر؟',['Split Column','Pivot','Unpivot Columns'],2,'Unpivot بيحول الأعمدة لصفوف.'),
     Q('عملت Merge على city بس بعض الصفوف طلعت null. أرجح سبب؟',['المسافات أو اختلاف الحروف بين القيمتين','Power BI قديم','الجدول كبير'],0,'المطابقة حساسة للنص. نضف المسافات وحالة الحروف الأول.')
   ],
   exercises:[
-    X('اعمل Merge بين sales_data وproducts على `product_name` (Left Outer) واجلب عمود `supplier`. المنتج Laptop بيجيب أنهي supplier؟','','TechLine. وChair وDesk: FurniCo، وMouse: TechLine.'),
-    X('اعمل Group By على `city` مع Sum على `revenue`. كام صف هيطلعلك وأنهي مدينة الأعلى؟','','3 صفوف: Cairo وGiza وAlexandria. Cairo: 12000+500+4000+600+2200+700 = 20000. Alexandria: 13000+12500+5000 = 30500. Giza: 2000+2000+4500 = 8500. الأعلى Alexandria بـ 30500.'),
+    X('اعمل Merge بين sales_data و products على `product_name` (Left Outer) واجلب عمود `supplier`. المنتج Laptop بيجيب أنهي supplier؟','','TechLine. وChair و Desk: FurniCo، و Mouse: TechLine.'),
+    X('اعمل Group By على `city` مع Sum على `revenue`. كام صف هيطلعلك وأنهي مدينة الأعلى؟','','3 صفوف: Cairo و Giza و Alexandria. Cairo: 12000+500+4000+600+2200+700 = 20000. Alexandria: 13000+12500+5000 = 30500. Giza: 2000+2000+4500 = 8500. الأعلى Alexandria بـ 30500.'),
     X('امتى تستخدم Append وامتى Merge؟ مثال لكل واحد.','','Append لما تجمع ملفات شهرية بنفس الأعمدة. Merge لما تجيب بيانات المنتج (supplier) من جدول تاني لجدول المبيعات.'),
     X('فسّر ليه Unpivot مهم قبل ما تعمل رسم خطي للمبيعات بالشهور.','','لأن الرسم محتاج عمود واحد للشهر وعمود للقيمة. لو الشهور أعمدة منفصلة مش هتقدر تحطها على المحور.')
   ]
@@ -570,10 +570,10 @@ CURRICULUM.push({
     P('بعد ما الداتا نضفت، لازم نرتبها في موديل. الموديل هو الجداول والعلاقات (Relationships) اللي بينهم. ده أهم جزء بيفرق بين تقرير شغال وتقرير بيطلع أرقام غلط.'),
     H('Fact Tables و Dimension Tables'),
     L([
-      '`Fact table`: جدول الأحداث، صفوفه كتير وبيتزود (المبيعات). فيه أرقام زي revenue وquantity ومفاتيح تربط بالباقي.',
+      '`Fact table`: جدول الأحداث، صفوفه كتير وبيتزود (المبيعات). فيه أرقام زي revenue و quantity ومفاتيح تربط بالباقي.',
       '`Dimension table`: جدول الوصف، صفوفه أقل وبيوصف حاجة (المنتجات، العملاء، التاريخ). فيه أعمدة تصنيف نفلتر بيها.'
     ]),
-    P('الشكل الأفضل اسمه `Star Schema`: Fact table في النص وحواليه Dimensions زي النجمة. عندنا Sales (Fact) وProducts (Dimension)، وبعدين هنضيف Calendar.'),
+    P('الشكل الأفضل اسمه `Star Schema`: Fact table في النص وحواليه Dimensions زي النجمة. عندنا Sales (Fact) و Products (Dimension)، وبعدين هنضيف Calendar.'),
     H('العلاقة (Relationship)'),
     P('العلاقة بتربط عمود في جدول بعمود في جدول تاني. في حالتنا `Sales[product_name]` مرتبط بـ `Products[product_name]`. النوع الشائع `One-to-many (1:*)`: كل منتج في Products ظاهر مرة واحدة (الجانب One) وبيتكرر في Sales مرات كتير (الجانب Many).'),
     L([
@@ -589,21 +589,21 @@ CURRICULUM.push({
       'لو Power BI اكتشف علاقة تلقائياً راجعها، متثقش فيها أعمى.'
     ]),
     H('ليه ده مهم؟'),
-    P('لما تحط `supplier` من Products على الرسم و`revenue` من Sales، الفلتر بيتنقل عبر العلاقة وPower BI بيعرف يجمع إيراد كل supplier. من غير العلاقة الأرقام كلها هتتكرر على كل supplier وهتطلع غلط.'),
+    P('لما تحط `supplier` من Products على الرسم و`revenue` من Sales، الفلتر بيتنقل عبر العلاقة و Power BI بيعرف يجمع إيراد كل supplier. من غير العلاقة الأرقام كلها هتتكرر على كل supplier وهتطلع غلط.'),
     N('ما تعملش جدول واحد ضخم فيه كل حاجة (Flat table) لو في داتا مختلفة. فصل الـ Fact عن الـ Dimensions بيخلي الملف أصغر والـ DAX أبسط.'),
     W('لو ظهرت علاقة Many-to-many أو علاقة ثنائية الاتجاه بدون ما تعرف ليه، غالباً في جدول فيه قيم مكررة في الجانب One. نضف الداتا الأول بدل ما تغير نوع العلاقة.')
   ],
   quiz:[
     Q('أنهي جدول عندنا هو الـ Fact table؟',['Products','Sales','supplier'],1,'Sales فيه الأحداث (الطلبات) والأرقام، وهو اللي بيتكرر بالصفوف.'),
-    Q('في علاقة One-to-many بين Products وSales، جانب الـ One هو:',['Sales','Products','الاتنين'],1,'كل منتج ظاهر مرة في Products وبيتكرر في Sales.'),
+    Q('في علاقة One-to-many بين Products و Sales، جانب الـ One هو:',['Sales','Products','الاتنين'],1,'كل منتج ظاهر مرة في Products وبيتكرر في Sales.'),
     Q('الاتجاه الافتراضي والأفضل للفلتر في العلاقة:',['Single من Dimension لـ Fact','Both دايماً','من Fact لـ Dimension بس'],0,'Single من الـ Dimension للـ Fact هو الأسلم والأوضح.'),
-    Q('إيه الشكل اللي بنحاول نوصله في الموديل؟',['Flat table ضخمة','Star Schema','جداول من غير علاقات'],1,'Star Schema: Fact في النص وDimensions حواليه.')
+    Q('إيه الشكل اللي بنحاول نوصله في الموديل؟',['Flat table ضخمة','Star Schema','جداول من غير علاقات'],1,'Star Schema: Fact في النص و Dimensions حواليه.')
   ],
   exercises:[
-    X('في Model view اعمل علاقة بين `Sales[product_name]` و`Products[product_name]`. اكتب نوعها والاتجاه.','','One to many (Products جهة One وSales جهة Many)، وCross filter direction: Single.'),
-    X('حط `supplier` من Products و`revenue` (Sum) من Sales في Table visual. إيه إيراد TechLine؟','','39300. (Laptop وMouse): 12000+500+13000+12500+600+700.'),
+    X('في Model view اعمل علاقة بين `Sales[product_name]` و`Products[product_name]`. اكتب نوعها والاتجاه.','','One to many (Products جهة One و Sales جهة Many)، و Cross filter direction: Single.'),
+    X('حط `supplier` من Products و`revenue` (Sum) من Sales في Table visual. إيه إيراد TechLine؟','','39300. (Laptop و Mouse): 12000+500+13000+12500+600+700.'),
     X('احذف العلاقة وشوف الرسم تاني. إيه اللي حصل؟','','كل supplier هيظهر بنفس إجمالي الإيراد 59000 لأن مفيش فلتر بينتقل بين الجدولين.'),
-    X('اشرح بجملتين الفرق بين Fact وDimension.','','Fact: أحداث وأرقام (المبيعات). Dimension: وصف وتصنيف (المنتج، العميل، التاريخ).')
+    X('اشرح بجملتين الفرق بين Fact و Dimension.','','Fact: أحداث وأرقام (المبيعات). Dimension: وصف وتصنيف (المنتج، العميل، التاريخ).')
   ]
 });
 
@@ -646,7 +646,7 @@ CURRICULUM.push({
     Q('عايز تعرض إجمالي الإيراد كرقم واحد كبير. أنسب Visual؟',['Card','Line chart','Map'],0,'Card بيعرض رقم واحد بوضوح.'),
     Q('الأنسب لعرض اتجاه المبيعات شهر بشهر؟',['Line chart','Donut','Card'],0,'الـ Line chart بيوضح التغير مع الزمن.'),
     Q('إيه هو الـ Matrix؟',['زي PivotTable بصفوف وأعمدة وقيم','خريطة','فلتر'],0,'Matrix بيعرض صفوف وأعمدة وقيم ومستويات تتفتح وتتقفل.'),
-    Q('لما بتحط revenue في الرسم وPower BI بيجمعها تلقائياً، ده اسمه:',['Implicit measure','Relationship','Slicer'],0,'تجميع ضمني. الأحسن تكتب Measure صريح بـ DAX.')
+    Q('لما بتحط revenue في الرسم و Power BI بيجمعها تلقائياً، ده اسمه:',['Implicit measure','Relationship','Slicer'],0,'تجميع ضمني. الأحسن تكتب Measure صريح بـ DAX.')
   ],
   exercises:[
     X('ارسم Clustered column chart: `city` على X و`revenue` على Y. أنهي مدينة الأعلى والقيمة؟','','Alexandria بـ 30500 (13000+12500+5000).'),
@@ -672,7 +672,7 @@ CURRICULUM.push({
     ]),
     P('تسحب أي حقل للمستوى اللي عايزه وتختار القيم. أنواع الفلتر: `Basic` (اختيار من قايمة) و`Advanced` (شروط زي أكبر من) و`Top N` (أعلى 3 منتجات مثلاً).'),
     H('Slicer'),
-    P('الـ `Slicer` هو Visual بيظهر للقارئ عشان يفلتر الصفحة. تضيفه من Visualizations (أيقونة القمع) وتسحب له حقل زي `city` أو `order_date`. أشكاله: List وDropdown وTile (أزرار) وBetween لشريط التاريخ.'),
+    P('الـ `Slicer` هو Visual بيظهر للقارئ عشان يفلتر الصفحة. تضيفه من Visualizations (أيقونة القمع) وتسحب له حقل زي `city` أو `order_date`. أشكاله: List و Dropdown و Tile (أزرار) و Between لشريط التاريخ.'),
     L([
       'اضغط `Ctrl` لاختيار أكتر من قيمة.',
       'ممكن تخلي الاختيار Single select من إعدادات Slicer.',
@@ -696,7 +696,7 @@ CURRICULUM.push({
   ],
   exercises:[
     X('ضيف Slicer لـ `city` واختار Cairo. إيه قيمة Card إجمالي الإيراد؟','','20000.'),
-    X('ضيف فلتر Top N على `product_name` يعرض أعلى 2 منتجات بالإيراد. هما إيه؟','','Laptop (37500) وDesk (13500). Laptop: 12000+13000+12500 = 37500. Desk: 4000+4500+5000 = 13500. Chair: 6200. Mouse: 1800.'),
+    X('ضيف فلتر Top N على `product_name` يعرض أعلى 2 منتجات بالإيراد. هما إيه؟','','Laptop (37500) و Desk (13500). Laptop: 12000+13000+12500 = 37500. Desk: 4000+4500+5000 = 13500. Chair: 6200. Mouse: 1800.'),
     X('اعمل Slicer للتاريخ Between من 2025-02-01 لـ 2025-03-31. الإجمالي كام؟','','36600 (فبراير 19000 + مارس 17600).'),
     X('جرب تضغط على عمود Alexandria في رسم المدن وشوف باقي الرسوم. إيه اللي حصل؟','','باقي الرسوم بتتفلتر أو بتتظلل على Alexandria. ده Cross-filtering.')
   ]
@@ -745,13 +745,13 @@ Margin % = DIVIDE([Profit], [Total Sales])`),
     Q('تجميع زي إجمالي المبيعات المفروض يكون:',['Measure','Calculated column','Relationship'],0,'التجميعات بتتحسب كـ Measures وقت العرض.'),
     Q('إيه ناتج `COUNTROWS(Sales)` في الداتا بتاعتنا؟',['9','12','59000'],1,'الجدول فيه 12 صف.'),
     Q('ليه نفضل DIVIDE على علامة /؟',['أسرع بـ 10 مرات','بتتعامل مع القسمة على صفر','مفيش فرق خالص'],1,'DIVIDE بترجع BLANK أو قيمة بديلة بدل Error.'),
-    Q('الصيغة المناسبة لحساب الربح من revenue وcost صف بصف:',['SUM(Sales[revenue]-Sales[cost])','SUMX(Sales, Sales[revenue]-Sales[cost])','COUNTROWS(Sales)'],1,'SUMX بتحسب التعبير لكل صف وبعدين تجمع. دالة SUM بتاخد عمود واحد بس.'),
+    Q('الصيغة المناسبة لحساب الربح من revenue و cost صف بصف:',['SUM(Sales[revenue]-Sales[cost])','SUMX(Sales, Sales[revenue]-Sales[cost])','COUNTROWS(Sales)'],1,'SUMX بتحسب التعبير لكل صف وبعدين تجمع. دالة SUM بتاخد عمود واحد بس.'),
     Q('إيه الصح لمناداة Measure اسمه Total Sales؟',['Sales[Total Sales]','[Total Sales]','Total Sales()'],1,'Measures بتتنادي باسمها بين أقواس مربعة.')
   ],
   exercises:[
     X('اكتب Measure لإجمالي الإيراد. جربه في المعمل. الناتج 59000.',`Total Sales = SUM(Sales[revenue])`,'SUM بتجمع عمود revenue كله. الناتج 59000.'),
     X('اكتب Measure لمتوسط قيمة الطلب.',`Average Order = AVERAGE(Sales[revenue])`,'المتوسط 4916.67 تقريباً (59000 على 12).'),
-    X('اكتب Measure لعدد العملاء المختلفين.',`Customers = DISTINCTCOUNT(Sales[customer])`,'الناتج 5: Aya وAli وOmar وMona وSara.'),
+    X('اكتب Measure لعدد العملاء المختلفين.',`Customers = DISTINCTCOUNT(Sales[customer])`,'الناتج 5: Aya و Ali و Omar و Mona و Sara.'),
     X('اكتب Measure لإجمالي الربح (revenue ناقص cost).',`Profit = SUMX(Sales, Sales[revenue] - Sales[cost])`,'الإيراد 59000 والتكلفة 44070، فالربح 14930.'),
     X('اكتب Measure لهامش الربح كنسبة من الإيراد.',`Margin % = DIVIDE([Profit], [Total Sales])`,'14930 على 59000 تساوي 0.2531 تقريباً (25.3%). لازم تعرف Measures الاتنين الأول في المعمل.'),
     X('اكتب أكبر قيمة طلب في الجدول.',`Max Order = MAX(Sales[revenue])`,'13000 (الطلب رقم 4).')
@@ -781,7 +781,7 @@ Tech Sales = CALCULATE([Total Sales], Sales[category] = "Tech")`),
     H('FILTER: شروط أعقد'),
     P('لما الشرط مش عمود واحد وقيمة بتستخدم `FILTER` اللي بترجع جدول بالصفوف اللي حققت الشرط:'),
     C(`Large Profit Orders = CALCULATE(COUNTROWS(Sales), FILTER(Sales, Sales[revenue] - Sales[cost] > 2000))`),
-    N('بتقدر تفلتر بعمود من جدول Dimension وPower BI بيمرر الفلتر عبر العلاقة للـ Fact:'),
+    N('بتقدر تفلتر بعمود من جدول Dimension و Power BI بيمرر الفلتر عبر العلاقة للـ Fact:'),
     C(`TechLine Sales = CALCULATE([Total Sales], Products[supplier] = "TechLine")`),
     W('الفلتر المنطقي البسيط زي `Sales[city] = "Cairo"` بيشتغل على عمود واحد بس. لو محتاج مقارنة بين عمودين أو حسبة على كل صف استخدم FILTER.')
   ],
@@ -812,7 +812,7 @@ CURRICULUM.push({
     H('الشرط الأول: جدول تواريخ (Date table)'),
     P('الدوال دي بتحتاج جدول تواريخ كامل: صف لكل يوم من غير أي يوم ناقص، حتى لو مفيش مبيعات فيه. مش هتستخدم عمود order_date من جدول Sales مباشرة. تعمل جدول جديد من `Modeling ثم New table`:'),
     C(`Calendar = CALENDAR(DATE(2025,1,1), DATE(2025,12,31))`),
-    P('بعدين تضيف أعمدة (Year وMonth Number وMonth Name) وتعمل `Mark as date table` (من Table tools) على عمود Date، وتعمل علاقة One-to-many من `Calendar[Date]` لـ `Sales[order_date]`.'),
+    P('بعدين تضيف أعمدة (Year و Month Number و Month Name) وتعمل `Mark as date table` (من Table tools) على عمود Date، وتعمل علاقة One-to-many من `Calendar[Date]` لـ `Sales[order_date]`.'),
     N('بدل CALENDAR ممكن تستخدم `CALENDARAUTO()` اللي بتحدد المدى من الداتا لوحدها.'),
     H('الدوال الأساسية'),
     C(`Sales YTD = TOTALYTD(SUM(Sales[revenue]), 'Calendar'[Date])
@@ -884,7 +884,7 @@ CURRICULUM.push({
     Q('لإدارة الـ Visuals المخفية والظاهرة مع الـ Bookmarks تستخدم:',['Selection pane','Model view','Power Query'],0,'Selection pane بيعرض كل عنصر وتقدر تخفيه.')
   ],
   exercises:[
-    X('اعمل 3 صفحات بأسماء Overview وSales Analysis وDetails. اكتب خطوات الإضافة.','','اضغط + أسفل الشاشة 3 مرات (أو 2 لو عندك صفحة أولى)، ودبل كليك على كل تبويب وغير الاسم.'),
+    X('اعمل 3 صفحات بأسماء Overview و Sales Analysis و Details. اكتب خطوات الإضافة.','','اضغط + أسفل الشاشة 3 مرات (أو 2 لو عندك صفحة أولى)، ودبل كليك على كل تبويب وغير الاسم.'),
     X('اعمل زرار على Overview ينقل لـ Details. الإعداد المطلوب؟','','Insert ثم Buttons ثم Blank. من Format فعّل Action والنوع Page navigation واختار Details. جربه بـ Ctrl+Click في Desktop.'),
     X('اعمل صفحة Drillthrough للمدينة. إيه الخطوات؟','','صفحة جديدة، حط city في Drill through، ضيف Cards وجدول طلبات. من صفحة تانية كليك يمين على مدينة واختار Drill through.'),
     X('اعمل Bookmark اسمه Reset يرجع الفلاتر الافتراضية، وزرار بيستدعيه.','','اضبط الصفحة بدون فلاتر، View ثم Bookmarks ثم Add. بعدين Button بـ Action Bookmark واختار Reset.')
@@ -918,7 +918,7 @@ CURRICULUM.push({
       'اختار حجم خط مقروء (على الأقل 10 أو 12).'
     ]),
     H('تنسيق الأرقام'),
-    P('اضغط على الـ Measure واختار من `Measure tools` الـ Format (Currency وPercentage) وعدد الخانات العشرية. نسبة الهامش تظهر 25.3% مش 0.253112.'),
+    P('اضغط على الـ Measure واختار من `Measure tools` الـ Format (Currency و Percentage) وعدد الخانات العشرية. نسبة الهامش تظهر 25.3% مش 0.253112.'),
     N('اعمل ثيم مرة، واحفظه واستخدمه في كل التقارير. كمان تقدر تستخدم الألوان الأساسية في الموقع ده (أزرق وأسود SAMS-MIS) كمرجع لهوية مشاريعك.'),
     W('الألوان الصارخة والـ 3D والتأثيرات بتشتت القارئ. لو الرسم لازم يتشرح مش تصميم كويس.')
   ],
@@ -930,8 +930,8 @@ CURRICULUM.push({
   ],
   exercises:[
     X('غير الـ Theme لتقريرك واكتب اسم الـ Theme.','','أي Theme من View ثم Themes. المهم تلاحظ إن كل الألوان تغيرت مرة واحدة.'),
-    X('رتب الـ Visuals: 4 Cards فوق في صف واحد متساوية المسافات. إيه الأمر؟','','حدد الـ Cards الأربعة ثم Format ثم Align (Align top) وDistribute horizontally.'),
-    X('اعمل Format لـ Measure الهامش كنسبة بخانة عشرية واحدة. فين الإعداد؟','','Measure tools ثم Format Percentage وDecimal places 1. القيمة تظهر 25.3%.'),
+    X('رتب الـ Visuals: 4 Cards فوق في صف واحد متساوية المسافات. إيه الأمر؟','','حدد الـ Cards الأربعة ثم Format ثم Align (Align top) و Distribute horizontally.'),
+    X('اعمل Format لـ Measure الهامش كنسبة بخانة عشرية واحدة. فين الإعداد؟','','Measure tools ثم Format Percentage و Decimal places 1. القيمة تظهر 25.3%.'),
     X('اعمل قايمة بـ 3 مشاكل تصميم ممكن تلاقيها في داشبورد وحلها.','','مثلاً: ألوان كتير (استخدم نظام ألوان محدد)، رسوم كتير (قلل)، عناوين غامضة (اكتب عناوين تفسيرية).')
   ]
 });
@@ -963,13 +963,13 @@ CURRICULUM.push({
     H('المشاركة'),
     L([
       '`Share`: ترسل رابط لأشخاص معينين. غالباً المستلم محتاج ترخيص أو التقرير في مساحة بسعة مناسبة، والإعدادات بتختلف حسب مؤسستك.',
-      '`Workspace roles`: Admin وMember وContributor وViewer: كل دور له صلاحيات مختلفة.',
+      '`Workspace roles`: Admin و Member و Contributor و Viewer: كل دور له صلاحيات مختلفة.',
       '`App`: تجمع تقارير ولوحات في حزمة وتوزعها على جمهور.',
       '`Export`: تصدير PDF أو PowerPoint من Service.',
       '`Row-level security (RLS)`: كل مستخدم يشوف الصفوف اللي تخصه بس (مثلاً مدير كل مدينة).'
     ]),
     W('خيار `Publish to web` بينشر التقرير للعامة على الإنترنت من غير تسجيل دخول. ممنوع تستخدمه لو الداتا فيها أي معلومة خاصة أو داخلية.'),
-    N('شروط الترخيص (Free وPro وPremium وFabric) بتتغير، فراجع صفحة مايكروسوفت الرسمية قبل ما تعتمد على خطة معينة.')
+    N('شروط الترخيص (Free و Pro و Premium و Fabric) بتتغير، فراجع صفحة مايكروسوفت الرسمية قبل ما تعتمد على خطة معينة.')
   ],
   quiz:[
     Q('فين بتنشر تقرير Desktop عشان الفريق يشوفه؟',['Power BI Service','Power Query','Excel'],0,'بتعمل Publish على الـ Service.'),
@@ -980,7 +980,7 @@ CURRICULUM.push({
   exercises:[
     X('اكتب خطوات نشر تقريرك على My workspace.','','احفظ pbix، Home ثم Publish، سجل دخول، اختار My workspace، وافتح الرابط.'),
     X('الداتا CSV على جهازك. التقرير المنشور محتاج إيه عشان يتحدث لوحده؟','','محتاج Gateway يوصل الـ Service بجهازك أو بنقل الملف لمصدر أونلاين (OneDrive أو SharePoint) وبعدين Scheduled refresh.'),
-    X('إيه الفرق بين Report وDashboard؟','','Report متعدد الصفحات وتفاعلي. Dashboard صفحة واحدة بتجمع Tiles من تقارير مختلفة.'),
+    X('إيه الفرق بين Report و Dashboard؟','','Report متعدد الصفحات وتفاعلي. Dashboard صفحة واحدة بتجمع Tiles من تقارير مختلفة.'),
     X('عايز كل مدير فرع يشوف مدينته بس. إيه الميزة؟','','Row-level security (RLS) بتعرفها في Desktop (Manage roles) وبتعين المستخدمين من الـ Service.')
   ]
 });
@@ -998,18 +998,18 @@ CURRICULUM.push({
     H('المرحلة 1: الداتا والتنضيف'),
     L([
       'Get data ثم Text/CSV، واستورد الملفين بـ Transform Data.',
-      'اظبط الأنواع: order_date = Date، quantity = Whole Number، revenue وcost = Fixed decimal number.',
-      'تأكد إن مفيش مكرر في order_id، وTrim على الأعمدة النصية.',
+      'اظبط الأنواع: order_date = Date، quantity = Whole Number، revenue و cost = Fixed decimal number.',
+      'تأكد إن مفيش مكرر في order_id، و Trim على الأعمدة النصية.',
       'Close & Apply.'
     ]),
     N('Check 1: Sales فيه 12 صف، Products فيه 4 صفوف، ومفيش أخطاء في أي عمود.'),
     H('المرحلة 2: الموديل'),
     L([
       'علاقة One-to-many من `Products[product_name]` لـ `Sales[product_name]`.',
-      'جدول `Calendar` بـ CALENDAR(DATE(2025,1,1), DATE(2025,12,31)) وMark as date table، وعلاقة من `Calendar[Date]` لـ `Sales[order_date]`.',
-      'أضف أعمدة Year وMonth Number وMonth Name للـ Calendar، ورتب Month Name حسب Month Number.'
+      'جدول `Calendar` بـ CALENDAR(DATE(2025,1,1), DATE(2025,12,31)) و Mark as date table، وعلاقة من `Calendar[Date]` لـ `Sales[order_date]`.',
+      'أضف أعمدة Year و Month Number و Month Name للـ Calendar، ورتب Month Name حسب Month Number.'
     ]),
-    N('Check 2: في Model view تلاقي Sales في النص وProducts وCalendar حواليه، والعلاقتين One to many بفلتر Single.'),
+    N('Check 2: في Model view تلاقي Sales في النص و Products و Calendar حواليه، والعلاقتين One to many بفلتر Single.'),
     H('المرحلة 3: الـ Measures'),
     C(`Total Sales = SUM(Sales[revenue])
 Profit = SUMX(Sales, Sales[revenue] - Sales[cost])
@@ -1026,11 +1026,11 @@ MoM % = DIVIDE([Total Sales] - [Sales Previous Month], [Sales Previous Month])`)
     N('Check 3: جرب كل Measure في معمل الموقع وكمان في Power BI. لازم الأرقام تتطابق.'),
     H('المرحلة 4: صفحة Overview'),
     L([
-      '6 Cards فوق: Total Sales وProfit وMargin % وOrders وAverage Order وCustomers.',
+      '6 Cards فوق: Total Sales و Profit و Margin % وOrders و Average Order و Customers.',
       'Clustered column: `Month Name` مع Total Sales.',
       'Clustered bar: `city` مع Total Sales مرتب من الأعلى.',
       'Donut: `category` مع Total Sales.',
-      'Slicers: city وcategory (وممكن Month).'
+      'Slicers: city و category (وممكن Month).'
     ]),
     T(['الرسم','القيم المتوقعة'],[
       ['الشهور','Jan 14500، Feb 19000، Mar 17600، Apr 7900'],
@@ -1041,8 +1041,8 @@ MoM % = DIVIDE([Total Sales] - [Sales Previous Month], [Sales Previous Month])`)
     N('Check 4: اختار Cairo في الـ Slicer: Total Sales = 20000، Profit = 5130، Orders = 6.'),
     H('المرحلة 5: صفحة Analysis'),
     L([
-      'Matrix: category وproduct_name في الصفوف، والقيم Total Sales وProfit وMargin %.',
-      'Line chart: Month Name مع Total Sales وSales Previous Month.',
+      'Matrix: category و product_name في الصفوف، والقيم Total Sales و Profit و Margin %.',
+      'Line chart: Month Name مع Total Sales و Sales Previous Month.',
       'Table: كل الطلبات بالتفاصيل.',
       'Slicer شهر: اختار Mar وتأكد: Sales YTD = 51100، Sales Previous Month = 19000، MoM % = سالب 7.4%.'
     ]),
@@ -1051,7 +1051,7 @@ MoM % = DIVIDE([Total Sales] - [Sales Previous Month], [Sales Previous Month])`)
     L([
       'أزرار Page navigation بين الصفحتين على كل صفحة.',
       'Theme موحد وعناوين واضحة، ومحاذاة الـ Cards.',
-      'Format الأرقام: Currency للمبيعات وPercentage للهامش.'
+      'Format الأرقام: Currency للمبيعات و Percentage للهامش.'
     ]),
     H('المرحلة 7: النشر'),
     L([
@@ -1075,7 +1075,7 @@ MoM % = DIVIDE([Total Sales] - [Sales Previous Month], [Sales Previous Month])`)
     X('اكتب Measure لنصيب Tech من الإجمالي. قيمته؟',`Tech Share = DIVIDE(CALCULATE(SUM(Sales[revenue]), Sales[category] = "Tech"), SUM(Sales[revenue]))`,'0.6661 تقريباً (66.6%). لاحظ المقام هنا بدون ALL لأن مفيش فلتر على الفئة.'),
     X('اكتب Measure لـ YTD لما مارس مختار. قيمته؟',`Sales YTD = TOTALYTD(SUM(Sales[revenue]), 'Calendar'[Date])`,'51100. اختار مارس في الـ Selector.'),
     X('اكتب Measure يحسب مبيعات المنتج Laptop فقط. قيمته؟',`Laptop Sales = CALCULATE(SUM(Sales[revenue]), Sales[product_name] = "Laptop")`,'37500.'),
-    X('اكتب خطوات نشر المشروع على GitHub بعد ما تخلص.','','أنشئ repo جديد، ارفع ملف pbix والداتا (لو مش حساسة) وscreenshot للداشبورد وREADME بيشرح المشروع، وحط الرابط على LinkedIn.')
+    X('اكتب خطوات نشر المشروع على GitHub بعد ما تخلص.','','أنشئ repo جديد، ارفع ملف pbix والداتا (لو مش حساسة) و screenshot للداشبورد و README بيشرح المشروع، وحط الرابط على LinkedIn.')
   ]
 });
 
@@ -1462,7 +1462,7 @@ function parse(src){
 
 /* ---------- model access ---------- */
 function colIndex(table,col){
-  var T=TABLES[table];if(!T)throw E('الجدول "'+table+'" مش موجود في الموديل. الجداول: Sales وProducts (وCalendar للتواريخ)');
+  var T=TABLES[table];if(!T)throw E('الجدول "'+table+'" مش موجود في الموديل. الجداول: Sales و Products (و Calendar للتواريخ)');
   var i=T.cols.indexOf(col);if(i<0)throw E('العمود '+table+'['+col+'] مش موجود. أعمدة '+table+': '+T.cols.join(', '));
   return i;
 }
@@ -1645,7 +1645,7 @@ function evalNode(n,env){
       if(env.vars&&n.name in env.vars)return env.vars[n.name];
       var u=n.name.toUpperCase();if(u==='TRUE')return true;if(u==='FALSE')return false;
       if(TABLES[n.name]){var rows=[];if(n.name==='Sales')rows=salesRows(env);else TABLES.Products.rows.forEach(function(_,i){rows.push(i);});return {tbl:n.name,rows:rows};}
-      throw E('الاسم "'+n.name+'" مش معروف. الجداول: Sales وProducts. لو دي دالة اكتبها بقوسين');}
+      throw E('الاسم "'+n.name+'" مش معروف. الجداول: Sales و Products. لو دي دالة اكتبها بقوسين');}
     case 'col':{var c=normCol(n);var ix=colIndex(c.table,c.col);
       if(env.row&&env.row.table===c.table){return TABLES[c.table].rows[env.row.idx][ix];}
       throw E('العمود '+c.table+'['+c.col+'] لوحده مش ينفع. لازم يكون جوه دالة تجميع زي SUM أو جوه SUMX/FILTER اللي بتلف على الصفوف');}
