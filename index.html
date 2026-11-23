@@ -515,7 +515,7 @@ CURRICULUM.push({
 CURRICULUM.push({
   id:'pq2',
   nav:'Power Query: التحويلات المتقدمة',
-  title:'الدرس 4: Power Query: Merge وAppend وSplit وGroup By',
+  title:'الدرس 4: Power Query: Merge و Append و Split و Group By',
   subtitle:'تجمع جداول، تقسم أعمدة، وتلخص قبل ما توصل الموديل',
   blocks:[
     P('بعد الأساسيات، دي أدوات بتستخدمها كل يوم في الشغل الحقيقي. كلها في تبويب `Transform` أو `Add Column` أو `Home` في Power Query.'),
@@ -526,7 +526,7 @@ CURRICULUM.push({
     N('لو هتعمل علاقات في الموديل (الدرس الجاي)، غالباً مش محتاج Merge. الـ Merge بتستخدمه لما تحتاج العمود الإضافي جوه نفس الجدول، والعلاقات أحسن لما تعمل Star schema.'),
     H('Split Column'),
     P('لو عمود فيه اسم كامل أو `city - area` تقدر تقسمه بـ `Split Column ثم By Delimiter`، وتحدد الفاصل (مسافة أو شرطة أو فاصلة).'),
-    H('Replace Values وTrim وClean'),
+    H('Replace Values و Trim و Clean'),
     L([
       '`Replace Values`: تبدل قيمة بقيمة تانية (مثلاً cairo بـ Cairo).',
       '`Format ثم Trim`: يشيل المسافات الزيادة من أول وآخر النص.',
@@ -562,11 +562,11 @@ CURRICULUM.push({
 CURRICULUM.push({
   id:'model',
   nav:'الموديل والعلاقات',
-  title:'الدرس 5: Data Modeling: الجداول والعلاقات وStar Schema',
+  title:'الدرس 5: Data Modeling: الجداول والعلاقات و Star Schema',
   subtitle:'الموديل الكويس بيخلي الأرقام صح والتقرير سريع',
   blocks:[
     P('بعد ما الداتا نضفت، لازم نرتبها في موديل. الموديل هو الجداول والعلاقات (Relationships) اللي بينهم. ده أهم جزء بيفرق بين تقرير شغال وتقرير بيطلع أرقام غلط.'),
-    H('Fact Tables وDimension Tables'),
+    H('Fact Tables و Dimension Tables'),
     L([
       '`Fact table`: جدول الأحداث، صفوفه كتير وبيتزود (المبيعات). فيه أرقام زي revenue وquantity ومفاتيح تربط بالباقي.',
       '`Dimension table`: جدول الوصف، صفوفه أقل وبيوصف حاجة (المنتجات، العملاء، التاريخ). فيه أعمدة تصنيف نفلتر بيها.'
@@ -635,7 +635,7 @@ CURRICULUM.push({
       '`Table`: صفوف وأعمدة عادية.',
       '`Matrix`: زي PivotTable في Excel: صفوف وأعمدة وقيم، وبتقدر تفتح وتقفل المستويات (Drill).'
     ]),
-    H('Drill وTooltips'),
+    H('Drill و Tooltips'),
     P('لو حطيت أكتر من عمود في الـ Axis (مثلاً category ثم product_name) بتقدر تعمل Drill down بالأسهم اللي فوق الرسم. وعند الوقوف بالماوس على أي عمود بيظهر `Tooltip` فيه التفاصيل.'),
     N('قاعدة بسيطة: كل Visual لازم يجاوب على سؤال واحد واضح، وليه عنوان بيقول إيه هو (مبيعات كل مدينة) مش (revenue by city).'),
     W('الـ Pie chart بيصعب المقارنة لو الفئات كتير. لو أكتر من 4 أو 5 فئات استخدم Bar chart مرتب من الأعلى للأقل.')
@@ -703,7 +703,7 @@ CURRICULUM.push({
 CURRICULUM.push({
   id:'dax1',
   nav:'DAX: Measures والدوال الأساسية',
-  title:'الدرس 8: مقدمة DAX: الـ Measures وSUM وAVERAGE وغيرهم',
+  title:'الدرس 8: مقدمة DAX: الـ Measures و SUM و AVERAGE وغيرهم',
   subtitle:'لغة الحسابات في Power BI، وبتتجرب في معمل الموقع',
   blocks:[
     P('`DAX` اختصار Data Analysis Expressions، ودي لغة الصيغ اللي بتحسب بيها الأرقام في Power BI. شبه صيغ Excel بس بتشتغل على جداول وأعمدة مش خلايا.'),
@@ -759,7 +759,7 @@ Margin % = DIVIDE([Profit], [Total Sales])`),
 CURRICULUM.push({
   id:'dax2',
   nav:'DAX: CALCULATE وسياق الفلتر',
-  title:'الدرس 9: CALCULATE وFilter Context',
+  title:'الدرس 9: CALCULATE و Filter Context',
   subtitle:'أهم دالة في DAX، وفهمها بيفرق بين مبتدئ ومحترف',
   blocks:[
     P('كل رقم في Visual بيتحسب جوه `Filter Context`: مجموعة الفلاتر الحالية اللي جاية من الـ Slicers والصف أو العمود في الرسم والفلاتر بتاعت الصفحة. مثلاً الـ Measure `Total Sales` في عمود Cairo على الرسم بيجمع revenue للقاهرة بس، لأن Cairo فلتر على الصف ده.'),
@@ -849,7 +849,7 @@ Sales LY = CALCULATE(SUM(Sales[revenue]), SAMEPERIODLASTYEAR('Calendar'[Date]))`
 CURRICULUM.push({
   id:'pages',
   nav:'صفحات التقرير والتنقل',
-  title:'الدرس 11: صفحات التقرير والتنقل: Buttons وBookmarks وDrillthrough',
+  title:'الدرس 11: صفحات التقرير والتنقل: Buttons و Bookmarks و Drillthrough',
   subtitle:'من صفحة واحدة مزدحمة لتقرير منظم بتتنقل فيه بسهولة',
   blocks:[
     P('التقرير الكويس مش صفحة واحدة مليانة رسوم. بيتقسم لصفحات كل واحدة ليها هدف: نظرة عامة، تفاصيل، وتحليل مفصل. من أسفل الشاشة اضغط `+` عشان تضيف صفحة، ودبل كليك لتغيير الاسم.'),
@@ -937,7 +937,7 @@ CURRICULUM.push({
 CURRICULUM.push({
   id:'publish',
   nav:'النشر والمشاركة',
-  title:'الدرس 13: Publish وPower BI Service والمشاركة',
+  title:'الدرس 13: Publish و Power BI Service والمشاركة',
   subtitle:'من ملف على جهازك لتقرير بيفتحه فريقك من أي مكان',
   blocks:[
     P('التقرير لحد دلوقتي ملف `.pbix` على جهازك. عشان الناس تشوفه بتنشره على Power BI Service.'),
@@ -1803,4 +1803,4 @@ renderChallenges();showCur();
 
 </script>
 </body>
-</html>
+    </html>
