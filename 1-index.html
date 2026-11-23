@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Power BI لتحليل البيانات | من الصفر خطوة بخطوة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0f1420;
+  --panel: #171e2e;
+  --panel2: #1e2740;
+  --border: #2a3552;
+  --text: #e8ecf5;
+  --muted: #9aa7c2;
+  --accent: #4da3ff;
+  --accent2: #7c5cff;
+  --green: #2ecc71;
+  --red: #ff6b6b;
+  --amber: #ffc048;
+  --code-bg: #0a0e18;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Cairo', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+}
+
+code, pre, .mono {
+  font-family: 'JetBrains Mono', monospace;
+  direction: ltr;
+  text-align: left;
+}
+
+/* ===== Topbar ===== */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(15,20,32,.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+.topbar-inner {
+  max-width: 1200px; margin: 0 auto; padding: 12px 20px;
+  display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
+}
+.logo { font-size: 1.3rem; font-weight: 900; }
+.logo span { color: var(--accent); }
+.progress-wrap { flex: 1; min-width: 180px; max-width: 420px; margin-inline-start: auto; }
+.progress-label { font-size: .8rem; color: var(--muted); margin-bottom: 4px; }
+.progress-label span { color: var(--accent); font-weight: 700; }
+.progress-bar { height: 8px; background: var(--panel2); border-radius: 99px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 99px; transition: width .5s ease; }
+
+/* ===== Layout ===== */
+.layout { max-width: 1200px; margin: 0 auto; display: flex; gap: 24px; padding: 24px 20px 80px; align-items: flex-start; }
+
+.sidebar {
+  width: 260px; flex-shrink: 0;
+  position: sticky; top: 76px;
+  background: var(--panel); border: 1px solid var(--border); border-radius: 14px;
+  padding: 14px; max-height: calc(100vh - 100px); overflow-y: auto;
+}
+#nav { display: flex; flex-direction: column; gap: 6px; }
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; border-radius: 10px; cursor: pointer;
+  color: var(--muted); font-weight: 600; font-size: .92rem;
+  border: 1px solid transparent; transition: .15s;
+}
+.nav-item:hover { background: var(--panel2); color: var(--text); }
+.nav-item.active { background: var(--panel2); color: var(--text); border-color: var(--accent); }
+.nav-item .check { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border); display: inline-flex; align-items: center; justify-content: center; font-size: .7rem; flex-shrink: 0; }
+.nav-item.done .check { background: var(--green); border-color: var(--green); color: #06270f; }
+.nav-item .num { color: var(--accent); font-size: .78rem; min-width: 20px; }
+
+.reset-btn {
+  margin-top: 14px; width: 100%; padding: 9px;
+  background: transparent; border: 1px solid var(--border); border-radius: 10px;
+  color: var(--muted); font-family: inherit; font-size: .85rem; cursor: pointer;
+}
+.reset-btn:hover { color: var(--red); border-color: var(--red); }
+
+.content { flex: 1; min-width: 0; }
+
+/* ===== Hero ===== */
+.hero { background: linear-gradient(135deg, var(--panel), var(--panel2)); border: 1px solid var(--border); border-radius: 16px; padding: 28px; }
+.hero h2 { margin-bottom: 10px; font-size: 1.6rem; }
+.hero p { color: var(--muted); margin-bottom: 10px; }
+.hero-hint { color: var(--accent) !important; font-weight: 700; }
+
+/* ===== Lesson ===== */
+.lesson { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 28px; }
+.lesson h2.lesson-title { font-size: 1.5rem; margin-bottom: 6px; }
+.lesson .lesson-sub { color: var(--muted); margin-bottom: 22px; font-size: .95rem; }
+.lesson h3 { margin: 26px 0 10px; color: var(--accent); font-size: 1.15rem; }
+.lesson p { margin-bottom: 12px; color: #d4dbea; }
+.lesson ul, .lesson ol { margin: 0 22px 14px; color: #d4dbea; }
+.lesson li { margin-bottom: 6px; }
+
+.kw { color: var(--amber); font-weight: 600; font-family: 'JetBrains Mono', monospace; direction: ltr; unicode-bidi: embed; background: var(--code-bg); padding: 1px 7px; border-radius: 6px; font-size: .85em; }
+
+pre {
+  background: var(--code-bg); border: 1px solid var(--border);
+  border-radius: 12px; padding: 16px 18px; margin: 12px 0 18px;
+  overflow-x: auto; font-size: .9rem; line-height: 1.7;
+}
+pre .c { color: #5b6b8c; }          /* comment */
+pre .k { color: var(--accent); }    /* keyword */
+pre .s { color: var(--green); }     /* string */
+pre .n { color: var(--amber); }     /* number */
+
+.note {
+  background: rgba(77,163,255,.08); border: 1px solid rgba(77,163,255,.35);
+  border-radius: 12px; padding: 14px 16px; margin: 14px 0; font-size: .93rem;
+}
+.note.warn { background: rgba(255,192,72,.07); border-color: rgba(255,192,72,.4); }
+.note b { color: var(--accent); }
+.note.warn b { color: var(--amber); }
+
+table.demo { border-collapse: collapse; margin: 12px 0 18px; font-size: .88rem; direction: ltr; }
+table.demo th, table.demo td { border: 1px solid var(--border); padding: 6px 14px; }
+table.demo th { background: var(--panel2); color: var(--accent); font-family: 'JetBrains Mono', monospace; }
+table.demo td { font-family: 'JetBrains Mono', monospace; color: #c7d1e6; }
+
+/* ===== Quiz ===== */
+.quiz-box, .exercise-box {
+  margin-top: 30px; border: 1px solid var(--border); border-radius: 14px;
+  padding: 20px; background: var(--panel2);
+}
+.quiz-box > h3, .exercise-box > h3 { margin-top: 0 !important; }
+.quiz-q { margin: 18px 0; padding: 16px; background: var(--panel); border: 1px solid var(--border); border-radius: 12px; }
+.quiz-q .q-text { font-weight: 700; margin-bottom: 12px; }
+.quiz-q pre { margin: 10px 0; }
+.opt {
+  display: block; width: 100%; text-align: right; margin-bottom: 8px;
+  padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border);
+  background: var(--panel2); color: var(--text); font-family: inherit; font-size: .92rem;
+  cursor: pointer; transition: .15s;
+}
+.opt .mono { font-size: .88rem; }
+.opt:hover:not(:disabled) { border-color: var(--accent); }
+.opt:disabled { cursor: default; opacity: .85; }
+.opt.correct { border-color: var(--green); background: rgba(46,204,113,.12); }
+.opt.wrong { border-color: var(--red); background: rgba(255,107,107,.12); }
+.feedback { margin-top: 8px; font-size: .88rem; border-radius: 8px; padding: 8px 12px; display: none; }
+.feedback.ok { display: block; background: rgba(46,204,113,.1); color: #8deab5; }
+.feedback.no { display: block; background: rgba(255,107,107,.1); color: #ffabab; }
+
+.quiz-result {
+  margin-top: 18px; padding: 14px; border-radius: 12px; text-align: center;
+  font-weight: 700; display: none;
+}
+.quiz-result.show { display: block; background: rgba(46,204,113,.1); border: 1px solid var(--green); color: #8deab5; }
+
+/* ===== Exercises ===== */
+.exercise { margin: 16px 0; padding: 16px; background: var(--panel); border: 1px solid var(--border); border-radius: 12px; }
+.exercise .task { font-weight: 700; margin-bottom: 10px; }
+.solution-toggle {
+  padding: 8px 16px; border-radius: 8px; border: 1px solid var(--accent);
+  background: transparent; color: var(--accent); font-family: inherit;
+  font-size: .85rem; font-weight: 700; cursor: pointer;
+}
+.solution-toggle:hover { background: rgba(77,163,255,.1); }
+.solution { display: none; margin-top: 12px; }
+.solution.open { display: block; }
+.solution pre { margin-bottom: 6px; }
+.solution .why { color: var(--muted); font-size: .88rem; }
+
+/* ===== Lesson nav buttons ===== */
+.lesson-nav { display: flex; justify-content: space-between; margin-top: 34px; gap: 12px; }
+.lesson-nav button {
+  padding: 11px 22px; border-radius: 10px; border: 1px solid var(--border);
+  background: var(--panel2); color: var(--text); font-family: inherit;
+  font-weight: 700; cursor: pointer; font-size: .92rem;
+}
+.lesson-nav button:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.lesson-nav button:disabled { opacity: .4; cursor: default; }
+.lesson-nav .next-btn { background: linear-gradient(90deg, var(--accent), var(--accent2)); border: none; color: #fff; }
+.lesson-nav .next-btn:hover:not(:disabled) { color: #fff; filter: brightness(1.1); }
+
+.complete-badge {
+  display: none; margin-top: 24px; text-align: center; padding: 16px;
+  background: rgba(46,204,113,.1); border: 1px solid var(--green); border-radius: 12px;
+  font-weight: 700; color: #8deab5; font-size: 1.05rem;
+}
+.complete-badge.show { display: block; }
+
+/* ===== Mobile ===== */
+.menu-toggle {
+  display: none; position: fixed; bottom: 18px; inset-inline-start: 18px; z-index: 60;
+  padding: 12px 20px; border-radius: 99px; border: none;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  color: #fff; font-family: inherit; font-weight: 700; cursor: pointer;
+  box-shadow: 0 6px 24px rgba(77,163,255,.4);
+}
+@media (max-width: 900px) {
+  .layout { flex-direction: column; }
+  .sidebar {
+    position: fixed; inset-inline-start: 0; top: 0; bottom: 0; z-index: 55;
+    width: 290px; border-radius: 0; transform: translateX(100%);
+    transition: transform .25s ease; max-height: none;
+  }
+  .sidebar.open { transform: translateX(0); }
+  .menu-toggle { display: block; }
+}
+:root{--bg:#04060d;--panel:#0a1120;--panel2:#0e1730;--border:#203454;--accent:#60a5fa;--accent2:#38bdf8}
+body{background-image:radial-gradient(ellipse at 50% 0,rgba(59,130,246,.15),transparent 65%)}
+.bg-shapes{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:-1}.bg-shapes i{position:absolute;width:280px;height:280px;border:1px solid #3b82f62b;transform:rotate(30deg);top:20%;left:-100px}.bg-shapes i:nth-child(2){left:auto;right:-120px;top:55%;border-radius:50%;width:400px;height:400px}.bg-shapes i:nth-child(3){top:65%;left:40%;width:120px;height:120px;border-color:#38bdf82b}
+.brand-mark{width:65px;height:auto}.hero{text-align:center;padding:40px 28px}.hero-logo{width:150px;filter:drop-shadow(0 0 20px #3b82f64d)}.hero-pill{font-size:11px;letter-spacing:1px;color:var(--accent);margin:15px 0}.hero h2{font-size:2rem}.stats{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin:30px 0}.stats span{font-size:12px;color:var(--muted)}.stats b{display:block;font-size:24px;color:white;direction:ltr}.cta{border:0;background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:white;padding:13px 30px;border-radius:12px;font:700 16px Cairo,sans-serif;cursor:pointer;margin:10px 0 20px;box-shadow:0 8px 30px #3b82f62b}.links-bar{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;padding:8px 12px;border-top:1px solid #20345466}.links-bar a,.links-bar button{color:var(--muted);font:600 12px Cairo,sans-serif;text-decoration:none;background:none;border:0;cursor:pointer}.links-bar a:hover,.links-bar button:hover{color:var(--accent)}.small{font-size:12px!important;color:var(--muted)!important}.nav-item{font-family:inherit;background:none;text-align:right;line-height:1.7}.sidebar{top:120px;max-height:calc(100vh - 145px)}
+textarea{width:100%;background:#040913;color:#d6e6ff;border:1px solid var(--border);border-radius:10px;padding:14px;font:14px/1.7 'JetBrains Mono',monospace;margin:10px 0;resize:vertical;text-align:left}.table-scroll{overflow-x:auto;max-width:100%}table.demo{display:block;overflow-x:auto;max-width:100%}pre .c{color:#91a6c8}.opt .mono{display:inline-block;direction:ltr;unicode-bidi:isolate}button:focus-visible,a:focus-visible,textarea:focus-visible{outline:2px solid #38bdf8;outline-offset:3px}.solution-toggle{margin:8px}.complete-badge{font-size:.95rem}
+@media(max-width:900px){.sidebar{top:0;max-height:none}.hero{padding:30px 18px}.lesson{padding:22px 16px}.layout{padding:18px 12px 85px}.hero h2{font-size:1.5rem}.topbar-inner{gap:10px}.progress-wrap{min-width:120px}.links-bar{gap:14px}.logo{font-size:1rem}.brand-mark{width:48px}.lesson-nav button{font-size:12px;padding:10px}.quiz-box,.exercise-box{padding:12px}}
+@media(prefers-reduced-motion:no-preference){.bg-shapes i{animation:float 12s ease-in-out infinite alternate}@keyframes float{to{transform:translateY(-25px) rotate(45deg)}}}
+
+footer a{color:var(--accent)}
+.content,.lesson{max-width:100%}.content{width:100%}pre{max-width:100%}.lesson p,.lesson li,.opt{overflow-wrap:anywhere}.lesson table{max-width:100%}
+
+/* SAMS-MIS visual language: ink-black surfaces, blue glass and quiet geometry. */
+:root{--bg:#06070a;--panel:#0a0c12;--panel2:#101522;--border:rgba(255,255,255,.10);--text:#f5f7fa;--muted:#98a1b3;--accent:#3b82f6;--accent2:#7aa7ff;--code-bg:#070a11}
+body{position:relative;isolation:isolate;background-image:radial-gradient(820px 420px at 50% -12%,rgba(59,130,246,.20),transparent 68%),radial-gradient(560px 340px at 88% 8%,rgba(139,92,246,.10),transparent 70%),radial-gradient(560px 340px at 8% 22%,rgba(56,189,248,.08),transparent 70%);background-attachment:fixed}
+.aurora{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(760px 360px at 50% -10%,rgba(59,130,246,.11),transparent 70%)}
+.bg-shapes{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.topbar,.layout,.menu-toggle{position:relative;z-index:1}
+.bg-shapes i{position:absolute;top:18%;left:-100px;width:280px;height:280px;border:1px solid rgba(59,130,246,.17);transform:rotate(30deg);animation:shapeFloat 14s ease-in-out infinite alternate}
+.bg-shapes i:nth-child(2){top:55%;left:auto;right:-130px;width:390px;height:390px;border-radius:50%;border-color:rgba(122,167,255,.15);animation-delay:-5s}
+.bg-shapes i:nth-child(3){top:72%;left:42%;width:110px;height:110px;border-color:rgba(56,189,248,.18);animation-delay:-9s}
+@keyframes shapeFloat{to{transform:translateY(-22px) rotate(44deg)}}
+.topbar{background:rgba(6,7,10,.78);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.08)}
+.topbar-inner{max-width:1152px;padding:10px 16px;gap:16px}
+.logo{font-size:1.08rem;letter-spacing:.02em}.brand-mark{width:48px;filter:drop-shadow(0 8px 24px rgba(59,130,246,.2))}
+.progress-wrap{max-width:360px}.progress-bar{background:rgba(255,255,255,.08)}.progress-fill{background:linear-gradient(90deg,#3b82f6,#38bdf8);box-shadow:0 0 16px rgba(59,130,246,.35)}
+.links-bar{gap:10px;padding:8px 12px;border-top:1px solid rgba(255,255,255,.06);background:rgba(6,7,10,.28)}
+.links-bar a,.links-bar button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:36px;padding:0 12px;border:1px solid transparent;border-radius:11px;color:#98a1b3;font:700 12px Cairo,sans-serif;text-decoration:none;background:transparent;transition:background .2s,color .2s,border-color .2s}
+.links-bar a:hover,.links-bar button:hover{color:#fff;background:rgba(59,130,246,.12);border-color:rgba(122,167,255,.24)}
+.links-bar .community-link{color:#e9f1ff;background:rgba(255,255,255,.035);border-color:rgba(255,255,255,.14);white-space:nowrap}
+.links-bar .community-link:hover{background:#3b82f6;border-color:#3b82f6;color:#fff}
+.hero{position:relative;overflow:hidden;text-align:center;background:linear-gradient(160deg,rgba(255,255,255,.045),rgba(255,255,255,.012));border:1px solid rgba(255,255,255,.10);border-radius:20px;box-shadow:0 22px 60px -38px rgba(59,130,246,.4)}
+.hero:before{content:"";position:absolute;top:0;right:10%;left:10%;height:2px;background:linear-gradient(to left,transparent,#7aa7ff,transparent);opacity:.75}
+.hero-logo{filter:drop-shadow(0 18px 44px rgba(59,130,246,.28))}
+.hero-pill{display:inline-block;padding:5px 13px;border-radius:999px;background:rgba(59,130,246,.10);border:1px solid rgba(122,167,255,.32);color:#9dc0ff;font-weight:800}
+.hero h2{color:#f5f7fa;font-weight:900}.hero p{color:#b8c0cf}.hero-hint{color:#9dc0ff!important}
+.lesson,.sidebar,.quiz-box,.exercise-box,.quiz-q,.exercise{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.015));border-color:rgba(255,255,255,.10);border-radius:18px;box-shadow:0 18px 45px -38px rgba(59,130,246,.32)}
+.lesson h3{color:#9dc0ff}.nav-item.active{background:rgba(59,130,246,.12);border-color:rgba(122,167,255,.45);color:#f5f7fa}
+.nav-item:hover{background:rgba(255,255,255,.06)}.nav-item.done .check{background:#3ddc84;border-color:#3ddc84}
+pre,textarea{border-color:rgba(255,255,255,.12);background:#070a11}pre .k{color:#7aa7ff}
+.note{background:rgba(59,130,246,.08);border-color:rgba(122,167,255,.25)}.note b{color:#9dc0ff}
+.cta{background:linear-gradient(135deg,#3b82f6,#1d4ed8);border-radius:12px;box-shadow:0 8px 30px rgba(59,130,246,.2)}
+footer{position:relative;border-top:1px solid rgba(255,255,255,.08);padding-top:24px!important}
+
+/* Ahmed's contact footer */
+.contact-footer{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:28px;padding:24px 16px 8px;border-top:1px solid rgba(255,255,255,.10);text-align:center;color:var(--muted)}
+.contact-footer .contact-name{color:var(--text);font-size:1.1rem;font-weight:800;letter-spacing:.01em}
+.contact-footer .contact-links{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:10px}
+.contact-footer .contact-links a{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border:1px solid rgba(122,167,255,.18);border-radius:999px;background:rgba(59,130,246,.07);color:#a8c4ff;text-decoration:none;transition:background .2s ease,border-color .2s ease,transform .2s ease}
+.contact-footer .contact-links a:hover{background:rgba(59,130,246,.16);border-color:rgba(122,167,255,.45);transform:translateY(-1px)}
+.contact-footer .contact-note{font-size:.78rem;color:var(--muted)}
+@media(max-width:480px){.contact-footer{padding-inline:10px}.contact-footer .contact-links{gap:7px}.contact-footer .contact-links a{padding:7px 10px;font-size:.88rem}}
+
+@media(max-width:430px){.links-bar{gap:4px;padding-inline:6px}.links-bar a,.links-bar button{padding:0 8px;font-size:11px}.links-bar .community-link span{display:none}.topbar-inner{padding-inline:12px}.brand-mark{width:40px}}
+@media(prefers-reduced-motion:reduce){.bg-shapes i{animation:none}}
+
+
+.fx-grid{border-collapse:collapse;direction:ltr;font-family:'JetBrains Mono',monospace;font-size:.78rem;margin:12px 0;display:block;overflow-x:auto;max-width:100%}
+.fx-grid th{background:var(--panel2);color:var(--accent);border:1px solid var(--border);padding:3px 8px}
+.fx-grid td{border:1px solid var(--border);padding:3px 8px;color:#c7d1e6;white-space:nowrap}
+.fx-grid .fx-gap{border:none!important;background:transparent}
+.fx-line{border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin:8px 0;background:var(--panel);direction:ltr;text-align:left;font-family:'JetBrains Mono',monospace;font-size:.88rem;overflow-wrap:anywhere}
+.fx-line .fx-f{color:var(--muted)}
+.fx-line .fx-r{font-weight:700;margin-top:4px}
+.fx-line .fx-ok{color:#3ddc84}
+.fx-line .fx-err{color:var(--red)}
+.fx-example{padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--panel2);color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:.8rem;cursor:pointer;margin:8px 4px 0}
+#fx-output{margin-top:14px}
+#py-output pre{white-space:pre-wrap;background:#070a11;border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px;margin:12px 0;direction:ltr;text-align:left;font-family:'JetBrains Mono',monospace;font-size:.88rem;line-height:1.7;color:#d6e6ff;max-height:420px;overflow:auto}#py-output img{max-width:100%;border-radius:12px;margin:10px 0;background:#fff;display:block}
+.dx-sel{display:flex;gap:14px;flex-wrap:wrap;margin:8px 0}.dx-sel label{display:flex;flex-direction:column;font-size:.85rem;color:var(--muted);gap:4px}
+.dx-sel select{background:var(--panel2);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-family:inherit}
+.dx-chs{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.dx-ch{padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--panel2);color:var(--text);font-family:inherit;cursor:pointer;font-size:.85rem}
+.dx-ch.active{border-color:var(--accent);color:var(--accent)}.dx-ch.done{border-color:var(--green);color:var(--green)}
+.dx-tname{font-weight:700;color:var(--accent);margin-top:10px}
+.dx-verdict{margin-top:6px;font-family:'Cairo',sans-serif;direction:rtl;text-align:right;font-size:.9rem}.dx-verdict.ok{color:#3ddc84}.dx-verdict.no{color:var(--red)}
+#dx-sol{white-space:pre-wrap}
+</style>
+</head>
+<body>
+<div class="aurora" aria-hidden="true"></div>
+<div class="bg-shapes" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <img class="brand-mark" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAABlCAMAAADTcTmKAAADAFBMVEVHcEz///////////////////7////////7/f///v8NAKH///////////8eU5n+/v9EZ8v7/Pv////+//8xrP+AtNp7nZ9Y/2D////9/P3////////8/f7//////////////////////v////////////////////////////////8TbP8hT3MTcv7///////////////////////9ctYuh8U3///////////////////8TX/L///8Ta/7///////////////8TV+UbW7UVQKP///////////////8UeP8TXen///8sW57///////////////////////8TQ62Lv9L///8nYaH///////////8SWO7////////29vseZ7v///////8TZ/4TbP0TZfwTXrb///8UZusTUL4TY+L///8TYPX///8TUNESZP4TVMr///////////9dyVb4+voTYO3///8TUdcWYb////8TQKUTWfwSYv4STKkTV9gTVdsUR6ETUrMSVtb///8UUK4TU8wScv/IiboTX98UbPkTTbMSXvkSV/oTVvIUfMUTUOwtpdMSW8kTZfizwFIVVq0UTcUVZNcTRrESRLYWVbITV9MTW90TaPUSXMQSn8kTVsTb0jkSW/YTTL4aWL0UULMTRqwRV8ITS8ETS7gSRb4TYdkTUscTT+ISTN8SQqoSTbEUV6YTUM8TUrsQQswUX/oTVcETUdMTUtQTUMoTWtYUaLIYYbkSQccRSL8Sa9USVckSWd4QWO0TStkTUMkUVK8TVdgTWbwTRb8SZPMbZbUgRZ4TTMsTYugVx+EUZuYTU8M3jNMVUqgRR7UTQK8TT78TUeEUgLoSWdESUr8SZ9oSVLcUduAjT6gTWa93xFoSYMwYXsUSXcISa88TWs0TPbITVtdDabg0a78SRc4sYswTX+AUYegTZN4TZcoTbuFhgb41YbETQ6kSgumIoMZTe8KJqt4TTLMaW7CIqMeCms3U2OP///8TVuEUWtYSUdkVXMoUZ9iJaHwdAAAA+nRSTlMA/Pn6/gT9AQMCAfv39QIFBAfyBgIFBgHbDTOJHOwV4BhbCMlgZ3sj1/Ov+QT776ZOgOXiBAKru6BWt/1j8RI7HxH5Fx6FR6Oy/f5KCULB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" alt="Infinity University Activity"><h1 class="logo">Power BI <span>لتحليل البيانات</span></h1>
+    <div class="progress-wrap">
+      <div class="progress-label"><span id="progress-text">0%</span> من الرحلة</div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+  </div>
+<nav class="links-bar" aria-label="روابط الموقع"><button id="home-link">الرئيسية</button><button id="lab-link">معمل DAX</button><a class="community-link" href="https://infinity-team-1-iua.github.io/IUA-SAMS/" target="_blank" rel="noopener" aria-label="Our Community">👥 <span>Our Community</span> ↗</a></nav></header>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <nav id="nav"></nav>
+    <button class="reset-btn" id="reset-btn" title="مسح كل التقدم المحفوظ">🗑️ ابدأ من الأول</button>
+  </aside>
+
+  <main class="content" id="content">
+    <div class="hero" id="hero">
+      <img class="hero-logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAABlCAMAAADTcTmKAAADAFBMVEVHcEz///////////////////7////////7/f///v8NAKH///////////8eU5n+/v9EZ8v7/Pv////+//8xrP+AtNp7nZ9Y/2D////9/P3////////8/f7//////////////////////v////////////////////////////////8TbP8hT3MTcv7///////////////////////9ctYuh8U3///////////////////8TX/L///8Ta/7///////////////8TV+UbW7UVQKP///////////////8UeP8TXen///8sW57///////////////////////8TQ62Lv9L///8nYaH///////////8SWO7////////29vseZ7v///////8TZ/4TbP0TZfwTXrb///8UZusTUL4TY+L///8TYPX///8TUNESZP4TVMr///////////9dyVb4+voTYO3///8TUdcWYb////8TQKUTWfwSYv4STKkTV9gTVdsUR6ETUrMSVtb///8UUK4TU8wScv/IiboTX98UbPkTTbMSXvkSV/oTVvIUfMUTUOwtpdMSW8kTZfizwFIVVq0UTcUVZNcTRrESRLYWVbITV9MTW90TaPUSXMQSn8kTVsTb0jkSW/YTTL4aWL0UULMTRqwRV8ITS8ETS7gSRb4TYdkTUscTT+ISTN8SQqoSTbEUV6YTUM8TUrsQQswUX/oTVcETUdMTUtQTUMoTWtYUaLIYYbkSQccRSL8Sa9USVckSWd4QWO0TStkTUMkUVK8TVdgTWbwTRb8SZPMbZbUgRZ4TTMsTYugVx+EUZuYTU8M3jNMVUqgRR7UTQK8TT78TUeEUgLoSWdESUr8SZ9oSVLcUduAjT6gTWa93xFoSYMwYXsUSXcISa88TWs0TPbITVtdDabg0a78SRc4sYswTX+AUYegTZN4TZcoTbuFhgb41YbETQ6kSgumIoMZTe8KJqt4TTLMaW7CIqMeCms3U2OP///8TVuEUWtYSUdkVXMoUZ9iJaHwdAAAA+nRSTlMA/Pn6/gT9AQMCAfv39QIFBAfyBgIFBgHbDTOJHOwV4BhbCMlgZ3sj1/Ov+QT776ZOgOXiBAKru6BWt/1j8RI7HxH5Fx6FR6Oy/f5KCULB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" alt="Infinity University Activity"><div class="hero-pill">INFINITY UNIVERSITY ACTIVITY • POWER BI ACADEMY</div><h2>أهلاً بيك في رحلة Power BI لتحليل البيانات</h2>
+      <p>الموقع ده هيمشي معاك من الصفر خالص لحد ما تبني داشبورد مبيعات كامل في Power BI وتنشره. كل درس فيه شرح بالعامية المصرية، أمثلة، كويز بإجابة فورية، وتمارين بالحل. وفي معمل DAX تدريبي جوه المتصفح تجرب فيه صيغ DAX على داتا الكورس. تقدمك بيتحفظ لوحده في المتصفح، فممكن تقفل وترجع تكمل من مكانك.</p>
+      <div class="stats"><span><b>14</b> درس متدرج</span><span><b>58</b> سؤال تفاعلي</span><span><b>DAX</b> معمل تدريبي</span></div><button id="start-btn" class="cta">ابدأ رحلتك ←</button><p class="hero-hint">من أول Get Data لحد داشبورد مبيعات منشور</p><p class="small">التقدم محفوظ على نفس المتصفح والجهاز فقط. مسح بيانات المتصفح بيمسحه.</p>
+    </div>
+    <div id="lesson"></div><section class="lesson" id="lab" hidden><h2>معمل DAX التدريبي</h2>
+<div class="note warn">اقرا ده الأول: Power BI Desktop مبيشتغلش جوه المتصفح، وده مش نسخة منه. ده <b>محاكي مصغر لصيغ DAX</b> مكتوب خصيصاً للموقع بيحسب الصيغ اللي بتكتبها على نفس داتا الكورس (جدولين مربوطين ببعض). مفيش Power Query ولا Visuals هنا: دول بتتطبق في Power BI Desktop الحقيقي. وأي نتيجة هنا اتحسبت فعلاً من صيغتك، مش نتايج متسجلة مسبقاً.</div>
+<h3>الموديل</h3><div id="fx-sheet"></div>
+<h3>الـ Selectors (بتمثل الـ Slicers)</h3>
+<p class="small">دي بتحدد الفلتر الأولي اللي الصيغة بتتحسب فيه، زي Slicer على الصفحة.</p>
+<div class="dx-sel"><label>المدينة <select id="sel-city"><option value="all">الكل</option><option>Cairo</option><option>Giza</option><option>Alexandria</option></select></label>
+<label>الفئة <select id="sel-category"><option value="all">الكل</option><option>Tech</option><option>Furniture</option></select></label>
+<label>الشهر <select id="sel-month"><option value="all">الكل</option><option value="1">يناير</option><option value="2">فبراير</option><option value="3">مارس</option><option value="4">أبريل</option></select></label></div>
+<h3>التحديات</h3><p class="small" id="dx-score"></p><div id="dx-challenges" class="dx-chs"></div>
+<div class="note" id="dx-current" hidden></div><button class="solution-toggle" id="dx-sol-btn" hidden>أظهر الحل النموذجي</button><pre id="dx-sol" hidden dir="ltr"></pre>
+<h3>اكتب صيغتك</h3>
+<label for="fx-input">صيغة DAX (ممكن تبدأ باسم Measure زي <code>Total Sales = ...</code> وتناديه بعدين بـ <code>[Total Sales]</code>)</label>
+<textarea id="fx-input" spellcheck="false" rows="3" dir="ltr">SUM(Sales[revenue])</textarea>
+<button class="cta" id="run-fx">احسب ▶</button><button class="solution-toggle" id="reset-fx">🔄 امسح السجل والـ Measures</button><button class="solution-toggle" id="reset-lab">مسح تقدم التحديات</button>
+<div><button class="fx-example" data-fx="Total Sales = SUM(Sales[revenue])">Total Sales</button><button class="fx-example" data-fx="Profit = SUMX(Sales, Sales[revenue] - Sales[cost])">Profit</button><button class="fx-example" data-fx="DIVIDE([Profit], [Total Sales])">Margin</button><button class="fx-example" data-fx='CALCULATE(SUM(Sales[revenue]), Sales[city] = "Cairo")'>إيراد القاهرة</button><button class="fx-example" data-fx="CALCULATE(SUM(Sales[revenue]), Products[supplier] = &quot;TechLine&quot;)">TechLine</button><button class="fx-example" data-fx="TOTALYTD(SUM(Sales[revenue]), 'Calendar'[Date])">YTD</button></div>
+<div id="dx-measures" class="small"></div><div id="fx-output" aria-live="polite"></div>
+<p class="small">المعمل بيشتغل على جهازك ومفيش حاجة بتتبعت لأي سيرفر. الدوال المدعومة: SUM AVERAGE MIN MAX COUNT COUNTA DISTINCTCOUNT COUNTROWS SUMX AVERAGEX MINX MAXX RELATED CALCULATE FILTER ALL DIVIDE IF SWITCH AND OR NOT TRUE FALSE BLANK ISBLANK ROUND ABS DATE YEAR MONTH DAY DATESBETWEEN DATESYTD TOTALYTD DATEADD SAMEPERIODLASTYEAR، وكمان VAR/RETURN والعمليات والمقارنات وIN. ALL جوه CALCULATE بتشيل فلتر الجدول أو العمود، وفي Power BI الحقيقي فيه دوال وإمكانيات أكتر بكتير.</p></section>
+  <footer class="small" style="text-align:center;margin:30px 0">من أسرة Infinity University Activity<br><a href="https://learn.microsoft.com/en-us/power-bi/">شرح مايكروسوفت الرسمي لـ Power BI</a> · <a href="https://powerbi.microsoft.com/en-us/desktop/">Power BI Desktop (مجاني)</a> · <a href="https://learn.microsoft.com/en-us/dax/">مرجع DAX</a><p>معمل DAX محاكي تدريبي مكتوب خصيصاً للموقع: بيحسب صيغ DAX على داتا الكورس، مش Power BI نفسه. Power Query والـ Visuals والنشر بتتطبق في Power BI Desktop.</p><div class="contact-footer" aria-label="بيانات التواصل">
+      <div class="contact-name">Ahmed Wael Othman</div>
+      <nav class="contact-links" aria-label="روابط التواصل">
+        <a href="https://www.linkedin.com/in/ahmed-wael-othman/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">in <span>LinkedIn</span></a>
+        <a href="mailto:ahmedwaelothman612@gmail.com" aria-label="Email Ahmed Wael Othman">✉ <span>Gmail</span></a>
+        <a href="https://github.com/capwv" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile">⌘ <span>GitHub</span></a>
+      </nav>
+    </div>
+  </footer></main>
+</div>
+
+<button class="menu-toggle" id="menu-toggle">☰ الدروس</button>
+
+<script>
+/* Power BI من الصفر : curriculum */
+var CURRICULUM = window.CURRICULUM || [];
+function P(t){return {type:'p',text:t};}
+function H(t){return {type:'h',text:t};}
+function N(t){return {type:'note',text:t};}
+function W(t){return {type:'note',warn:true,text:t};}
+function L(a){return {type:'list',items:a};}
+function C(t){return {type:'code',code:t};}
+function T(head,rows){return {type:'table',head:head,rows:rows};}
+function O(t,m){return m?{text:t,mono:true}:{text:t};}
+function Q(q,opts,ans,explain,code){var o={q:q,options:opts.map(function(x){return typeof x==='string'?{text:x}:x;}),answer:ans,explain:explain};if(code)o.code=code;return o;}
+function X(task,code,why,hint){var o={task:task,code:code||'',why:why||''};if(hint)o.hint=hint;return o;}
+
+CURRICULUM.push({
+  id:'intro',
+  nav:'مقدمة: إيه هو Power BI وتنصيبه',
+  title:'الدرس 1: إيه هو Power BI وإزاي تجهز بيئة الشغل؟',
+  subtitle:'من ملفات مبعترة لداشبورد بيفهمها المدير في 10 ثواني',
+  blocks:[
+    P('تخيل إن عندك ملف مبيعات في Excel وملف تاني للعملاء وتالت للمنتجات، والمدير كل أسبوع عايز تقرير فيه رسوم وأرقام بتتحدث لوحدها. لو كل أسبوع هتفتح الملفات وتنسخ وتلزق، هتتعب وتغلط. Power BI اتعمل عشان يحل المشكلة دي: بتوصّل الداتا مرة واحدة، وتجهزها مرة واحدة، وتبني التقرير مرة واحدة، وبعد كده بيتحدث بضغطة Refresh.'),
+    P('Power BI مجموعة أدوات من مايكروسوفت للـ Business Intelligence. في الكورس ده هنشتغل على 3 حاجات أساسية:'),
+    L([
+      '`Power BI Desktop`: برنامج مجاني بتنزله على ويندوز، وفيه بتجيب الداتا وتنضفها وتعمل الموديل والتقارير. ده المكان اللي هنقضي فيه 90% من وقتنا.',
+      '`Power BI Service`: الموقع الأونلاين (app.powerbi.com) اللي بترفع عليه التقرير عشان الناس تشوفه وتتشارك. بيحتاج حساب شغل أو دراسة (مش Gmail عادي).',
+      '`Power BI Mobile`: تطبيق الموبايل اللي بتشوف بيه التقارير المنشورة.'
+    ]),
+    H('رحلة الداتا في Power BI'),
+    P('أي مشروع Power BI بيمشي في نفس الترتيب، وهو نفس ترتيب الكورس ده:'),
+    L([
+      'Get Data: توصل الداتا من Excel أو CSV أو قاعدة بيانات.',
+      'Power Query: تنضف وتجهز الداتا (نوع الأعمدة، المكرر، الفاضي).',
+      'Model: تربط الجداول ببعض بـ Relationships وتكتب Measures بـ DAX.',
+      'Report: ترسم الـ Visuals وتضيف Slicers وتظبط التصميم.',
+      'Publish: ترفع التقرير على الـ Service وتشاركه.'
+    ]),
+    H('التنصيب'),
+    P('Power BI Desktop بيشتغل على ويندوز بس. تنزله من Microsoft Store (ببحث عن Power BI Desktop) أو من موقع مايكروسوفت الرسمي، وبيتحدث كل شهر تقريباً. لو معاك ماك، عندك حلين: تستخدم Power BI Service من المتصفح (إمكانياته أقل في تجهيز الداتا)، أو تشغل ويندوز على جهاز افتراضي.'),
+    N('الواجهة بتتغير شوية مع التحديثات الشهرية، فممكن تلاقي زرار في مكان مختلف عن الشرح. أسماء الأوامر الإنجليزي هي اللي تدور بيها دايماً.'),
+    H('أول ما تفتح Desktop هتلاقي'),
+    L([
+      '`Report view`: الصفحة الفاضية اللي بترسم عليها الـ Visuals (أول أيقونة على الشمال).',
+      '`Table view`: بتشوف فيها الجداول كأنها شيت.',
+      '`Model view`: بتشوف فيها الجداول والعلاقات بينها.',
+      '`Ribbon`: الشريط العلوي (Home وInsert وModeling وView).',
+      'ثلاث لوحات على اليمين: `Filters` و`Visualizations` و`Data` (أو Fields) اللي فيها الجداول والأعمدة.'
+    ]),
+    H('الداتا اللي هنشتغل عليها'),
+    P('هنستخدم نفس جدول المبيعات اللي في موقعي SQL وExcel: 12 طلب في 4 شهور من 2025، بس زودنا عمودين: `quantity` و`cost` عشان نحسب الربح. وفي جدول تاني للمنتجات. الملفين `sales_data.csv` و`products.csv` موجودين في الـ GitHub repo بتاع الموقع ده.'),
+    T(['order_id','order_date','product_name','category','city','customer','quantity','revenue','cost'],[
+      ['1','2025-01-03','Laptop','Tech','Cairo','Aya','1','12000','9500'],
+      ['2','2025-01-15','Chair','Furniture','Giza','Ali','1','2000','1400'],
+      ['3','2025-01-21','Mouse','Tech','Cairo','Omar','2','500','300']
+    ]),
+    W('Power BI Desktop نفسه مش بيشتغل جوه المتصفح، فمعمل الموقع ده مش نسخة منه. هو معمل DAX تدريبي مكتوب للموقع بيحسب الصيغ على نفس الداتا، وبتطبق كل حاجة تانية في Power BI Desktop الحقيقي عندك.')
+  ],
+  quiz:[
+    Q('أنهي نسخة من Power BI هي اللي بتبني فيها التقرير وتجهز الداتا؟',['Power BI Mobile','Power BI Desktop','Power BI Service بس'],1,'Desktop هو البرنامج المجاني على ويندوز اللي فيه Power Query والموديل والـ Visuals. الـ Service للنشر والمشاركة، والموبايل للعرض.'),
+    Q('إيه الترتيب الصح لرحلة الداتا في أي مشروع؟',['Report ثم Get Data ثم Publish','Get Data ثم Power Query ثم Model ثم Report ثم Publish','Publish ثم Model ثم Get Data'],1,'بنجيب الداتا، ننضفها، نربطها ونحسب عليها، نرسم التقرير، وبعدين ننشره.'),
+    Q('معمل DAX اللي في الموقع ده هو:',['نسخة كاملة من Power BI بتشتغل في المتصفح','معمل تدريبي بيحسب صيغ DAX على داتا الكورس، ومش بديل عن Power BI Desktop','موقع Microsoft الرسمي'],1,'Power BI مش بيشتغل في المتصفح بنفس إمكانيات Desktop، فعملنا معمل تدريبي واضح إنه محاكي صغير لصيغ DAX بس.'),
+    Q('أنهي View بتشوف فيه العلاقات بين الجداول؟',['Report view','Table view','Model view'],2,'Model view بيعرض الجداول كمربعات والعلاقات كخطوط بينها.')
+  ],
+  exercises:[
+    X('نزّل Power BI Desktop (لو معاك ويندوز) وافتحه. اكتب أسماء الـ 3 Views اللي على الشمال بالترتيب.','','Report وTable وModel (وفي نسخ أحدث ممكن يظهر View رابع للـ DAX query). لو معاك ماك: سجل دخول على app.powerbi.com بحساب شغل أو دراسة وشوف واجهة الـ Service.'),
+    X('نزّل الملفين `sales_data.csv` و`products.csv` من الـ GitHub repo بتاع الموقع، وافتح الأول بأي برنامج. عدد الصفوف والأعمدة.','','12 صف و9 أعمدة في sales_data، و4 صفوف في products. المهم تفهم الداتا قبل ما تحطها في Power BI.'),
+    X('اكتب بجملة واحدة الفرق بين Power BI Desktop وPower BI Service.','','Desktop برنامج على جهازك لبناء التقرير، والـ Service موقع أونلاين لنشر ومشاركة التقرير وجدولة التحديث.'),
+    X('اكتب 3 تقارير ممكن تبنيها في شغلك أو دراستك باستخدام Power BI.','','أي إجابة منطقية تقبل، مثلاً: تقرير مبيعات شهري، تقرير حضور وغياب، ومتابعة مصاريف. الفكرة إنك تفكر في داتا بتتحدث بشكل متكرر.')
+  ]
+});
+
+CURRICULUM.push({
+  id:'getdata',
+  nav:'جلب الداتا (Get Data)',
+  title:'الدرس 2: Get Data: توصيل الداتا من مصادرها',
+  subtitle:'مصدر واحد أو عشرة، Power BI بيوصل كلهم',
+  blocks:[
+    P('أول خطوة في أي تقرير هي إنك تجيب الداتا. من تبويب `Home` اضغط `Get data` وهتلاقي عشرات المصادر: ملفات (Excel وText/CSV وJSON وFolder)، قواعد بيانات (SQL Server وPostgreSQL وغيرهم)، خدمات أونلاين، وحتى Web.'),
+    H('أشهر المصادر'),
+    L([
+      '`Text/CSV`: أبسط مصدر. بتختار الملف وPower BI بيخمن الفاصل (comma) والـ encoding.',
+      '`Excel workbook`: بتختار الشيتات أو الـ Tables اللي عايزها.',
+      '`Folder`: بتوصل فولدر فيه ملفات كتير بنفس الشكل (مبيعات كل شهر في ملف) وبتدمجهم في جدول واحد.',
+      '`SQL Server / Database`: بتكتب اسم السيرفر والداتابيز، وممكن تكتب SQL query جاهزة.',
+      '`Web`: بتلزق رابط صفحة فيها جدول وPower BI بيسحبه.'
+    ]),
+    H('نافذة Navigator والـ Preview'),
+    P('بعد ما تختار المصدر بتظهرلك نافذة `Navigator` فيها قايمة الجداول وعينة منها. عندك زرارين مهمين:'),
+    L([
+      '`Load`: بيحمل الداتا على طول للموديل زي ما هي. استخدمه لو الداتا نضيفة.',
+      '`Transform Data`: بيفتح Power Query عشان تنضف الداتا قبل التحميل. ده الاختيار الأحسن في الشغل الحقيقي.'
+    ]),
+    H('Import مقابل DirectQuery'),
+    P('لما بتوصل قاعدة بيانات بيسألك عن وضع الاتصال (Connectivity mode). `Import` بيحمل نسخة من الداتا جوه ملف التقرير، وده الأسرع وده اللي هنستخدمه. `DirectQuery` بيسيب الداتا في مصدرها وبيبعت استعلام في كل مرة بتتفاعل مع التقرير. في الملفات زي CSV وExcel بنستخدم Import دايماً.'),
+    N('Import معناه إن التقرير بيشتغل على نسخة من الداتا وقت آخر Refresh. لو الملف الأصلي اتغير لازم تعمل `Refresh` عشان تشوف التغيير.'),
+    H('خطوات توصيل sales_data.csv'),
+    L([
+      'Home ثم Get data ثم Text/CSV.',
+      'اختار `sales_data.csv` واضغط Open.',
+      'راجع الـ Preview: لازم تشوف 9 أعمدة و12 صف.',
+      'اضغط `Transform Data` (مش Load) عشان تدخل Power Query.',
+      'كرر نفس الخطوات لـ `products.csv`.'
+    ]),
+    W('خلي بالك من مسار الملف. لو نقلت الملف لفولدر تاني التقرير مش هيلاقيه عند الـ Refresh. تقدر تظبط المسار من `Transform data ثم Data source settings`.')
+  ],
+  quiz:[
+    Q('عندك فولدر فيه 12 ملف CSV لمبيعات كل شهر بنفس الأعمدة. أنسب Connector؟',['Web','Folder','Text/CSV 12 مرة وتدمجهم بإيدك'],1,'الـ Folder connector بيجمع الملفات اللي بنفس الشكل في جدول واحد، وبيجيب الملفات الجديدة تلقائياً.'),
+    Q('عايز تنضف الداتا قبل ما تتحمل في الموديل. تضغط على إيه في Navigator؟',['Load','Transform Data','Cancel'],1,'Transform Data بيفتح Power Query فتنضف الداتا قبل التحميل.'),
+    Q('إيه هو وضع Import؟',['بيسيب الداتا في المصدر ويبعت استعلام كل مرة','بيحمل نسخة من الداتا جوه التقرير','بيمسح الداتا الأصلية'],1,'Import بيخزن نسخة من الداتا في ملف التقرير، وبتتحدث لما تعمل Refresh.'),
+    Q('نقلت ملف الـ CSV لفولدر تاني وعملت Refresh فظهر Error. السبب الأرجح؟',['Power BI معطل','مسار المصدر القديم بقى غلط','الداتا كبيرة'],1,'التقرير بيفتكر مسار الملف القديم. تعدله من Data source settings.')
+  ],
+  exercises:[
+    X('وصّل `sales_data.csv` في Power BI Desktop عن طريق Get data ثم Text/CSV، واضغط Transform Data. كام عمود ظهر في Power Query؟','','9 أعمدة: order_id وorder_date وproduct_name وcategory وcity وcustomer وquantity وrevenue وcost.'),
+    X('وصّل `products.csv` بنفس الطريقة. اسم الجدول اللي ظهر في Queries pane إيه؟','','اسمه بيتاخد من اسم الملف: products. تقدر تغيره بـ F2 أو من Properties.'),
+    X('اذكر الفرق بين Import وDirectQuery في جملتين.','','Import ينسخ الداتا للتقرير ويشتغل بسرعة لحد آخر Refresh. DirectQuery يسيب الداتا في المصدر ويستعلم عنها مباشرة كل مرة.'),
+    X('ليه الأحسن تضغط Transform Data بدل Load في الشغل الحقيقي؟','','عشان الداتا الحقيقية دايماً فيها مشاكل (أنواع غلط، فاضي، مكرر). تنضيفها قبل التحميل بيمنع أخطاء في الحسابات بعدين.')
+  ]
+});
+
+CURRICULUM.push({
+  id:'pq1',
+  nav:'Power Query: الأساسيات',
+  title:'الدرس 3: Power Query: واجهة التنضيف والـ Applied Steps',
+  subtitle:'كل خطوة تنضيف بتتسجل وبتتكرر لوحدها كل Refresh',
+  blocks:[
+    P('Power Query هو محرر الداتا اللي جوه Power BI. بتفتحه من `Home ثم Transform data`. قوته إنه بيسجل كل حاجة بتعملها كخطوات في قايمة اسمها `Applied Steps`، ولما الداتا تتحدث بيعيد نفس الخطوات تلقائياً. يعني تنضف مرة وتتحدث للأبد.'),
+    H('الواجهة'),
+    L([
+      '`Queries pane` على الشمال: قايمة الجداول (Queries).',
+      'منطقة الـ Preview في النص: عينة من الداتا.',
+      '`Query Settings` على اليمين: اسم الـ Query وقايمة Applied Steps.',
+      '`Formula bar` فوق: بيعرض كود الخطوة بلغة M (مش لازم تكتبها دلوقتي).'
+    ]),
+    H('أنواع البيانات (Data Types)'),
+    P('أهم خطوة تنضيف: تتأكد إن كل عمود نوعه صح. الرمز اللي في رأس العمود بيقولك النوع: `123` للرقم الصحيح، `1.2` للعشري، `ABC` للنص، وأيقونة تقويم للتاريخ. لو `order_date` نوعها نص مش هتقدر تعمل عليها Time intelligence بعد كده.'),
+    L([
+      '`Whole Number`: أعداد صحيحة زي quantity.',
+      '`Decimal Number` أو `Fixed decimal number`: للمبالغ زي revenue.',
+      '`Date`: للتواريخ.',
+      '`Text`: للأسماء والأكواد (حتى لو شكلها أرقام زي رقم التليفون).'
+    ]),
+    H('تنضيف الصفوف والأعمدة'),
+    L([
+      '`Remove Columns` و`Choose Columns`: تشيل الأعمدة اللي مش محتاجها.',
+      '`Remove Rows`: تشيل أول N صف، أو الصفوف الفاضية، أو الأخطاء.',
+      '`Remove Duplicates`: تشيل الصفوف المكررة بناء على العمود المحدد.',
+      '`Use First Row as Headers`: لو العناوين نزلت كأنها صف داتا.',
+      '`Rename`: تغير الأسماء لأسماء واضحة (دبل كليك على اسم العمود).',
+      '`Filter rows`: السهم اللي في رأس العمود بيخليك تشيل قيم معينة.'
+    ]),
+    H('ترتيب الخطوات مهم'),
+    P('الخطوات بتتنفذ من فوق لتحت. لو مسحت خطوة في النص، ممكن الخطوات اللي بعدها تتكسر. اضغط على أي خطوة في Applied Steps عشان تشوف الداتا كانت عاملة إزاي وقتها، وتقدر تمسحها بـ X اللي جنبها.'),
+    N('اتعود تسمي الجداول بأسماء واضحة وتقفل بـ `Close & Apply` من تبويب Home. وقتها بس التنضيف بيتطبق على الموديل.'),
+    W('Remove Duplicates بيشيل الصفوف المكررة على أساس الأعمدة اللي إنت محددها بس. لو محددت عمود واحد هيشيل كل صف قيمته مكررة في العمود ده حتى لو باقي الصف مختلف. حدد كل الأعمدة (أو العمود المفتاح) بحذر.')
+  ],
+  quiz:[
+    Q('فين Power Query بيسجل الخطوات اللي بتعملها؟',['في Formula bar بس','في Applied Steps','في Data view'],1,'Applied Steps هي قايمة الخطوات اللي بتتعاد تلقائياً في كل Refresh.'),
+    Q('عمود `order_date` نوعه Text. المشكلة؟',['مفيش مشكلة','مش هتقدر تستخدمه كتاريخ في الفلاتر وTime intelligence','هيتمسح'],1,'لازم يكون Date عشان تتعامل معاه كتاريخ في الرسوم وDAX.'),
+    Q('إيه الأمر اللي بيطبق التنضيف على الموديل وبيقفل Power Query؟',['Close & Apply','Refresh Preview','Data source settings'],0,'Close & Apply بيطبق الخطوات ويحمل الداتا للموديل.'),
+    Q('عايز تشيل عمود مش محتاجه. تستخدم؟',['Remove Columns','Remove Duplicates','Group By'],0,'Remove Columns بيشيل الأعمدة المحددة من الـ Query.')
+  ],
+  exercises:[
+    X('في Power Query غيّر نوع `order_date` لـ Date، `quantity` لـ Whole Number، و`revenue` و`cost` لـ Fixed decimal number. اكتب ظهرت كام خطوة في Applied Steps.','','عادة خطوة واحدة اسمها Changed Type بتجمع كل التغييرات لو عملتها مع بعض، أو أكتر لو عملتها كل مرة لوحدها. المهم الأنواع تبقى صح.'),
+    X('أضف عمود جديد باسم `profit` من Add Column ثم Custom Column بالصيغة اللي تحت. اكتب الصيغة.','= [revenue] - [cost]','الصيغة في Custom Column بلغة M وبتكتب أسماء الأعمدة بين أقواس مربعة. هنعمل نفس الحسبة بعدين كـ Measure في DAX.'),
+    X('اعمل Remove Duplicates على عمود `order_id`. كام صف فاضل؟','','12 صف، لأن الداتا النضيفة مفيهاش مكرر. بنتأكد بس.'),
+    X('امسح الخطوة الأخيرة من Applied Steps ثم اضغط عليها ببطء من الأولى للآخر. إيه اللي لاحظته؟','','الـ Preview بيتغير مع كل خطوة وده بيخليك تعرف أنهي خطوة عملت المشكلة.')
+  ]
+});
+
+CURRICULUM.push({
+  id:'pq2',
+  nav:'Power Query: التحويلات المتقدمة',
+  title:'الدرس 4: Power Query: Merge وAppend وSplit وGroup By',
+  subtitle:'تجمع جداول، تقسم أعمدة، وتلخص قبل ما توصل الموديل',
+  blocks:[
+    P('بعد الأساسيات، دي أدوات بتستخدمها كل يوم في الشغل الحقيقي. كلها في تبويب `Transform` أو `Add Column` أو `Home` في Power Query.'),
+    H('Append Queries: رص جداول فوق بعض'),
+    P('لو عندك مبيعات يناير في جدول ومبيعات فبراير في جدول بنفس الأعمدة، `Append Queries` بيرصهم فوق بعض في جدول واحد. فكر فيها كـ UNION. تستخدمها لما الجداول بنفس الشكل.'),
+    H('Merge Queries: ضم جداول جنب بعض'),
+    P('`Merge Queries` بيضم أعمدة جدول تاني على جدول عندك بناء على عمود مشترك، زي JOIN في SQL. مثلاً تجيب `supplier` من جدول products وتضيفه لجدول المبيعات عن طريق `product_name`. بتختار نوع الـ Join: Left Outer هو الأشهر (كل الصفوف من الجدول الأول).'),
+    N('لو هتعمل علاقات في الموديل (الدرس الجاي)، غالباً مش محتاج Merge. الـ Merge بتستخدمه لما تحتاج العمود الإضافي جوه نفس الجدول، والعلاقات أحسن لما تعمل Star schema.'),
+    H('Split Column'),
+    P('لو عمود فيه اسم كامل أو `city - area` تقدر تقسمه بـ `Split Column ثم By Delimiter`، وتحدد الفاصل (مسافة أو شرطة أو فاصلة).'),
+    H('Replace Values وTrim وClean'),
+    L([
+      '`Replace Values`: تبدل قيمة بقيمة تانية (مثلاً cairo بـ Cairo).',
+      '`Format ثم Trim`: يشيل المسافات الزيادة من أول وآخر النص.',
+      '`Format ثم Capitalize Each Word`: يظبط حالة الحروف.',
+      '`Replace Errors`: يبدل الأخطاء بقيمة افتراضية.'
+    ]),
+    H('Group By'),
+    P('`Group By` بيلخص الجدول: تختار عمود للتجميع (city) وعملية (Sum على revenue)، وبيطلع جدول جديد فيه صف لكل مدينة. استخدمه لو الموديل محتاج جدول ملخص، لكن في أغلب الحالات بنسيب الجدول التفصيلي ونعمل التلخيص في الرسم أو في DAX.'),
+    H('Unpivot Columns'),
+    P('لو الداتا جاية بأعمدة شهور (Jan وFeb وMar) في عرض الصفحة، تحدد الأعمدة دي وتعمل `Unpivot Columns` فتتحول لعمودين: Month وValue. ده من أهم التحويلات لأن Power BI بيحب الجداول الطويلة (long) مش العريضة.'),
+    L([
+      'Append: تزود صفوف.',
+      'Merge: تزود أعمدة.',
+      'Unpivot: تحول أعمدة لصفوف.',
+      'Group By: تلخص الصفوف.'
+    ]),
+    W('Merge بيعتمد على مطابقة النصوص بالظبط، فمسافة زيادة أو اختلاف حروف (cairo وCairo) هيخلي المطابقة تفشل وتطلع null. نضف الأعمدة بـ Trim وحالة الحروف قبل الـ Merge.')
+  ],
+  quiz:[
+    Q('عندك مبيعات كل شهر في جدول منفصل بنفس الأعمدة وعايزهم في جدول واحد. تستخدم؟',['Merge Queries','Append Queries','Unpivot'],1,'Append بيرص الجداول فوق بعض، مناسب لنفس الأعمدة.'),
+    Q('إيه أقرب أمر في SQL لـ Merge Queries؟',['UNION','JOIN','GROUP BY'],1,'Merge بيضم أعمدة بناء على عمود مشترك، يعني JOIN.'),
+    Q('الداتا جاية بأعمدة Jan وFeb وMar وعايزها في عمودين Month وValue. الأمر؟',['Split Column','Pivot','Unpivot Columns'],2,'Unpivot بيحول الأعمدة لصفوف.'),
+    Q('عملت Merge على city بس بعض الصفوف طلعت null. أرجح سبب؟',['المسافات أو اختلاف الحروف بين القيمتين','Power BI قديم','الجدول كبير'],0,'المطابقة حساسة للنص. نضف المسافات وحالة الحروف الأول.')
+  ],
+  exercises:[
+    X('اعمل Merge بين sales_data وproducts على `product_name` (Left Outer) واجلب عمود `supplier`. المنتج Laptop بيجيب أنهي supplier؟','','TechLine. وChair وDesk: FurniCo، وMouse: TechLine.'),
+    X('اعمل Group By على `city` مع Sum على `revenue`. كام صف هيطلعلك وأنهي مدينة الأعلى؟','','3 صفوف: Cairo وGiza وAlexandria. Cairo: 12000+500+4000+600+2200+700 = 20000. Alexandria: 13000+12500+5000 = 30500. Giza: 2000+2000+4500 = 8500. الأعلى Alexandria بـ 30500.'),
+    X('امتى تستخدم Append وامتى Merge؟ مثال لكل واحد.','','Append لما تجمع ملفات شهرية بنفس الأعمدة. Merge لما تجيب بيانات المنتج (supplier) من جدول تاني لجدول المبيعات.'),
+    X('فسّر ليه Unpivot مهم قبل ما تعمل رسم خطي للمبيعات بالشهور.','','لأن الرسم محتاج عمود واحد للشهر وعمود للقيمة. لو الشهور أعمدة منفصلة مش هتقدر تحطها على المحور.')
+  ]
+});
+
+CURRICULUM.push({
+  id:'model',
+  nav:'الموديل والعلاقات',
+  title:'الدرس 5: Data Modeling: الجداول والعلاقات وStar Schema',
+  subtitle:'الموديل الكويس بيخلي الأرقام صح والتقرير سريع',
+  blocks:[
+    P('بعد ما الداتا نضفت، لازم نرتبها في موديل. الموديل هو الجداول والعلاقات (Relationships) اللي بينهم. ده أهم جزء بيفرق بين تقرير شغال وتقرير بيطلع أرقام غلط.'),
+    H('Fact Tables وDimension Tables'),
+    L([
+      '`Fact table`: جدول الأحداث، صفوفه كتير وبيتزود (المبيعات). فيه أرقام زي revenue وquantity ومفاتيح تربط بالباقي.',
+      '`Dimension table`: جدول الوصف، صفوفه أقل وبيوصف حاجة (المنتجات، العملاء، التاريخ). فيه أعمدة تصنيف نفلتر بيها.'
+    ]),
+    P('الشكل الأفضل اسمه `Star Schema`: Fact table في النص وحواليه Dimensions زي النجمة. عندنا Sales (Fact) وProducts (Dimension)، وبعدين هنضيف Calendar.'),
+    H('العلاقة (Relationship)'),
+    P('العلاقة بتربط عمود في جدول بعمود في جدول تاني. في حالتنا `Sales[product_name]` مرتبط بـ `Products[product_name]`. النوع الشائع `One-to-many (1:*)`: كل منتج في Products ظاهر مرة واحدة (الجانب One) وبيتكرر في Sales مرات كتير (الجانب Many).'),
+    L([
+      'عمود الجانب One لازم يكون قيمه فريدة (unique) من غير تكرار.',
+      '`Cross filter direction`: الافتراضي Single، الفلتر بيمشي من Dimension لـ Fact. استخدمه إلا لو محتاج Both بسبب معين.',
+      '`Active` مقابل `Inactive`: بس علاقة واحدة نشطة بين جدولين في نفس الوقت.'
+    ]),
+    H('إزاي تعمل علاقة'),
+    L([
+      'افتح `Model view`.',
+      'اسحب `product_name` من جدول Products وزق على `product_name` في Sales.',
+      'اتأكد من الكاردينالتي `One to many` واتجاه الفلتر Single.',
+      'لو Power BI اكتشف علاقة تلقائياً راجعها، متثقش فيها أعمى.'
+    ]),
+    H('ليه ده مهم؟'),
+    P('لما تحط `supplier` من Products على الرسم و`revenue` من Sales، الفلتر بيتنقل عبر العلاقة وPower BI بيعرف يجمع إيراد كل supplier. من غير العلاقة الأرقام كلها هتتكرر على كل supplier وهتطلع غلط.'),
+    N('ما تعملش جدول واحد ضخم فيه كل حاجة (Flat table) لو في داتا مختلفة. فصل الـ Fact عن الـ Dimensions بيخلي الملف أصغر والـ DAX أبسط.'),
+    W('لو ظهرت علاقة Many-to-many أو علاقة ثنائية الاتجاه بدون ما تعرف ليه، غالباً في جدول فيه قيم مكررة في الجانب One. نضف الداتا الأول بدل ما تغير نوع العلاقة.')
+  ],
+  quiz:[
+    Q('أنهي جدول عندنا هو الـ Fact table؟',['Products','Sales','supplier'],1,'Sales فيه الأحداث (الطلبات) والأرقام، وهو اللي بيتكرر بالصفوف.'),
+    Q('في علاقة One-to-many بين Products وSales، جانب الـ One هو:',['Sales','Products','الاتنين'],1,'كل منتج ظاهر مرة في Products وبيتكرر في Sales.'),
+    Q('الاتجاه الافتراضي والأفضل للفلتر في العلاقة:',['Single من Dimension لـ Fact','Both دايماً','من Fact لـ Dimension بس'],0,'Single من الـ Dimension للـ Fact هو الأسلم والأوضح.'),
+    Q('إيه الشكل اللي بنحاول نوصله في الموديل؟',['Flat table ضخمة','Star Schema','جداول من غير علاقات'],1,'Star Schema: Fact في النص وDimensions حواليه.')
+  ],
+  exercises:[
+    X('في Model view اعمل علاقة بين `Sales[product_name]` و`Products[product_name]`. اكتب نوعها والاتجاه.','','One to many (Products جهة One وSales جهة Many)، وCross filter direction: Single.'),
+    X('حط `supplier` من Products و`revenue` (Sum) من Sales في Table visual. إيه إيراد TechLine؟','','39300. (Laptop وMouse): 12000+500+13000+12500+600+700.'),
+    X('احذف العلاقة وشوف الرسم تاني. إيه اللي حصل؟','','كل supplier هيظهر بنفس إجمالي الإيراد 59000 لأن مفيش فلتر بينتقل بين الجدولين.'),
+    X('اشرح بجملتين الفرق بين Fact وDimension.','','Fact: أحداث وأرقام (المبيعات). Dimension: وصف وتصنيف (المنتج، العميل، التاريخ).')
+  ]
+});
+
+CURRICULUM.push({
+  id:'visuals',
+  nav:'بناء الـ Visuals',
+  title:'الدرس 6: بناء الـ Visuals واختيار الرسم المناسب',
+  subtitle:'كل سؤال ليه رسم، واختيار الرسم الغلط بيضيع الرسالة',
+  blocks:[
+    P('الـ Visual هو أي عنصر على صفحة التقرير: رسم أو جدول أو كارت. بتبنيه بإنك تضغط على النوع من لوحة `Visualizations` وتسحب الحقول من لوحة `Data` للخانات (`Axis` و`Legend` و`Values`).'),
+    H('اختار الرسم حسب السؤال'),
+    T(['السؤال','الرسم المناسب','Visual في Power BI'],[
+      ['كام إجمالي المبيعات؟','رقم واحد كبير','Card'],
+      ['مين الأعلى بين المنتجات أو المدن؟','مقارنة بين فئات','Clustered bar / column'],
+      ['المبيعات بتتغير إزاي مع الوقت؟','اتجاه زمني','Line chart'],
+      ['كل فئة بتمثل كام % من الكل؟','نسب (فئات قليلة)','Donut'],
+      ['عايز الأرقام التفصيلية','جدول','Table / Matrix'],
+      ['التوزيع على المدن جغرافياً','خريطة','Map']
+    ]),
+    H('خطوات رسم أول Visual'),
+    L([
+      'اضغط على `Clustered column chart` من Visualizations.',
+      'اسحب `city` لخانة `X-axis`.',
+      'اسحب `revenue` لخانة `Y-axis`. هيتجمع Sum تلقائياً.',
+      'من أيقونة Format (فرشاة) عدل العنوان والألوان.'
+    ]),
+    H('الحقول والتجميع'),
+    P('لما تحط عمود رقمي زي revenue في الرسم Power BI بيعمل له Aggregation تلقائي (Sum غالباً). تقدر تغيره لـ Average أو Count أو Min من السهم اللي جنب الحقل. ده تجميع ضمني (Implicit). الأفضل في الشغل الجدي إنك تعمل Measure بـ DAX، وده موضوع الدرس 8.'),
+    H('Table مقابل Matrix'),
+    L([
+      '`Table`: صفوف وأعمدة عادية.',
+      '`Matrix`: زي PivotTable في Excel: صفوف وأعمدة وقيم، وبتقدر تفتح وتقفل المستويات (Drill).'
+    ]),
+    H('Drill وTooltips'),
+    P('لو حطيت أكتر من عمود في الـ Axis (مثلاً category ثم product_name) بتقدر تعمل Drill down بالأسهم اللي فوق الرسم. وعند الوقوف بالماوس على أي عمود بيظهر `Tooltip` فيه التفاصيل.'),
+    N('قاعدة بسيطة: كل Visual لازم يجاوب على سؤال واحد واضح، وليه عنوان بيقول إيه هو (مبيعات كل مدينة) مش (revenue by city).'),
+    W('الـ Pie chart بيصعب المقارنة لو الفئات كتير. لو أكتر من 4 أو 5 فئات استخدم Bar chart مرتب من الأعلى للأقل.')
+  ],
+  quiz:[
+    Q('عايز تعرض إجمالي الإيراد كرقم واحد كبير. أنسب Visual؟',['Card','Line chart','Map'],0,'Card بيعرض رقم واحد بوضوح.'),
+    Q('الأنسب لعرض اتجاه المبيعات شهر بشهر؟',['Line chart','Donut','Card'],0,'الـ Line chart بيوضح التغير مع الزمن.'),
+    Q('إيه هو الـ Matrix؟',['زي PivotTable بصفوف وأعمدة وقيم','خريطة','فلتر'],0,'Matrix بيعرض صفوف وأعمدة وقيم ومستويات تتفتح وتتقفل.'),
+    Q('لما بتحط revenue في الرسم وPower BI بيجمعها تلقائياً، ده اسمه:',['Implicit measure','Relationship','Slicer'],0,'تجميع ضمني. الأحسن تكتب Measure صريح بـ DAX.')
+  ],
+  exercises:[
+    X('ارسم Clustered column chart: `city` على X و`revenue` على Y. أنهي مدينة الأعلى والقيمة؟','','Alexandria بـ 30500 (13000+12500+5000).'),
+    X('ارسم Line chart بالشهر على X والـ revenue على Y. أنهي شهر الأعلى؟','','فبراير: 13000+4000+2000 = 19000. وكمان مارس: 600+12500+4500 = 17600، يناير: 14500، أبريل: 7900. لو بتستخدم شهور من 2025 الأعلى فبراير.'),
+    X('حط Card لـ Sum of revenue. قيمته كام؟','','59000.'),
+    X('اختار الرسم المناسب لكل سؤال: (أ) نسبة Tech من الإجمالي (ب) مبيعات كل شهر (ج) تفاصيل كل طلب.','','(أ) Donut أو Card بنسبة، (ب) Line chart، (ج) Table.')
+  ]
+});
+
+CURRICULUM.push({
+  id:'filters',
+  nav:'الفلاتر والـ Slicers',
+  title:'الدرس 7: الفلاتر والـ Slicers والتفاعل بين الـ Visuals',
+  subtitle:'خلي التقرير يتفاعل مع القارئ بدل ما يبقى صورة ثابتة',
+  blocks:[
+    P('قوة Power BI إن القارئ يقدر يضغط على مدينة أو شهر والتقرير كله يتغير. ده بيحصل بنوعين: الفلاتر (Filters) اللي بتعملها إنت، والـ Slicers اللي القارئ بيتحكم فيها.'),
+    H('لوحة Filters'),
+    P('على اليمين لوحة `Filters` فيها 3 مستويات:'),
+    L([
+      '`Filters on this visual`: بتأثر على Visual واحد بس.',
+      '`Filters on this page`: بتأثر على كل الـ Visuals في الصفحة.',
+      '`Filters on all pages`: بتأثر على التقرير كله.'
+    ]),
+    P('تسحب أي حقل للمستوى اللي عايزه وتختار القيم. أنواع الفلتر: `Basic` (اختيار من قايمة) و`Advanced` (شروط زي أكبر من) و`Top N` (أعلى 3 منتجات مثلاً).'),
+    H('Slicer'),
+    P('الـ `Slicer` هو Visual بيظهر للقارئ عشان يفلتر الصفحة. تضيفه من Visualizations (أيقونة القمع) وتسحب له حقل زي `city` أو `order_date`. أشكاله: List وDropdown وTile (أزرار) وBetween لشريط التاريخ.'),
+    L([
+      'اضغط `Ctrl` لاختيار أكتر من قيمة.',
+      'ممكن تخلي الاختيار Single select من إعدادات Slicer.',
+      'الـ Slicer بيأثر على الصفحة اللي فيها، ولو عايزه يأثر على صفحات تانية بتستخدم `Sync slicers` من تبويب View.'
+    ]),
+    H('التفاعل بين الـ Visuals (Cross-filtering)'),
+    P('لما بتضغط على عمود في رسم، باقي الرسوم في الصفحة بتتفلتر أو بتتظلل على نفس القيمة. تتحكم في ده من `Format ثم Edit interactions`: لكل Visual بتختار Filter أو Highlight أو None.'),
+    N('لو قيمة KPI مهمة (زي إجمالي المبيعات) خليها مش بتتأثر بكليك على رسم تاني من Edit interactions، لو ده هدفك.'),
+    H('ليه الفلتر والـ Slicer مش نفس الحاجة؟'),
+    L([
+      'الفلتر في اللوحة: ثابت ومخفي عن القارئ العادي.',
+      'الـ Slicer: ظاهر والقارئ بيغيره.'
+    ]),
+    W('كتر الـ Slicers بتزحم الصفحة وبتبطأ التقرير. 3 أو 4 slicers مفيدة (تاريخ، مدينة، فئة) أحسن من 10.')
+  ],
+  quiz:[
+    Q('فلتر عايز يأثر على كل الـ Visuals في الصفحة. أنهي مستوى؟',['Visual','Page','All pages'],1,'Filters on this page بيأثر على الصفحة كلها.'),
+    Q('إيه الفرق الأساسي بين Slicer وفلتر لوحة Filters؟',['Slicer ظاهر والقارئ بيتحكم فيه','مفيش فرق','الفلتر دايماً أسرع'],0,'الـ Slicer واجهة تفاعل للقارئ.'),
+    Q('عايز Slicer المدينة يشتغل على كذا صفحة. تستخدم؟',['Sync slicers','Top N','Drillthrough'],0,'Sync slicers بيزامن الـ Slicer بين الصفحات.'),
+    Q('لو مش عايز Visual يتأثر بكليك على رسم تاني؟',['Edit interactions وتختار None','تمسحه','تغير النوع'],0,'Edit interactions بيحدد علاقة كل Visual بالتانيين.')
+  ],
+  exercises:[
+    X('ضيف Slicer لـ `city` واختار Cairo. إيه قيمة Card إجمالي الإيراد؟','','20000.'),
+    X('ضيف فلتر Top N على `product_name` يعرض أعلى 2 منتجات بالإيراد. هما إيه؟','','Laptop (37500) وDesk (13500). Laptop: 12000+13000+12500 = 37500. Desk: 4000+4500+5000 = 13500. Chair: 6200. Mouse: 1800.'),
+    X('اعمل Slicer للتاريخ Between من 2025-02-01 لـ 2025-03-31. الإجمالي كام؟','','36600 (فبراير 19000 + مارس 17600).'),
+    X('جرب تضغط على عمود Alexandria في رسم المدن وشوف باقي الرسوم. إيه اللي حصل؟','','باقي الرسوم بتتفلتر أو بتتظلل على Alexandria. ده Cross-filtering.')
+  ]
+});
+
+CURRICULUM.push({
+  id:'dax1',
+  nav:'DAX: Measures والدوال الأساسية',
+  title:'الدرس 8: مقدمة DAX: الـ Measures وSUM وAVERAGE وغيرهم',
+  subtitle:'لغة الحسابات في Power BI، وبتتجرب في معمل الموقع',
+  blocks:[
+    P('`DAX` اختصار Data Analysis Expressions، ودي لغة الصيغ اللي بتحسب بيها الأرقام في Power BI. شبه صيغ Excel بس بتشتغل على جداول وأعمدة مش خلايا.'),
+    H('Measure مقابل Calculated Column'),
+    L([
+      '`Measure`: حساب بيتنفذ وقت العرض بناء على الفلاتر الحالية (إجمالي مبيعات، متوسط). مش بيتخزن في الجدول. ده اللي بتستخدمه 90% من الوقت.',
+      '`Calculated Column`: عمود جديد في الجدول بيتحسب لكل صف ويتخزن في الموديل. بيزود حجم الملف.'
+    ]),
+    P('القاعدة: لو الحساب تجميع (مجموع، متوسط، نسبة) يبقى Measure. لو محتاج عمود تفلتر بيه أو تحطه على محور يبقى Calculated Column.'),
+    H('إنشاء Measure'),
+    P('من تبويب Home اضغط `New measure` واكتب الصيغة في شريط الصيغة. التنسيق: `اسم الـ Measure = الصيغة`.'),
+    C(`Total Sales = SUM(Sales[revenue])`),
+    C(`Orders = COUNTROWS(Sales)`),
+    C(`Average Order = AVERAGE(Sales[revenue])`),
+    C(`Customers = DISTINCTCOUNT(Sales[customer])`),
+    H('أهم الدوال'),
+    T(['الدالة','بتعمل إيه','مثال'],[
+      ['SUM','مجموع عمود','SUM(Sales[revenue])'],
+      ['AVERAGE','متوسط عمود','AVERAGE(Sales[revenue])'],
+      ['MIN / MAX','أصغر وأكبر قيمة','MAX(Sales[revenue])'],
+      ['COUNTROWS','عدد صفوف جدول','COUNTROWS(Sales)'],
+      ['DISTINCTCOUNT','عدد القيم المختلفة','DISTINCTCOUNT(Sales[customer])'],
+      ['DIVIDE','قسمة آمنة','DIVIDE(a, b)'],
+      ['SUMX','مجموع صف بصف','SUMX(Sales, Sales[revenue]-Sales[cost])']
+    ]),
+    H('ليه DIVIDE وليس علامة القسمة؟'),
+    P('`DIVIDE(a, b)` لو b صفر أو فاضي بترجع BLANK بدل خطأ. تقدر تكتب قيمة بديلة كمعامل تالت: `DIVIDE(a, b, 0)`. استخدمها دايماً في النسب.'),
+    H('SUMX: الـ Iterators'),
+    P('لو الحساب محتاج عملية على كل صف قبل التجميع (الربح = revenue ناقص cost لكل صف) استخدم `SUMX`. بيعدي على كل صف في الجدول ويحسب التعبير وبعدين يجمع النتيجة.'),
+    C(`Profit = SUMX(Sales, Sales[revenue] - Sales[cost])
+Margin % = DIVIDE([Profit], [Total Sales])`),
+    N('بتقدر تنادي على Measure جوه Measure تاني بكتابة اسمه بين أقواس مربعة `[Total Sales]`. ودي الطريقة اللي تبني بيها حسابات معقدة من حاجات بسيطة.'),
+    N('جرب كل صيغة هنا في زرار `معمل DAX` فوق قبل ما تكتبها في Power BI. المعمل بيحسب على نفس الداتا.'),
+    W('أسماء الأعمدة بتتكتب `Table[Column]`، والـ Measures بتتكتب `[Measure]` من غير اسم جدول. الخلط بينهم أشهر غلطة للمبتدئين.')
+  ],
+  quiz:[
+    Q('تجميع زي إجمالي المبيعات المفروض يكون:',['Measure','Calculated column','Relationship'],0,'التجميعات بتتحسب كـ Measures وقت العرض.'),
+    Q('إيه ناتج `COUNTROWS(Sales)` في الداتا بتاعتنا؟',['9','12','59000'],1,'الجدول فيه 12 صف.'),
+    Q('ليه نفضل DIVIDE على علامة /؟',['أسرع بـ 10 مرات','بتتعامل مع القسمة على صفر','مفيش فرق خالص'],1,'DIVIDE بترجع BLANK أو قيمة بديلة بدل Error.'),
+    Q('الصيغة المناسبة لحساب الربح من revenue وcost صف بصف:',['SUM(Sales[revenue]-Sales[cost])','SUMX(Sales, Sales[revenue]-Sales[cost])','COUNTROWS(Sales)'],1,'SUMX بتحسب التعبير لكل صف وبعدين تجمع. دالة SUM بتاخد عمود واحد بس.'),
+    Q('إيه الصح لمناداة Measure اسمه Total Sales؟',['Sales[Total Sales]','[Total Sales]','Total Sales()'],1,'Measures بتتنادي باسمها بين أقواس مربعة.')
+  ],
+  exercises:[
+    X('اكتب Measure لإجمالي الإيراد. جربه في المعمل. الناتج 59000.',`Total Sales = SUM(Sales[revenue])`,'SUM بتجمع عمود revenue كله. الناتج 59000.'),
+    X('اكتب Measure لمتوسط قيمة الطلب.',`Average Order = AVERAGE(Sales[revenue])`,'المتوسط 4916.67 تقريباً (59000 على 12).'),
+    X('اكتب Measure لعدد العملاء المختلفين.',`Customers = DISTINCTCOUNT(Sales[customer])`,'الناتج 5: Aya وAli وOmar وMona وSara.'),
+    X('اكتب Measure لإجمالي الربح (revenue ناقص cost).',`Profit = SUMX(Sales, Sales[revenue] - Sales[cost])`,'الإيراد 59000 والتكلفة 44070، فالربح 14930.'),
+    X('اكتب Measure لهامش الربح كنسبة من الإيراد.',`Margin % = DIVIDE([Profit], [Total Sales])`,'14930 على 59000 تساوي 0.2531 تقريباً (25.3%). لازم تعرف Measures الاتنين الأول في المعمل.'),
+    X('اكتب أكبر قيمة طلب في الجدول.',`Max Order = MAX(Sales[revenue])`,'13000 (الطلب رقم 4).')
+  ]
+});
+
+CURRICULUM.push({
+  id:'dax2',
+  nav:'DAX: CALCULATE وسياق الفلتر',
+  title:'الدرس 9: CALCULATE وFilter Context',
+  subtitle:'أهم دالة في DAX، وفهمها بيفرق بين مبتدئ ومحترف',
+  blocks:[
+    P('كل رقم في Visual بيتحسب جوه `Filter Context`: مجموعة الفلاتر الحالية اللي جاية من الـ Slicers والصف أو العمود في الرسم والفلاتر بتاعت الصفحة. مثلاً الـ Measure `Total Sales` في عمود Cairo على الرسم بيجمع revenue للقاهرة بس، لأن Cairo فلتر على الصف ده.'),
+    P('`CALCULATE` بتخليك تحسب Measure في سياق فلتر مختلف. شكلها:'),
+    C(`CALCULATE( <expression>, <filter1>, <filter2>, ... )`),
+    H('أمثلة'),
+    C(`Cairo Sales = CALCULATE(SUM(Sales[revenue]), Sales[city] = "Cairo")
+Big Orders = CALCULATE(COUNTROWS(Sales), Sales[revenue] > 5000)
+Tech Sales = CALCULATE([Total Sales], Sales[category] = "Tech")`),
+    P('الأول بيحسب مجموع الإيراد بس لصفوف المدينة فيها Cairo (20000). التاني بيعد الطلبات الأكبر من 5000 (3 طلبات). التالت بيستخدم Measure جاهز بفلتر الفئة (39300).'),
+    H('إزاي الفلتر بيتعامل مع الفلاتر الحالية'),
+    P('لو فلتر CALCULATE على نفس العمود اللي عليه فلتر من الرسم، فلتر CALCULATE هو اللي بيكسب (بيستبدله). لو على عمود تاني بيتجمعوا مع بعض (AND).'),
+    H('ALL: شيل الفلاتر'),
+    P('`ALL(Sales)` أو `ALL(Sales[city])` بتشيل الفلاتر. بتستخدمها لحساب النسبة من الإجمالي:'),
+    C(`% of Total = DIVIDE([Total Sales], CALCULATE([Total Sales], ALL(Sales)))`),
+    P('الحسبة دي في أي مدينة بتطلع نصيبها من إجمالي كل المدن.'),
+    H('FILTER: شروط أعقد'),
+    P('لما الشرط مش عمود واحد وقيمة بتستخدم `FILTER` اللي بترجع جدول بالصفوف اللي حققت الشرط:'),
+    C(`Large Profit Orders = CALCULATE(COUNTROWS(Sales), FILTER(Sales, Sales[revenue] - Sales[cost] > 2000))`),
+    N('بتقدر تفلتر بعمود من جدول Dimension وPower BI بيمرر الفلتر عبر العلاقة للـ Fact:'),
+    C(`TechLine Sales = CALCULATE([Total Sales], Products[supplier] = "TechLine")`),
+    W('الفلتر المنطقي البسيط زي `Sales[city] = "Cairo"` بيشتغل على عمود واحد بس. لو محتاج مقارنة بين عمودين أو حسبة على كل صف استخدم FILTER.')
+  ],
+  quiz:[
+    Q('إيه وظيفة CALCULATE؟',['تحسب تعبير في سياق فلتر معدل','تنشئ علاقة','تنشئ Slicer'],0,'CALCULATE بتغير الفلتر اللي الحساب بيتنفذ فيه.'),
+    Q('نتيجة `CALCULATE(SUM(Sales[revenue]), Sales[city] = "Giza")` بدون أي Slicer:',['8500','20000','59000'],0,'Giza: 2000+2000+4500 = 8500.'),
+    Q('إيه اللي بتعمله `ALL(Sales)` جوه CALCULATE؟',['بتشيل الفلاتر عن جدول Sales','بتزود فلتر','بتمسح الجدول'],0,'بتشيل الفلاتر فيبقى الحساب على كل الصفوف.'),
+    Q('عايز نسبة المدينة من الإجمالي. الصيغة الصح؟',['DIVIDE([Total Sales], CALCULATE([Total Sales], ALL(Sales)))','SUM(Sales[city])','COUNTROWS(ALL)'],0,'المقام لازم يشيل فلتر المدينة بـ ALL.'),
+    Q('الفلتر `Products[supplier] = "TechLine"` على Measure في Sales بيشتغل عشان:',['في علاقة بين الجدولين','بالصدفة','لأنهم بنفس الاسم'],0,'الفلتر بيمشي عبر العلاقة من Dimension لـ Fact.')
+  ],
+  exercises:[
+    X('اكتب Measure لإيراد القاهرة بس.',`Cairo Sales = CALCULATE(SUM(Sales[revenue]), Sales[city] = "Cairo")`,'الناتج 20000.'),
+    X('اكتب Measure لعدد الطلبات اللي قيمتها أكبر من 5000.',`Big Orders = CALCULATE(COUNTROWS(Sales), Sales[revenue] > 5000)`,'الناتج 3 طلبات (12000 و13000 و12500).'),
+    X('اكتب Measure لإيراد فئة Tech بس.',`Tech Sales = CALCULATE(SUM(Sales[revenue]), Sales[category] = "Tech")`,'الناتج 39300.'),
+    X('اكتب نسبة Tech من إجمالي كل الإيراد.',`Tech Share = DIVIDE(CALCULATE(SUM(Sales[revenue]), Sales[category] = "Tech"), CALCULATE(SUM(Sales[revenue]), ALL(Sales)))`,'39300 على 59000 تساوي 0.6661 تقريباً (66.6%).'),
+    X('اكتب Measure لإيراد المورد TechLine باستخدام جدول Products.',`TechLine Sales = CALCULATE(SUM(Sales[revenue]), Products[supplier] = "TechLine")`,'الناتج 39300. الفلتر انتقل من Products لـ Sales عبر العلاقة.'),
+    X('اكتب عدد الطلبات اللي ربحها (revenue ناقص cost) أكبر من 2000.',`Large Profit Orders = CALCULATE(COUNTROWS(Sales), FILTER(Sales, Sales[revenue] - Sales[cost] > 2000))`,'الناتج 3: الطلب 1 (ربحه 2500) والطلب 4 (3000) والطلب 8 (2700).')
+  ]
+});
+
+CURRICULUM.push({
+  id:'timeintel',
+  nav:'Time Intelligence الأساسيات',
+  title:'الدرس 10: Time Intelligence: YTD والشهر السابق والسنة السابقة',
+  subtitle:'قارن النهارده بامبارح من غير ما تكتب فلتر لكل شهر',
+  blocks:[
+    P('أكتر سؤال بيتسأل في أي تقرير: المبيعات زادت ولا قلت عن الشهر اللي فات؟ وعن نفس الفترة السنة اللي فاتت؟ دوال `Time Intelligence` بتجاوب على ده في سطر واحد.'),
+    H('الشرط الأول: جدول تواريخ (Date table)'),
+    P('الدوال دي بتحتاج جدول تواريخ كامل: صف لكل يوم من غير أي يوم ناقص، حتى لو مفيش مبيعات فيه. مش هتستخدم عمود order_date من جدول Sales مباشرة. تعمل جدول جديد من `Modeling ثم New table`:'),
+    C(`Calendar = CALENDAR(DATE(2025,1,1), DATE(2025,12,31))`),
+    P('بعدين تضيف أعمدة (Year وMonth Number وMonth Name) وتعمل `Mark as date table` (من Table tools) على عمود Date، وتعمل علاقة One-to-many من `Calendar[Date]` لـ `Sales[order_date]`.'),
+    N('بدل CALENDAR ممكن تستخدم `CALENDARAUTO()` اللي بتحدد المدى من الداتا لوحدها.'),
+    H('الدوال الأساسية'),
+    C(`Sales YTD = TOTALYTD(SUM(Sales[revenue]), 'Calendar'[Date])
+Sales Previous Month = CALCULATE(SUM(Sales[revenue]), DATEADD('Calendar'[Date], -1, MONTH))
+Sales LY = CALCULATE(SUM(Sales[revenue]), SAMEPERIODLASTYEAR('Calendar'[Date]))`),
+    L([
+      '`TOTALYTD`: المجموع من أول السنة لحد آخر يوم في الفترة المحددة (Year To Date).',
+      '`DATEADD`: بتزحزح الفترة (-1 MONTH يعني الشهر السابق، -1 YEAR السنة السابقة).',
+      '`SAMEPERIODLASTYEAR`: نفس الفترة السنة اللي فاتت.'
+    ]),
+    H('مقارنة النمو'),
+    C(`MoM Growth % = DIVIDE([Total Sales] - [Sales Previous Month], [Sales Previous Month])`),
+    P('لو اخترت مارس: المبيعات 17600 والشهر السابق (فبراير) 19000، فالنمو (17600-19000)/19000 = سالب 7.37%.'),
+    H('ملاحظات مهمة'),
+    L([
+      'لو مفيش داتا السنة اللي فاتت، `SAMEPERIODLASTYEAR` بترجع BLANK، وده سلوك صح مش غلط. داتا كورسنا كلها 2025 فالنتيجة فاضية.',
+      'الدوال دي بتشتغل على سياق التاريخ الحالي: لازم يكون في فلتر زمني (Slicer على الشهر أو رسم بشهور) عشان تدي مقارنة مفيدة.',
+      '`TOTALYTD` تقدر تديها تاريخ نهاية السنة المالية كمعامل تالت لو سنتك المالية مش من يناير.'
+    ]),
+    W('في معمل الموقع مفيش جدول Calendar فعلي. المعمل بيفهم `Calendar[Date]` وبيعتبره جدول أيام 2025 كاملة، وبتختار الشهر من الـ Selector اللي فوق. في Power BI الحقيقي لازم تبني الجدول وتعمل العلاقة.')
+  ],
+  quiz:[
+    Q('ليه لازم نعمل Date table منفصل؟',['عشان الدوال تلاقي كل الأيام من غير فجوات','عشان نخفي الداتا','مش لازم أبداً'],0,'دوال Time Intelligence محتاجة جدول أيام متصل.'),
+    Q('أنهي دالة بتديك المجموع من أول السنة؟',['TOTALYTD','DATEADD','DIVIDE'],0,'TOTALYTD = Year To Date.'),
+    Q('ناتج `SAMEPERIODLASTYEAR` لداتا كلها في 2025:',['BLANK','59000','0 دايماً Error'],0,'مفيش داتا 2024، فالناتج فاضي.'),
+    Q('لو مارس مختار، `DATEADD(Calendar[Date], -1, MONTH)` بيروح لـ:',['فبراير','أبريل','مارس السنة اللي فاتت'],0,'-1 MONTH بيرجع شهر لورا.')
+  ],
+  exercises:[
+    X('اكتب Measure يحسب YTD لإجمالي الإيراد. لو مفيش فلتر زمني الناتج كام؟',`Sales YTD = TOTALYTD(SUM(Sales[revenue]), 'Calendar'[Date])`,'59000. اخترنا مارس في المعمل هيطلع 51100 (يناير 14500 وفبراير 19000 ومارس 17600).'),
+    X('اختار مارس في المعمل واكتب Measure للشهر السابق.',`Sales Previous Month = CALCULATE(SUM(Sales[revenue]), DATEADD('Calendar'[Date], -1, MONTH))`,'فبراير: 19000.'),
+    X('اكتب نمو الشهر على الشهر (MoM) كنسبة. اختار مارس.',`MoM % = DIVIDE(SUM(Sales[revenue]) - CALCULATE(SUM(Sales[revenue]), DATEADD('Calendar'[Date], -1, MONTH)), CALCULATE(SUM(Sales[revenue]), DATEADD('Calendar'[Date], -1, MONTH)))`,'(17600-19000)/19000 = سالب 0.0737 (انخفاض 7.4%).'),
+    X('اكتب مبيعات نفس الفترة السنة اللي فاتت. ليه الناتج فاضي؟',`Sales LY = CALCULATE(SUM(Sales[revenue]), SAMEPERIODLASTYEAR('Calendar'[Date]))`,'لأن الداتا كلها 2025 ومفيش مبيعات في 2024، فالناتج BLANK.')
+  ]
+});
+
+CURRICULUM.push({
+  id:'pages',
+  nav:'صفحات التقرير والتنقل',
+  title:'الدرس 11: صفحات التقرير والتنقل: Buttons وBookmarks وDrillthrough',
+  subtitle:'من صفحة واحدة مزدحمة لتقرير منظم بتتنقل فيه بسهولة',
+  blocks:[
+    P('التقرير الكويس مش صفحة واحدة مليانة رسوم. بيتقسم لصفحات كل واحدة ليها هدف: نظرة عامة، تفاصيل، وتحليل مفصل. من أسفل الشاشة اضغط `+` عشان تضيف صفحة، ودبل كليك لتغيير الاسم.'),
+    H('تقسيم مقترح'),
+    L([
+      '`Overview`: الأرقام الرئيسية (Cards) ورسمين أو تلاتة.',
+      '`Sales Analysis`: تفاصيل المبيعات بالمدينة والمنتج والزمن.',
+      '`Details`: جدول بالطلبات للرجوع للتفاصيل.'
+    ]),
+    H('Buttons والتنقل'),
+    P('من `Insert ثم Buttons` تضيف زرار. من Format تحدد الـ `Action`: النوع `Page navigation` وتختار الصفحة الوجهة. تقدر تعمل قايمة تنقل (Navigation bar) ثابتة على كل الصفحات. ولما تضغط على الزرار في Power BI Desktop لازم تمسك `Ctrl` وتضغط عشان تجربه، لكن في الـ Service بيشتغل بكليك عادي.'),
+    H('Bookmarks'),
+    P('الـ Bookmark بيحفظ حالة الصفحة (الفلاتر وإظهار وإخفاء الـ Visuals). من `View ثم Bookmarks`. استخدامات مشهورة: زرار يبدل بين رسم مبيعات ورسم ربح، أو يرجع الفلاتر للوضع الافتراضي (Reset).'),
+    N('لو بتخبي Visuals وتظهرها بـ Bookmarks استخدم `Selection pane` من View عشان تتحكم في إظهار كل عنصر وترتيب الطبقات.'),
+    H('Drillthrough'),
+    P('بتعمل صفحة تفاصيل (مثلاً تفاصيل المدينة) وتحط حقل `city` في خانة `Drill through` في لوحة Visualizations. بعد كده كليك يمين على أي مدينة في صفحة تانية واختار Drill through ثم الصفحة. بتفتح الصفحة التفصيلية مفلترة على المدينة دي ومعاها زرار رجوع.'),
+    H('Tooltip pages'),
+    P('تقدر تعمل صفحة صغيرة وتحددها كـ `Tooltip page` من إعدادات الصفحة، فتظهر كتلميح غني لما تقف على Visual.'),
+    L([
+      'اسم الصفحة لازم يشرح محتواها.',
+      'رتب الصفحات من العام للتفصيلي.',
+      'خلي نفس مكان القايمة والعنوان في كل الصفحات.'
+    ]),
+    W('الـ Bookmarks بتحفظ حالة الفلاتر وقت الحفظ. لو غيرت الـ Slicers بعدها بتحتاج تحدث الـ Bookmark (Update) عشان يتحفظ الوضع الجديد.')
+  ],
+  quiz:[
+    Q('عايز زرار ينقل لصفحة Details. الـ Action؟',['Page navigation','Q&A','Web URL'],0,'Page navigation بتحدد صفحة الوجهة.'),
+    Q('أنهي ميزة بتفتح صفحة تفاصيل مفلترة على عنصر ضغطت عليه كليك يمين؟',['Drillthrough','Sync slicers','Top N'],0,'Drillthrough بتنقل السياق للصفحة التفصيلية.'),
+    Q('الـ Bookmark بيحفظ إيه؟',['حالة الصفحة من فلاتر وظهور Visuals','الداتا الأصلية','كلمة السر'],0,'بيحفظ حالة العرض والفلاتر.'),
+    Q('لإدارة الـ Visuals المخفية والظاهرة مع الـ Bookmarks تستخدم:',['Selection pane','Model view','Power Query'],0,'Selection pane بيعرض كل عنصر وتقدر تخفيه.')
+  ],
+  exercises:[
+    X('اعمل 3 صفحات بأسماء Overview وSales Analysis وDetails. اكتب خطوات الإضافة.','','اضغط + أسفل الشاشة 3 مرات (أو 2 لو عندك صفحة أولى)، ودبل كليك على كل تبويب وغير الاسم.'),
+    X('اعمل زرار على Overview ينقل لـ Details. الإعداد المطلوب؟','','Insert ثم Buttons ثم Blank. من Format فعّل Action والنوع Page navigation واختار Details. جربه بـ Ctrl+Click في Desktop.'),
+    X('اعمل صفحة Drillthrough للمدينة. إيه الخطوات؟','','صفحة جديدة، حط city في Drill through، ضيف Cards وجدول طلبات. من صفحة تانية كليك يمين على مدينة واختار Drill through.'),
+    X('اعمل Bookmark اسمه Reset يرجع الفلاتر الافتراضية، وزرار بيستدعيه.','','اضبط الصفحة بدون فلاتر، View ثم Bookmarks ثم Add. بعدين Button بـ Action Bookmark واختار Reset.')
+  ]
+});
+
+CURRICULUM.push({
+  id:'design',
+  nav:'الـ Themes والتصميم',
+  title:'الدرس 12: Themes وتصميم داشبورد يتقري من أول نظرة',
+  subtitle:'التصميم مش تجميل: ده اللي بيخلي القارئ يفهم في 5 ثواني',
+  blocks:[
+    P('تقرير بأرقام صح لكن شكله فوضى هيتساب. التصميم الجيد بيوجه عين القارئ للأهم.'),
+    H('الـ Themes'),
+    P('من `View ثم Themes` تختار Theme جاهز يغير ألوان كل الـ Visuals مرة واحدة. تقدر تعمل `Customize current theme` وتحدد ألوانك، أو تحمل ملف JSON فيه الألوان والخطوط (`Browse for themes`) وتستخدمه في كل تقاريرك لتوحيد الهوية.'),
+    H('قواعد التصميم'),
+    L([
+      'نظام ألوان محدد: لون أساسي ولون تمييز ولون محايد. ما تستخدمش كل ألوان قوس قزح.',
+      'الأرقام المهمة (Cards) فوق ويسار حسب اتجاه القراءة، والتفاصيل تحت.',
+      'محاذاة الـ Visuals وتساوي المسافات: استخدم `Format ثم Align` و`Distribute`.',
+      'عنوان واضح لكل Visual، وحذف الشبكة والتفاصيل اللي مالهاش لازمة.',
+      'ما تحطش أكتر من 6 أو 8 Visuals في الصفحة.',
+      'ألوان الخلفية الغامقة ممكنة بس لازم يكون التباين (Contrast) كافي للقراءة.'
+    ]),
+    H('اتجاه القراءة بالعربي'),
+    P('لو جمهورك بيقرأ عربي، رتب الصفحة من اليمين للشمال لأن الأهم ييجي على اليمين. ممكن تعدل الاتجاه حسب لغة الـ Visuals والنصوص. الأرقام والـ Measures الإنجليزي بتفضل LTR وده طبيعي.'),
+    H('إمكانية الوصول (Accessibility)'),
+    L([
+      'مش كل الناس بتفرق بين الأحمر والأخضر. اعتمد على لون وشكل (رمز) مش لون بس.',
+      'ضيف `Alt text` للـ Visuals من Format ثم General.',
+      'اختار حجم خط مقروء (على الأقل 10 أو 12).'
+    ]),
+    H('تنسيق الأرقام'),
+    P('اضغط على الـ Measure واختار من `Measure tools` الـ Format (Currency وPercentage) وعدد الخانات العشرية. نسبة الهامش تظهر 25.3% مش 0.253112.'),
+    N('اعمل ثيم مرة، واحفظه واستخدمه في كل التقارير. كمان تقدر تستخدم الألوان الأساسية في الموقع ده (أزرق وأسود SAMS-MIS) كمرجع لهوية مشاريعك.'),
+    W('الألوان الصارخة والـ 3D والتأثيرات بتشتت القارئ. لو الرسم لازم يتشرح مش تصميم كويس.')
+  ],
+  quiz:[
+    Q('فين تحمل ملف Theme بصيغة JSON؟',['View ثم Themes ثم Browse for themes','Get data','Model view'],0,'من تبويب View.'),
+    Q('أنسب عدد Visuals في الصفحة:',['حوالي 6 إلى 8 بحد أقصى','كل ما زاد أحسن','20 على الأقل'],0,'الصفحة المزدحمة تضيع الرسالة.'),
+    Q('ليه ما نعتمدش على الأحمر والأخضر بس؟',['بعض الناس عندها عمى ألوان','مش بتظهر على الموبايل','مفيش سبب'],0,'يفضل إضافة رمز أو شكل لجانب اللون.'),
+    Q('إيه الفايدة من حفظ Theme JSON؟',['تستخدم نفس الهوية في كل تقاريرك','يسرع الـ Refresh','يعمل علاقات تلقائية'],0,'توحيد الألوان والخطوط في كل التقارير.')
+  ],
+  exercises:[
+    X('غير الـ Theme لتقريرك واكتب اسم الـ Theme.','','أي Theme من View ثم Themes. المهم تلاحظ إن كل الألوان تغيرت مرة واحدة.'),
+    X('رتب الـ Visuals: 4 Cards فوق في صف واحد متساوية المسافات. إيه الأمر؟','','حدد الـ Cards الأربعة ثم Format ثم Align (Align top) وDistribute horizontally.'),
+    X('اعمل Format لـ Measure الهامش كنسبة بخانة عشرية واحدة. فين الإعداد؟','','Measure tools ثم Format Percentage وDecimal places 1. القيمة تظهر 25.3%.'),
+    X('اعمل قايمة بـ 3 مشاكل تصميم ممكن تلاقيها في داشبورد وحلها.','','مثلاً: ألوان كتير (استخدم نظام ألوان محدد)، رسوم كتير (قلل)، عناوين غامضة (اكتب عناوين تفسيرية).')
+  ]
+});
+
+CURRICULUM.push({
+  id:'publish',
+  nav:'النشر والمشاركة',
+  title:'الدرس 13: Publish وPower BI Service والمشاركة',
+  subtitle:'من ملف على جهازك لتقرير بيفتحه فريقك من أي مكان',
+  blocks:[
+    P('التقرير لحد دلوقتي ملف `.pbix` على جهازك. عشان الناس تشوفه بتنشره على Power BI Service.'),
+    H('خطوات النشر'),
+    L([
+      'احفظ التقرير (`.pbix`).',
+      'اضغط `Publish` في Home.',
+      'سجل دخول بحساب شغل أو دراسة.',
+      'اختار الـ `Workspace` (ممكن My workspace للتجربة).',
+      'افتح التقرير على الـ Service من الرابط اللي بيظهر.'
+    ]),
+    N('Power BI Service محتاج حساب شغل أو دراسة، مش Gmail شخصي. لو مفيش عندك حساب، اسأل المسؤول عن IT في جامعتك أو شركتك.'),
+    H('Report مقابل Dashboard'),
+    L([
+      '`Report`: صفحات متعددة بتبنيها في Desktop وتتفاعل معاها.',
+      '`Dashboard`: صفحة واحدة في الـ Service بتجمع Tiles مثبتة من تقارير مختلفة.',
+      '`Semantic model` (كان اسمه Dataset): الداتا والموديل اللي التقرير مبني عليه.'
+    ]),
+    H('Refresh'),
+    P('التقرير المنشور بيحتاج تحديث الداتا. من إعدادات الـ Semantic model بتعمل `Scheduled refresh`. لو المصدر ملف على جهازك أو داتابيز داخلية بتحتاج `On-premises data gateway` يوصل الـ Service بجهازك. لو المصدر أونلاين ممكن بدون Gateway.'),
+    H('المشاركة'),
+    L([
+      '`Share`: ترسل رابط لأشخاص معينين. غالباً المستلم محتاج ترخيص أو التقرير في مساحة بسعة مناسبة، والإعدادات بتختلف حسب مؤسستك.',
+      '`Workspace roles`: Admin وMember وContributor وViewer: كل دور له صلاحيات مختلفة.',
+      '`App`: تجمع تقارير ولوحات في حزمة وتوزعها على جمهور.',
+      '`Export`: تصدير PDF أو PowerPoint من Service.',
+      '`Row-level security (RLS)`: كل مستخدم يشوف الصفوف اللي تخصه بس (مثلاً مدير كل مدينة).'
+    ]),
+    W('خيار `Publish to web` بينشر التقرير للعامة على الإنترنت من غير تسجيل دخول. ممنوع تستخدمه لو الداتا فيها أي معلومة خاصة أو داخلية.'),
+    N('شروط الترخيص (Free وPro وPremium وFabric) بتتغير، فراجع صفحة مايكروسوفت الرسمية قبل ما تعتمد على خطة معينة.')
+  ],
+  quiz:[
+    Q('فين بتنشر تقرير Desktop عشان الفريق يشوفه؟',['Power BI Service','Power Query','Excel'],0,'بتعمل Publish على الـ Service.'),
+    Q('إيه الـ Gateway؟',['بوابة بتوصل الـ Service بمصادر داخلية على جهازك أو شبكتك','نوع Visual','فلتر'],0,'الـ On-premises data gateway لتحديث الداتا من مصادر محلية.'),
+    Q('خيار Publish to web مناسب لـ:',['داتا خاصة بالشركة','داتا عامة مفتوحة للجميع فقط','أي داتا'],1,'بيخلي التقرير متاح للعامة. ما تستخدمهوش لداتا حساسة.'),
+    Q('RLS بتستخدم عشان:',['كل مستخدم يشوف الصفوف المسموحة له بس','تسرع الـ Refresh','تغير الألوان'],0,'Row-level security بتقيد البيانات حسب المستخدم.')
+  ],
+  exercises:[
+    X('اكتب خطوات نشر تقريرك على My workspace.','','احفظ pbix، Home ثم Publish، سجل دخول، اختار My workspace، وافتح الرابط.'),
+    X('الداتا CSV على جهازك. التقرير المنشور محتاج إيه عشان يتحدث لوحده؟','','محتاج Gateway يوصل الـ Service بجهازك أو بنقل الملف لمصدر أونلاين (OneDrive أو SharePoint) وبعدين Scheduled refresh.'),
+    X('إيه الفرق بين Report وDashboard؟','','Report متعدد الصفحات وتفاعلي. Dashboard صفحة واحدة بتجمع Tiles من تقارير مختلفة.'),
+    X('عايز كل مدير فرع يشوف مدينته بس. إيه الميزة؟','','Row-level security (RLS) بتعرفها في Desktop (Manage roles) وبتعين المستخدمين من الـ Service.')
+  ]
+});
+
+CURRICULUM.push({
+  id:'capstone',
+  nav:'المشروع النهائي: Sales Dashboard',
+  title:'الدرس 14: المشروع النهائي: داشبورد المبيعات من الصفر',
+  subtitle:'كل اللي اتعلمناه في تقرير واحد، ومعاك أرقام تتأكد بيها إنك صح',
+  blocks:[
+    P('دلوقتي هتبني داشبورد مبيعات كامل بخطوات موجهة. بعد كل مرحلة فيه `Checks`: أرقام لازم تطلع زي ما هي. لو رقم اختلف، ارجع للمرحلة اللي قبلها.'),
+    H('الداتا'),
+    P('نزل `sales_data.csv` (12 طلب، 9 أعمدة) و`products.csv` (4 منتجات) من الـ repo بتاع الموقع. نفس الداتا اللي اشتغلنا عليها طول الكورس.'),
+    T(['product_name','unit_price','supplier'],[['Laptop','13000','TechLine'],['Chair','2100','FurniCo'],['Mouse','550','TechLine'],['Desk','4300','FurniCo']]),
+    H('المرحلة 1: الداتا والتنضيف'),
+    L([
+      'Get data ثم Text/CSV، واستورد الملفين بـ Transform Data.',
+      'اظبط الأنواع: order_date = Date، quantity = Whole Number، revenue وcost = Fixed decimal number.',
+      'تأكد إن مفيش مكرر في order_id، وTrim على الأعمدة النصية.',
+      'Close & Apply.'
+    ]),
+    N('Check 1: Sales فيه 12 صف، Products فيه 4 صفوف، ومفيش أخطاء في أي عمود.'),
+    H('المرحلة 2: الموديل'),
+    L([
+      'علاقة One-to-many من `Products[product_name]` لـ `Sales[product_name]`.',
+      'جدول `Calendar` بـ CALENDAR(DATE(2025,1,1), DATE(2025,12,31)) وMark as date table، وعلاقة من `Calendar[Date]` لـ `Sales[order_date]`.',
+      'أضف أعمدة Year وMonth Number وMonth Name للـ Calendar، ورتب Month Name حسب Month Number.'
+    ]),
+    N('Check 2: في Model view تلاقي Sales في النص وProducts وCalendar حواليه، والعلاقتين One to many بفلتر Single.'),
+    H('المرحلة 3: الـ Measures'),
+    C(`Total Sales = SUM(Sales[revenue])
+Profit = SUMX(Sales, Sales[revenue] - Sales[cost])
+Margin % = DIVIDE([Profit], [Total Sales])
+Orders = COUNTROWS(Sales)
+Average Order = AVERAGE(Sales[revenue])
+Customers = DISTINCTCOUNT(Sales[customer])
+Sales YTD = TOTALYTD([Total Sales], 'Calendar'[Date])
+Sales Previous Month = CALCULATE([Total Sales], DATEADD('Calendar'[Date], -1, MONTH))
+MoM % = DIVIDE([Total Sales] - [Sales Previous Month], [Sales Previous Month])`),
+    T(['Measure','القيمة المتوقعة (من غير فلاتر)'],[
+      ['Total Sales','59000'],['Profit','14930'],['Margin %','25.3%'],['Orders','12'],['Average Order','4916.67'],['Customers','5'],['Sales YTD','59000']
+    ]),
+    N('Check 3: جرب كل Measure في معمل الموقع وكمان في Power BI. لازم الأرقام تتطابق.'),
+    H('المرحلة 4: صفحة Overview'),
+    L([
+      '6 Cards فوق: Total Sales وProfit وMargin % وOrders وAverage Order وCustomers.',
+      'Clustered column: `Month Name` مع Total Sales.',
+      'Clustered bar: `city` مع Total Sales مرتب من الأعلى.',
+      'Donut: `category` مع Total Sales.',
+      'Slicers: city وcategory (وممكن Month).'
+    ]),
+    T(['الرسم','القيم المتوقعة'],[
+      ['الشهور','Jan 14500، Feb 19000، Mar 17600، Apr 7900'],
+      ['المدن','Alexandria 30500، Cairo 20000، Giza 8500'],
+      ['الفئات','Tech 39300 (66.6%)، Furniture 19700 (33.4%)'],
+      ['الربح بالفئة','Tech 8930، Furniture 6000']
+    ]),
+    N('Check 4: اختار Cairo في الـ Slicer: Total Sales = 20000، Profit = 5130، Orders = 6.'),
+    H('المرحلة 5: صفحة Analysis'),
+    L([
+      'Matrix: category وproduct_name في الصفوف، والقيم Total Sales وProfit وMargin %.',
+      'Line chart: Month Name مع Total Sales وSales Previous Month.',
+      'Table: كل الطلبات بالتفاصيل.',
+      'Slicer شهر: اختار Mar وتأكد: Sales YTD = 51100، Sales Previous Month = 19000، MoM % = سالب 7.4%.'
+    ]),
+    N('Check 5: المنتج الأعلى مبيعاً Laptop (37500) والأعلى ربحاً Laptop (8200).'),
+    H('المرحلة 6: التنقل والتصميم'),
+    L([
+      'أزرار Page navigation بين الصفحتين على كل صفحة.',
+      'Theme موحد وعناوين واضحة، ومحاذاة الـ Cards.',
+      'Format الأرقام: Currency للمبيعات وPercentage للهامش.'
+    ]),
+    H('المرحلة 7: النشر'),
+    L([
+      'احفظ `.pbix` وعمل Publish لـ My workspace.',
+      'افتح التقرير في الـ Service وجرب الـ Slicers.',
+      'ارفع الملف على GitHub مع README يشرح المشروع. ما تحطش داتا حساسة.'
+    ]),
+    W('مراجعة أخيرة قبل ما تشارك: الأرقام الكبيرة طابقت الـ Checks؟ العناوين مفهومة؟ الألوان متباينة؟ مفيش داتا خاصة؟'),
+    N('الربح الأعلى لـ Laptop: 2500 + 3000 + 2700 = 8200. ده من SUMX على صفوف Laptop الثلاثة.')
+  ],
+  quiz:[
+    Q('إجمالي الإيراد وإجمالي الربح في الداتا (بالترتيب)؟',['59000 و14930','59000 و44070','14930 و59000'],0,'الإيراد 59000 والتكلفة 44070 والفرق 14930.'),
+    Q('اخترت Cairo في Slicer. Orders؟',['6','12','3'],0,'6 طلبات: رقم 1 و3 و5 و7 و10 و11.'),
+    Q('اخترت Mar. أنهي قيمة صح لـ Sales YTD؟',['51100','17600','59000'],0,'يناير وفبراير ومارس: 14500+19000+17600.'),
+    Q('إيه أنسب أول خطوة لو رقم في الداشبورد مش طابق الـ Check؟',['ارجع لخطوة الأنواع والعلاقات وراجعها','احذف التقرير','غير الرقم المتوقع'],0,'غالباً المشكلة في أنواع الأعمدة أو علاقة أو Measure غلط.')
+  ],
+  exercises:[
+    X('اكتب Measure لـ Profit وقيمته من غير فلاتر.',`Profit = SUMX(Sales, Sales[revenue] - Sales[cost])`,'14930.'),
+    X('اكتب Measure لـ Margin % وقيمته.',`Margin % = DIVIDE([Profit], [Total Sales])`,'0.2531 تقريباً، يعني 25.3%.'),
+    X('اكتب Measure لربح القاهرة فقط. قيمته كام؟',`Cairo Profit = CALCULATE(SUMX(Sales, Sales[revenue] - Sales[cost]), Sales[city] = "Cairo")`,'5130.'),
+    X('اكتب Measure لنصيب Tech من الإجمالي. قيمته؟',`Tech Share = DIVIDE(CALCULATE(SUM(Sales[revenue]), Sales[category] = "Tech"), SUM(Sales[revenue]))`,'0.6661 تقريباً (66.6%). لاحظ المقام هنا بدون ALL لأن مفيش فلتر على الفئة.'),
+    X('اكتب Measure لـ YTD لما مارس مختار. قيمته؟',`Sales YTD = TOTALYTD(SUM(Sales[revenue]), 'Calendar'[Date])`,'51100. اختار مارس في الـ Selector.'),
+    X('اكتب Measure يحسب مبيعات المنتج Laptop فقط. قيمته؟',`Laptop Sales = CALCULATE(SUM(Sales[revenue]), Sales[product_name] = "Laptop")`,'37500.'),
+    X('اكتب خطوات نشر المشروع على GitHub بعد ما تخلص.','','أنشئ repo جديد، ارفع ملف pbix والداتا (لو مش حساسة) وscreenshot للداشبورد وREADME بيشرح المشروع، وحط الرابط على LinkedIn.')
+  ]
+});
+
+</script>
+<script>
+/* Power BI من الصفر : rendering engine + progress tracking */
+(function () {
+  'use strict';
+
+  var STORAGE_KEY = 'powerbi-zero-progress-v1';
+
+  function loadProgress() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        var p = JSON.parse(raw);
+        if (p && typeof p === 'object') {
+          p.answers = p.answers || {};
+          p.done = p.done || {};
+          return p;
+        }
+      }
+    } catch (e) { /* corrupted storage -> start fresh */ }
+    return { answers: {}, done: {} };
+  }
+
+  function saveProgress() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(progress)); } catch (e) {}
+  }
+
+  var progress = loadProgress();
+
+  /* ---------- helpers ---------- */
+  function esc(s) {
+    return String(s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  /* small Excel formula highlighter: strings, function names, cell refs, numbers */
+  var XLFNS = ['SUM','AVERAGE','MIN','MAX','COUNT','COUNTA','DISTINCTCOUNT','COUNTROWS','SUMX','AVERAGEX','MINX','MAXX','RELATED','CALCULATE','FILTER','ALL','DIVIDE','IF','SWITCH','AND','OR','NOT','TRUE','FALSE','BLANK','ISBLANK','ROUND','ABS','DATE','YEAR','MONTH','DAY','DATESBETWEEN','DATESYTD','TOTALYTD','DATEADD','SAMEPERIODLASTYEAR','CALENDAR','CALENDARAUTO','VAR','RETURN','IN','DAY','MONTH','QUARTER'];
+  var HL_RE = new RegExp(
+    '("(?:[^"]|"")*")' +
+    '|(\\b(?:' + XLFNS.join('|') + ')\\b)(?=\\s*\\(|\\s+[A-Za-z]|\\s*$)' +
+    '|((?:\'[^\']+\'|[A-Za-z_][A-Za-z_0-9]*)?\\[[^\\]]+\\])' +
+    '|(\\b\\d+(?:\\.\\d+)?\\b)', 'g');
+
+  function highlight(code) {
+    var out = esc(code).replace(HL_RE, function (m, s, f, r, n) {
+      if (s) return '<span class="s">' + s + '</span>';
+      if (f) return '<span class="k">' + f + '</span>';
+      if (r) return '<span class="k">' + r + '</span>';
+      if (n) return '<span class="n">' + n + '</span>';
+      return m;
+    });
+    return '<pre><code>' + out + '</code></pre>';
+  }
+
+  function renderInline(text) {
+    /* `code` spans inside normal text */
+    return esc(text).replace(/`([^`]+)`/g, function (_, c) {
+      return '<span class="kw">' + c + '</span>';
+    });
+  }
+
+  /* ---------- progress ---------- */
+  function totalLessons() { return CURRICULUM.length; }
+  function doneCount() {
+    var n = 0;
+    CURRICULUM.forEach(function (l) { if (progress.done[l.id]) n++; });
+    return n;
+  }
+
+  function refreshProgressUI() {
+    var pct = totalLessons() ? Math.round(doneCount() / totalLessons() * 100) : 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-text').textContent = pct + '%';
+    CURRICULUM.forEach(function (l) {
+      var el = document.querySelector('.nav-item[data-id="' + l.id + '"]');
+      if (el) { el.classList.toggle('done', !!progress.done[l.id]); el.querySelector('.check').textContent=progress.done[l.id]?'✓':''; }
+    });
+  }
+
+  /* ---------- nav ---------- */
+  function buildNav() {
+    var nav = document.getElementById('nav');
+    nav.innerHTML = '';
+    CURRICULUM.forEach(function (l, idx) {
+      var item = document.createElement('button');
+      item.type='button';
+      item.className = 'nav-item';
+      item.dataset.id = l.id;
+      item.innerHTML = '<span class="check">' + (progress.done[l.id] ? '✓' : '') + '</span>' +
+        '<span class="num">' + (idx + 1) + '</span><span>' + esc(l.nav) + '</span>';
+      item.addEventListener('click', function () {
+        openLesson(l.id);
+        document.getElementById('sidebar').classList.remove('open');
+      });
+      nav.appendChild(item);
+    });
+  }
+
+  /* ---------- lesson rendering ---------- */
+  function renderBlocks(blocks) {
+    var html = '';
+    blocks.forEach(function (b) {
+      if (b.type === 'p') html += '<p>' + renderInline(b.text) + '</p>';
+      else if (b.type === 'h') html += '<h3>' + esc(b.text) + '</h3>';
+      else if (b.type === 'code') html += highlight(b.code);
+      else if (b.type === 'note') html += '<div class="note' + (b.warn ? ' warn' : '') + '">' + renderInline(b.text) + '</div>';
+      else if (b.type === 'list') {
+        html += '<ul>' + b.items.map(function (i) { return '<li>' + renderInline(i) + '</li>'; }).join('') + '</ul>';
+      } else if (b.type === 'table') {
+        html += '<table class="demo"><tr>' + b.head.map(function (h) { return '<th>' + esc(h) + '</th>'; }).join('') + '</tr>' +
+          b.rows.map(function (r) { return '<tr>' + r.map(function (c) { return '<td>' + esc(c) + '</td>'; }).join('') + '</tr>'; }).join('') +
+          '</table>';
+      }
+    });
+    return html;
+  }
+
+  var currentLesson = null;
+
+  function openLesson(id) {
+    var lesson = null, idx = -1;
+    CURRICULUM.forEach(function (l, i) { if (l.id === id) { lesson = l; idx = i; } });
+    if (!lesson) return;
+    currentLesson = lesson;
+    document.getElementById('lab').hidden = true;
+    document.getElementById('lesson').style.display = 'block';
+    progress.lastLesson = id; saveProgress();
+
+    document.getElementById('hero').style.display = 'none';
+    var host = document.getElementById('lesson');
+
+    var html = '<div class="lesson">';
+    html += '<h2 class="lesson-title">' + esc(lesson.title) + '</h2>';
+    html += '<div class="lesson-sub">' + esc(lesson.subtitle) + '</div>';
+    html += renderBlocks(lesson.blocks);
+    html += '<div class="quiz-box" id="quiz-box"><h3>🧠 اختبر نفسك</h3><div id="quiz-qs"></div><div class="quiz-result" id="quiz-result"></div></div>';
+    html += '<div class="exercise-box"><h3>✍️ تمارين عملية</h3><div id="exs"></div></div>';
+    html += '<div class="complete-badge" id="complete-badge">🎉 مبروك! خلصت الدرس ده. كمل اللي بعده 👇</div>';
+    html += '<div class="lesson-nav">';
+    html += '<button id="prev-btn"' + (idx === 0 ? ' disabled' : '') + '>→ الدرس اللي فات</button>';
+    html += '<button id="next-btn" class="next-btn"' + (idx === CURRICULUM.length - 1 ? ' disabled' : '') + '>الدرس اللي بعده ←</button>';
+    html += '</div></div>';
+
+    host.innerHTML = html;
+
+    buildQuiz(lesson);
+    buildExercises(lesson);
+
+    document.getElementById('prev-btn').addEventListener('click', function () {
+      if (idx > 0) openLesson(CURRICULUM[idx - 1].id);
+    });
+    document.getElementById('next-btn').addEventListener('click', function () {
+      if (idx < CURRICULUM.length - 1) openLesson(CURRICULUM[idx + 1].id);
+    });
+
+    document.querySelectorAll('.nav-item').forEach(function (n) {
+      n.classList.toggle('active', n.dataset.id === id);
+    });
+    refreshProgressUI();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ---------- quiz ---------- */
+  function buildQuiz(lesson) {
+    var qsHost = document.getElementById('quiz-qs');
+    lesson.quiz.forEach(function (q, qi) {
+      var box = document.createElement('div');
+      box.className = 'quiz-q';
+      var qid = lesson.id + ':' + qi;
+
+      var qhtml = '<div class="q-text">' + (qi + 1) + '. ' + renderInline(q.q) + '</div>';
+      if (q.code) qhtml += highlight(q.code);
+      box.innerHTML = qhtml;
+
+      var answered = progress.answers[qid];
+      var fb = document.createElement('div');
+      fb.className = 'feedback';
+
+      q.options.forEach(function (opt, oi) {
+        var btn = document.createElement('button');
+        btn.className = 'opt';
+        btn.innerHTML = opt.mono ? '<span class="mono">' + esc(opt.text) + '</span>' : renderInline(opt.text);
+        btn.addEventListener('click', function () {
+          if (progress.answers[qid] !== undefined) return;
+          var correct = (oi === q.answer);
+          progress.answers[qid] = { picked: oi, correct: correct };
+          saveProgress();
+          paint();
+          checkQuizDone(lesson);
+        });
+        box.appendChild(btn);
+      });
+      box.appendChild(fb);
+      qsHost.appendChild(box);
+
+      function paint() {
+        var rec = progress.answers[qid];
+        var btns = box.querySelectorAll('.opt');
+        btns.forEach(function (b, oi) {
+          b.disabled = rec !== undefined;
+          if (rec !== undefined) {
+            if (oi === q.answer) b.classList.add('correct');
+            else if (oi === rec.picked) b.classList.add('wrong');
+          }
+        });
+        if (rec !== undefined) {
+          fb.className = 'feedback ' + (rec.correct ? 'ok' : 'no');
+          fb.innerHTML = (rec.correct ? '✅ صح! ' : '❌ مش دي. ') + renderInline(q.explain);
+        }
+      }
+      paint();
+    });
+    checkQuizDone(lesson);
+  }
+
+  function checkQuizDone(lesson) {
+    var total = lesson.quiz.length, answered = 0, correct = 0;
+    lesson.quiz.forEach(function (q, qi) {
+      var rec = progress.answers[lesson.id + ':' + qi];
+      if (rec !== undefined) { answered++; if (rec.correct) correct++; }
+    });
+    var result = document.getElementById('quiz-result');
+    if (answered === total && total > 0) {
+      if (correct === total && !progress.done[lesson.id]) {
+        progress.done[lesson.id] = true;
+        saveProgress();
+      }
+      result.classList.add('show');
+      result.innerHTML = '🏁 خلصت كويز الدرس: ' + correct + ' من ' + total + ' صح' +
+        (correct === total ? ' : أداء مثالي 👏' : ' : راجع اللي غلطت فيه فوق وافهم ليه');
+      if (correct===total) document.getElementById('complete-badge').classList.add('show');
+      else { const retry=document.createElement('button'); retry.className='solution-toggle';retry.textContent='حاول الكويز تاني';retry.onclick=()=>{lesson.quiz.forEach((q,i)=>delete progress.answers[lesson.id+':'+i]);saveProgress();openLesson(lesson.id);};result.appendChild(retry); }
+      refreshProgressUI();
+    }
+  }
+
+  /* ---------- exercises ---------- */
+  function buildExercises(lesson) {
+    var host = document.getElementById('exs');
+    lesson.exercises.forEach(function (ex, i) {
+      var box = document.createElement('div');
+      box.className = 'exercise';
+      var html = '<div class="task">تمرين ' + (i + 1) + ': ' + renderInline(ex.task) + '</div>';
+      if (ex.hint) html += '<p style="color:var(--muted);font-size:.88rem">💡 تلميح: ' + renderInline(ex.hint) + '</p>';
+      html += '<label>اكتب محاولتك قبل الحل:</label><textarea class="attempt" dir="ltr" rows="4" spellcheck="false" aria-label="محاولتك"></textarea><p class="small">لو التمرين صيغة DAX، جربها في معمل DAX من الشريط فوق. لو خطوات واجهة، طبقها في Power BI Desktop نفسه. المحاولة هنا للمذاكرة وبتتحفظ في متصفحك.</p><button class="solution-toggle">أظهر الحل النموذجي</button>';
+      html += '<div class="solution">' + (ex.code ? highlight(ex.code) : '') +
+        (ex.why ? '<div class="why">' + renderInline(ex.why) + '</div>' : '') + '</div>';
+      box.innerHTML = html;
+      var btn = box.querySelector('.solution-toggle');
+      var sol = box.querySelector('.solution');
+      var attempt=box.querySelector('.attempt');var ak='attempt:'+lesson.id+':'+i;attempt.value=progress[ak]||'';attempt.oninput=()=>{progress[ak]=attempt.value;saveProgress();};
+      btn.addEventListener('click', function () {
+        sol.classList.toggle('open');
+        btn.textContent = sol.classList.contains('open') ? 'إخفي الحل' : 'أظهر الحل النموذجي';
+      });
+      host.appendChild(box);
+    });
+  }
+
+  /* ---------- reset + menu ---------- */
+  document.getElementById('reset-btn').addEventListener('click', function () {
+    if (confirm('متأكد إنك عايز تمسح كل تقدمك وتبدأ من الأول؟')) {
+      progress = { answers: {}, done: {} };
+      saveProgress();
+      buildNav();
+      refreshProgressUI();
+      if (currentLesson) openLesson(currentLesson.id);
+    }
+  });
+
+  document.getElementById('menu-toggle').addEventListener('click', function () {
+    document.getElementById('sidebar').classList.toggle('open');
+  });
+
+  /* ---------- boot ---------- */
+  buildNav();
+  refreshProgressUI();
+})();
+
+</script>
+<script>
+/* معمل DAX: mini DAX evaluator over the course model (Sales + Products + Calendar) */
+(function(root){
+'use strict';
+var SALES_COLS=['order_id','order_date','product_name','category','city','customer','quantity','revenue','cost'];
+var SALES=[
+[1,'2025-01-03','Laptop','Tech','Cairo','Aya',1,12000,9500],
+[2,'2025-01-15','Chair','Furniture','Giza','Ali',1,2000,1400],
+[3,'2025-01-21','Mouse','Tech','Cairo','Omar',2,500,300],
+[4,'2025-02-05','Laptop','Tech','Alexandria','Mona',1,13000,10000],
+[5,'2025-02-14','Desk','Furniture','Cairo','Aya',1,4000,2800],
+[6,'2025-02-25','Chair','Furniture','Giza','Ali',1,2000,1400],
+[7,'2025-03-04','Mouse','Tech','Cairo','Sara',2,600,350],
+[8,'2025-03-11','Laptop','Tech','Alexandria','Mona',1,12500,9800],
+[9,'2025-03-18','Desk','Furniture','Giza','Omar',1,4500,3100],
+[10,'2025-04-02','Chair','Furniture','Cairo','Sara',1,2200,1500],
+[11,'2025-04-09','Mouse','Tech','Cairo','Aya',2,700,420],
+[12,'2025-04-25','Desk','Furniture','Alexandria','Mona',1,5000,3500]];
+var PRODUCTS_COLS=['product_name','unit_price','supplier'];
+var PRODUCTS=[['Laptop',13000,'TechLine'],['Chair',2100,'FurniCo'],['Mouse',550,'TechLine'],['Desk',4300,'FurniCo']];
+var TABLES={Sales:{cols:SALES_COLS,rows:SALES},Products:{cols:PRODUCTS_COLS,rows:PRODUCTS}};
+function pad(n){return (n<10?'0':'')+n;}
+function iso(y,m,d){return y+'-'+pad(m)+'-'+pad(d);}
+function dim(y,m){return new Date(Date.UTC(y,m,0)).getUTCDate();}
+var CAL=[];(function(){for(var m=1;m<=12;m++)for(var d=1;d<=dim(2025,m);d++)CAL.push(iso(2025,m,d));})();
+function E(msg){var e=new Error(msg);e.dax=true;return e;}
+
+/* ---------- tokenizer ---------- */
+function tokenize(src){
+  var t=[],i=0,n=src.length,m;
+  while(i<n){
+    var c=src[i];
+    if(/\s/.test(c)){i++;continue;}
+    if(c==='/'&&src[i+1]==='/'){while(i<n&&src[i]!=='\n')i++;continue;}
+    if(c==='-'&&src[i+1]==='-'){while(i<n&&src[i]!=='\n')i++;continue;}
+    if(/[0-9]/.test(c)){m=/^\d+(\.\d+)?/.exec(src.slice(i));t.push({t:'num',v:parseFloat(m[0])});i+=m[0].length;continue;}
+    if(c==='"'){var s='';i++;while(i<n){if(src[i]==='"'){if(src[i+1]==='"'){s+='"';i+=2;continue;}break;}s+=src[i++];}
+      if(i>=n)throw E('نص مفتوح: ناقص علامة " في الآخر');i++;t.push({t:'str',v:s});continue;}
+    if(c==="'"){var j=src.indexOf("'",i+1);if(j<0)throw E("اسم جدول مفتوح: ناقص علامة ' في الآخر");var tb=src.slice(i+1,j);i=j+1;
+      if(src[i]!=='[')throw E('بعد اسم الجدول لازم يجي [اسم العمود]');var k=src.indexOf(']',i);if(k<0)throw E('ناقص ] في آخر اسم العمود');
+      t.push({t:'col',table:tb,col:src.slice(i+1,k)});i=k+1;continue;}
+    if(c==='['){var k2=src.indexOf(']',i);if(k2<0)throw E('ناقص ] في آخر الاسم');t.push({t:'meas',name:src.slice(i+1,k2)});i=k2+1;continue;}
+    if(/[A-Za-z_]/.test(c)){m=/^[A-Za-z_][A-Za-z_0-9]*/.exec(src.slice(i));var id=m[0];i+=id.length;
+      if(src[i]==='['){var k3=src.indexOf(']',i);if(k3<0)throw E('ناقص ] في آخر اسم العمود');t.push({t:'col',table:id,col:src.slice(i+1,k3)});i=k3+1;}
+      else t.push({t:'id',v:id});continue;}
+    var two=src.substr(i,2);
+    if(['<>','<=','>=','&&','||'].indexOf(two)>=0){t.push({t:'op',v:two});i+=2;continue;}
+    if('+-*/^&=<>(),{}'.indexOf(c)>=0){t.push({t:'op',v:c});i++;continue;}
+    throw E('رمز غير مفهوم في الصيغة: ' + c);
+  }
+  return t;
+}
+
+/* ---------- parser ---------- */
+function parse(src){
+  var tk=tokenize(src),p=0;
+  function peek(){return tk[p];}
+  function isOp(v){var x=tk[p];return x&&x.t==='op'&&x.v===v;}
+  function isId(v){var x=tk[p];return x&&x.t==='id'&&x.v.toUpperCase()===v;}
+  function expectOp(v){if(!isOp(v))throw E('متوقع "'+v+'" في الصيغة');p++;}
+  function expr(){
+    if(isId('VAR')){
+      var vars=[];
+      while(isId('VAR')){p++;var nm=tk[p];if(!nm||nm.t!=='id')throw E('بعد VAR لازم اسم المتغير');p++;expectOp('=');vars.push({name:nm.v,e:or()});}
+      if(!isId('RETURN'))throw E('ناقص RETURN بعد تعريف المتغيرات');p++;
+      return {k:'let',vars:vars,body:expr()};
+    }
+    return or();
+  }
+  function or(){var l=and();while(isOp('||')){p++;l={k:'bin',op:'||',l:l,r:and()};}return l;}
+  function and(){var l=cmp();while(isOp('&&')){p++;l={k:'bin',op:'&&',l:l,r:cmp()};}return l;}
+  function cmp(){var l=cat();
+    for(;;){var x=peek();
+      if(x&&x.t==='op'&&['=','<>','<','>','<=','>='].indexOf(x.v)>=0){p++;l={k:'bin',op:x.v,l:l,r:cat()};}
+      else if(isId('IN')){p++;l={k:'in',l:l,r:cat()};}
+      else break;}
+    return l;}
+  function cat(){var l=add();while(isOp('&')){p++;l={k:'bin',op:'&',l:l,r:add()};}return l;}
+  function add(){var l=mul();while(isOp('+')||isOp('-')){var o=tk[p++].v;l={k:'bin',op:o,l:l,r:mul()};}return l;}
+  function mul(){var l=pow();while(isOp('*')||isOp('/')){var o=tk[p++].v;l={k:'bin',op:o,l:l,r:pow()};}return l;}
+  function pow(){var l=unary();while(isOp('^')){p++;l={k:'bin',op:'^',l:l,r:unary()};}return l;}
+  function unary(){if(isOp('-')){p++;return {k:'neg',e:unary()};}if(isOp('+')){p++;return unary();}return prim();}
+  function prim(){
+    var x=tk[p];if(!x)throw E('الصيغة ناقصة: في حاجة متوقعة في الآخر');
+    if(x.t==='num'){p++;return {k:'num',v:x.v};}
+    if(x.t==='str'){p++;return {k:'str',v:x.v};}
+    if(x.t==='col'){p++;return {k:'col',table:x.table,col:x.col};}
+    if(x.t==='meas'){p++;return {k:'meas',name:x.name};}
+    if(x.t==='op'&&x.v==='('){p++;var e=expr();expectOp(')');return e;}
+    if(x.t==='op'&&x.v==='{'){p++;var items=[];if(!isOp('}')){items.push(or());while(isOp(',')){p++;items.push(or());}}expectOp('}');return {k:'set',items:items};}
+    if(x.t==='id'){p++;
+      if(isOp('(')){p++;var args=[];if(!isOp(')')){args.push(argExpr());while(isOp(',')){p++;args.push(argExpr());}}expectOp(')');return {k:'call',name:x.v.toUpperCase(),args:args};}
+      return {k:'id',name:x.v};}
+    throw E('رمز مش متوقع في الصيغة: ' + (x.v!==undefined?x.v:x.name||x.col));
+  }
+  function argExpr(){return expr();}
+  var ast=expr();
+  if(p<tk.length)throw E('في كلام زيادة بعد نهاية الصيغة. راجع الأقواس والفواصل');
+  return ast;
+}
+
+/* ---------- model access ---------- */
+function colIndex(table,col){
+  var T=TABLES[table];if(!T)throw E('الجدول "'+table+'" مش موجود في الموديل. الجداول: Sales وProducts (وCalendar للتواريخ)');
+  var i=T.cols.indexOf(col);if(i<0)throw E('العمود '+table+'['+col+'] مش موجود. أعمدة '+table+': '+T.cols.join(', '));
+  return i;
+}
+function normCol(n){ /* Calendar[Date] is the date axis of Sales in the lab */
+  if(n.table==='Calendar'||n.table==='Date'){if(n.col!=='Date')throw E('جدول Calendar في المعمل فيه عمود Date بس');return {table:'Sales',col:'order_date',cal:true};}
+  return n;
+}
+function lookupProduct(name){for(var i=0;i<PRODUCTS.length;i++)if(PRODUCTS[i][0]===name)return PRODUCTS[i];return null;}
+function cellOf(key,rowIdx){ /* key like Sales[city] or Products[supplier] */
+  var r=SALES[rowIdx];var tb=key.slice(0,key.indexOf('['));var col=key.slice(key.indexOf('[')+1,-1);
+  if(tb==='Sales')return r[SALES_COLS.indexOf(col)];
+  var pr=lookupProduct(r[2]);if(!pr)return undefined;return pr[PRODUCTS_COLS.indexOf(col)];
+}
+function salesRows(env){
+  var out=[];
+  for(var i=0;i<SALES.length;i++){
+    var ok=true;
+    for(var k in env.cols){if(!env.cols[k](cellOf(k,i))){ok=false;break;}}
+    if(ok)for(var j=0;j<env.sets.length;j++)if(!env.sets[j].has(i)){ok=false;break;}
+    if(ok)out.push(i);
+  }
+  return out;
+}
+function dateSet(env){
+  var f=env.cols['Sales[order_date]'];var out=[];
+  CAL.forEach(function(d){if(!f||f(d))out.push(d);});
+  return out;
+}
+function shiftDate(d,n,unit){
+  var y=+d.slice(0,4),m=+d.slice(5,7),dd=+d.slice(8,10);
+  if(unit==='DAY'){var dt=new Date(Date.UTC(y,m-1,dd+n));return iso(dt.getUTCFullYear(),dt.getUTCMonth()+1,dt.getUTCDate());}
+  var months=unit==='YEAR'?12*n:unit==='QUARTER'?3*n:n;
+  var tot=y*12+(m-1)+months;var ny=Math.floor(tot/12),nm=tot%12+1;
+  if(dd>dim(ny,nm))return null;return iso(ny,nm,dd);
+}
+function cloneEnv(env){var c={cols:{},sets:env.sets.slice(),row:env.row,vars:env.vars,depth:env.depth};for(var k in env.cols)c.cols[k]=env.cols[k];return c;}
+var MEASURES={};
+function isBlank(v){return v===null||v===undefined;}
+function num(v){if(isBlank(v))return 0;if(typeof v==='boolean')return v?1:0;if(typeof v==='number')return v;if(typeof v==='string'&&v!==''&&isFinite(v))return parseFloat(v);throw E('القيمة "'+v+'" مش رقم، فمينفعش نستخدمها في حساب');}
+function truthy(v){if(isBlank(v))return false;if(typeof v==='boolean')return v;if(typeof v==='number')return v!==0;throw E('الشرط لازم يطلع TRUE أو FALSE');}
+function isTable(v){return v&&typeof v==='object'&&v.tbl!==undefined;}
+function isDates(v){return v&&typeof v==='object'&&v.dates!==undefined;}
+
+/* build a column predicate from a CALCULATE filter argument; returns [{key,pred}] or null */
+function filterPreds(node,env){
+  if(node.k==='bin'&&node.op==='&&'){var a=filterPreds(node.l,env),b=filterPreds(node.r,env);if(a&&b)return a.concat(b);return null;}
+  if(node.k==='bin'&&node.op==='||'){
+    var x=filterPreds(node.l,env),y=filterPreds(node.r,env);
+    if(x&&y&&x.length===1&&y.length===1&&x[0].key===y[0].key){var f1=x[0].pred,f2=y[0].pred;return [{key:x[0].key,pred:function(v){return f1(v)||f2(v);}}];}
+    return null;}
+  if(node.k==='in'&&node.l.k==='col'){
+    var cn=normCol(node.l);colIndex(cn.table,cn.col);var set=evalNode(node.r,env);var arr=(set&&set.list)?set.list:[set];
+    return [{key:cn.table+'['+cn.col+']',pred:function(v){return arr.some(function(a){return cmpEq(v,a);});}}];}
+  if(node.k==='bin'&&['=','<>','<','>','<=','>='].indexOf(node.op)>=0&&node.l.k==='col'){
+    var c2=normCol(node.l);colIndex(c2.table,c2.col);var rv=evalNode(node.r,env);var op=node.op;
+    return [{key:c2.table+'['+c2.col+']',pred:function(v){return cmpOp(op,v,rv);}}];}
+  return null;
+}
+function cmpEq(a,b){if(isBlank(a)&&isBlank(b))return true;if(isBlank(a)||isBlank(b))return (isBlank(a)?(typeof b==='string'?'':0):a)===(isBlank(b)?(typeof a==='string'?'':0):b);
+  if(typeof a==='string'&&typeof b==='string')return a.toLowerCase()===b.toLowerCase();return a===b;}
+function cmpOp(op,a,b){
+  if(op==='=')return cmpEq(a,b);if(op==='<>')return !cmpEq(a,b);
+  if(typeof a==='string'||typeof b==='string'){a=String(isBlank(a)?'':a);b=String(isBlank(b)?'':b);}else{a=num(a);b=num(b);}
+  if(op==='<')return a<b;if(op==='>')return a>b;if(op==='<=')return a<=b;return a>=b;
+}
+function colOf(node,env){ /* column reference argument -> list of values under current filter */
+  if(node.k!=='col')throw E('الدالة دي محتاجة عمود زي Sales[revenue] كمعامل');
+  var c=normCol(node);var idx=colIndex(c.table,c.col);
+  if(c.table==='Sales'){return salesRows(env).map(function(i){return SALES[i][idx];});}
+  var seen={};var rows=salesRows(env);var vals=[];
+  PRODUCTS.forEach(function(p){vals.push(p[idx]);});return vals;
+}
+function ctxTransition(env){
+  var e=cloneEnv(env);
+  if(env.row&&env.row.table==='Sales'){e.sets.push(new Set([env.row.idx]));}
+  e.row=null;return e;
+}
+function evalTableArg(node,env){
+  var v=evalNode(node,env);
+  if(!isTable(v))throw E('المعامل ده لازم يكون جدول زي Sales أو FILTER(...)');
+  return v;
+}
+var FN={};
+function callFn(node,env){
+  var name=node.name,a=node.args;
+  function ev(i){return evalNode(a[i],env);}
+  function need(n,m){if(a.length<n||(m!==undefined&&a.length>m))throw E('عدد المعاملات في '+name+' غلط');}
+  switch(name){
+    case 'SUM':case 'AVERAGE':case 'MIN':case 'MAX':{
+      if(name==='MAX'||name==='MIN'){ if(a.length===2){var x=num(ev(0)),y=num(ev(1));return name==='MAX'?Math.max(x,y):Math.min(x,y);} }
+      need(1,1);var vals=colOf(a[0],env).filter(function(v){return !isBlank(v);});
+      if(!vals.length)return null;
+      var allnum=vals.every(function(v){return typeof v==='number';});
+      if(name==='SUM'||name==='AVERAGE'){if(!allnum)throw E(name+' بتشتغل على أعمدة أرقام بس');}
+      if(name==='SUM')return vals.reduce(function(s,v){return s+v;},0);
+      if(name==='AVERAGE')return vals.reduce(function(s,v){return s+v;},0)/vals.length;
+      if(name==='MIN')return vals.reduce(function(s,v){return v<s?v:s;});
+      return vals.reduce(function(s,v){return v>s?v:s;});}
+    case 'COUNT':{need(1,1);var c1=colOf(a[0],env).filter(function(v){return typeof v==='number';});return c1.length||null;}
+    case 'COUNTA':{need(1,1);var c0=colOf(a[0],env).filter(function(v){return !isBlank(v);});return c0.length||null;}
+    case 'DISTINCTCOUNT':{need(1,1);var d={};var n=0;colOf(a[0],env).forEach(function(v){if(!d.hasOwnProperty('k'+v)){d['k'+v]=1;n++;}});return n||null;}
+    case 'COUNTROWS':{need(1,1);var t=evalTableArg(a[0],env);return t.rows.length||null;}
+    case 'SUMX':case 'AVERAGEX':case 'MINX':case 'MAXX':{
+      need(2,2);var tb=evalTableArg(a[0],env);var vs=[];
+      tb.rows.forEach(function(i){var e=cloneEnv(env);e.row={table:tb.tbl,idx:i};var v=evalNode(a[1],e);if(!isBlank(v))vs.push(num(v));});
+      if(!vs.length)return null;
+      if(name==='SUMX')return vs.reduce(function(s,v){return s+v;},0);
+      if(name==='AVERAGEX')return vs.reduce(function(s,v){return s+v;},0)/vs.length;
+      if(name==='MINX')return Math.min.apply(null,vs);return Math.max.apply(null,vs);}
+    case 'RELATED':{need(1,1);var cn=normCol(a[0]);if(a[0].k!=='col')throw E('RELATED محتاجة عمود');
+      if(!env.row||env.row.table!=='Sales')throw E('RELATED بتشتغل جوه دالة بتلف على صفوف Sales زي SUMX');
+      if(cn.table!=='Products')throw E('RELATED بتجيب عمود من جدول الـ One (Products)');
+      colIndex('Products',cn.col);return cellOf('Products['+cn.col+']',env.row.idx);}
+    case 'CALCULATE':{
+      need(1);var e=ctxTransition(env);
+      for(var i=1;i<a.length;i++){
+        var fa=a[i];
+        if(fa.k==='call'&&fa.name==='ALL'){
+          if(!fa.args.length||fa.args[0].k==='id'){
+            var tn=fa.args.length?fa.args[0].name:null;
+            if(tn&&!TABLES[tn]&&tn!=='Calendar')throw E('الجدول "'+tn+'" مش موجود');
+            Object.keys(e.cols).forEach(function(k){if(!tn||k.indexOf(tn+'[')===0||(tn==='Calendar'&&k==='Sales[order_date]'))delete e.cols[k];});
+            if(!tn||tn==='Sales')e.sets=[];
+          }else if(fa.args[0].k==='col'){var ac=normCol(fa.args[0]);colIndex(ac.table,ac.col);delete e.cols[ac.table+'['+ac.col+']'];}
+          else throw E('ALL بتاخد جدول أو عمود');
+          continue;}
+        var preds=filterPreds(fa,env);
+        if(preds){preds.forEach(function(q){e.cols[q.key]=q.pred;});continue;}
+        var fv=evalNode(fa,env);
+        if(isTable(fv)&&fv.tbl==='Sales'){e.sets.push(new Set(fv.rows));continue;}
+        if(isDates(fv)){var ds=new Set(fv.dates);e.cols['Sales[order_date]']=function(v){return ds.has(v);};continue;}
+        if(typeof fv==='boolean')throw E('فلتر CALCULATE لازم يكون على عمود واحد زي Sales[city] = "Cairo". لو الشرط أعقد استخدم FILTER');
+        throw E('فلتر CALCULATE مش مفهوم. استخدم شرط على عمود أو FILTER أو ALL');
+      }
+      return evalNode(a[0],e);}
+    case 'FILTER':{need(2,2);var t2=evalTableArg(a[0],env);var keep=[];
+      t2.rows.forEach(function(i){var e2=cloneEnv(env);e2.row={table:t2.tbl,idx:i};if(truthy(evalNode(a[1],e2)))keep.push(i);});
+      return {tbl:t2.tbl,rows:keep};}
+    case 'ALL':{
+      if(a.length===1&&a[0].k==='id'&&TABLES[a[0].name]){var all=[];TABLES[a[0].name].rows.forEach(function(_,i){all.push(i);});return {tbl:a[0].name,rows:all};}
+      throw E('ALL جوه CALCULATE بتشيل الفلاتر. ولوحدها بتاخد اسم جدول');}
+    case 'DIVIDE':{need(2,3);var nu=ev(0),de=ev(1);if(isBlank(nu)||isBlank(de)||num(de)===0)return a.length===3?ev(2):null;return num(nu)/num(de);}
+    case 'IF':{need(2,3);return truthy(ev(0))?ev(1):(a.length===3?ev(2):null);}
+    case 'SWITCH':{need(3);var sv=ev(0);for(var k=1;k+1<a.length;k+=2){var cv=ev(k);if(cmpEq(sv,cv))return ev(k+1);}
+      return (a.length%2===0)?ev(a.length-1):null;}
+    case 'AND':need(2,2);return truthy(ev(0))&&truthy(ev(1));
+    case 'OR':need(2,2);return truthy(ev(0))||truthy(ev(1));
+    case 'NOT':need(1,1);return !truthy(ev(0));
+    case 'TRUE':return true;case 'FALSE':return false;case 'BLANK':return null;
+    case 'ISBLANK':need(1,1);return isBlank(ev(0));
+    case 'ROUND':{need(2,2);var f=Math.pow(10,num(ev(1)));return Math.round(num(ev(0))*f)/f;}
+    case 'ABS':need(1,1);return Math.abs(num(ev(0)));
+    case 'DATE':{need(3,3);var y=num(ev(0)),m=num(ev(1)),d2=num(ev(2));var dt=new Date(Date.UTC(y,m-1,d2));return iso(dt.getUTCFullYear(),dt.getUTCMonth()+1,dt.getUTCDate());}
+    case 'YEAR':need(1,1);return +String(ev(0)).slice(0,4);
+    case 'MONTH':need(1,1);return +String(ev(0)).slice(5,7);
+    case 'DAY':need(1,1);return +String(ev(0)).slice(8,10);
+    case 'DATESBETWEEN':{need(3,3);var dc=normCol(a[0]);if(dc.col!=='order_date')throw E('DATESBETWEEN بتاخد عمود التاريخ: Calendar[Date]');
+      var lo=ev(1),hi=ev(2);return {dates:CAL.filter(function(x){return x>=lo&&x<=hi;})};}
+    case 'DATESYTD':{need(1,2);var dsx=dateSet(env);if(!dsx.length)return {dates:[]};var mx=dsx[dsx.length-1];var yy=mx.slice(0,4);
+      return {dates:CAL.filter(function(x){return x.slice(0,4)===yy&&x<=mx;})};}
+    case 'TOTALYTD':{need(2,3);var e3=ctxTransition(env);var ds3=dateSet(env);
+      if(ds3.length){var mx3=ds3[ds3.length-1],y3=mx3.slice(0,4);var set3=new Set(CAL.filter(function(x){return x.slice(0,4)===y3&&x<=mx3;}));e3.cols['Sales[order_date]']=function(v){return set3.has(v);};}
+      else e3.cols['Sales[order_date]']=function(){return false;};
+      return evalNode(a[0],e3);}
+    case 'DATEADD':{need(3,3);var n3=num(ev(1));var unit=a[2].k==='id'?a[2].name.toUpperCase():null;
+      if(['DAY','MONTH','QUARTER','YEAR'].indexOf(unit)<0)throw E('الوحدة لازم تكون DAY أو MONTH أو QUARTER أو YEAR');
+      var sh=[];dateSet(env).forEach(function(d){var s=shiftDate(d,n3,unit);if(s&&CAL.indexOf(s)>=0)sh.push(s);});return {dates:sh};}
+    case 'SAMEPERIODLASTYEAR':{need(1,1);var sh2=[];dateSet(env).forEach(function(d){var s=shiftDate(d,-1,'YEAR');if(s&&CAL.indexOf(s)>=0)sh2.push(s);});return {dates:sh2};}
+    default:throw E('الدالة '+name+' مش مدعومة في المعمل (ممكن تكون شغالة في Power BI نفسه). الدوال المدعومة مكتوبة تحت.');
+  }
+}
+function evalNode(n,env){
+  switch(n.k){
+    case 'num':case 'str':return n.v;
+    case 'neg':return -num(evalNode(n.e,env));
+    case 'set':return {list:n.items.map(function(x){return evalNode(x,env);})};
+    case 'let':{var e=cloneEnv(env);e.vars=Object.create(env.vars||null);
+      n.vars.forEach(function(v){e.vars[v.name]=evalNode(v.e,e);});return evalNode(n.body,e);}
+    case 'id':{
+      if(env.vars&&n.name in env.vars)return env.vars[n.name];
+      var u=n.name.toUpperCase();if(u==='TRUE')return true;if(u==='FALSE')return false;
+      if(TABLES[n.name]){var rows=[];if(n.name==='Sales')rows=salesRows(env);else TABLES.Products.rows.forEach(function(_,i){rows.push(i);});return {tbl:n.name,rows:rows};}
+      throw E('الاسم "'+n.name+'" مش معروف. الجداول: Sales وProducts. لو دي دالة اكتبها بقوسين');}
+    case 'col':{var c=normCol(n);var ix=colIndex(c.table,c.col);
+      if(env.row&&env.row.table===c.table){return TABLES[c.table].rows[env.row.idx][ix];}
+      throw E('العمود '+c.table+'['+c.col+'] لوحده مش ينفع. لازم يكون جوه دالة تجميع زي SUM أو جوه SUMX/FILTER اللي بتلف على الصفوف');}
+    case 'meas':{
+      if(!MEASURES[n.name]){
+        throw E('الـ Measure ['+n.name+'] مش معرّف لسه. عرّفه الأول بصيغة: '+n.name+' = ...');}
+      if((env.depth||0)>20)throw E('Measures بتنادي على بعض في دايرة');
+      var e2=ctxTransition(env);e2.depth=(env.depth||0)+1;return evalNode(MEASURES[n.name],e2);}
+    case 'call':return callFn(n,env);
+    case 'in':{var lv=evalNode(n.l,env),rv=evalNode(n.r,env);var arr=(rv&&rv.list)?rv.list:[rv];return arr.some(function(x){return cmpEq(lv,x);});}
+    case 'bin':{
+      var op=n.op;
+      if(op==='&&')return truthy(evalNode(n.l,env))&&truthy(evalNode(n.r,env));
+      if(op==='||')return truthy(evalNode(n.l,env))||truthy(evalNode(n.r,env));
+      var l=evalNode(n.l,env),r=evalNode(n.r,env);
+      if(op==='&')return String(isBlank(l)?'':l)+String(isBlank(r)?'':r);
+      if(['=','<>','<','>','<=','>='].indexOf(op)>=0)return cmpOp(op,l,r);
+      if(isTable(l)||isTable(r)||isDates(l)||isDates(r))throw E('مينفعش تعمل عملية حسابية على جدول');
+      if((op==='*'||op==='/')&&(isBlank(l)||isBlank(r)))return null;
+      var a=num(l),b=num(r);
+      if(op==='+')return a+b;if(op==='-')return a-b;if(op==='*')return a*b;
+      if(op==='/'){if(b===0)throw E('قسمة على صفر. استخدم DIVIDE(a, b) عشان تتجنب الخطأ ده');return a/b;}
+      return Math.pow(a,b);}
+  }
+  throw E('صيغة مش مفهومة');
+}
+
+/* ---------- public API ---------- */
+function initialEnv(ctx){
+  var e={cols:{},sets:[],row:null,vars:null,depth:0};ctx=ctx||{};
+  if(ctx.city&&ctx.city!=='all')e.cols['Sales[city]']=function(v){return v===ctx.city;};
+  if(ctx.category&&ctx.category!=='all')e.cols['Sales[category]']=function(v){return v===ctx.category;};
+  if(ctx.month&&ctx.month!=='all'){var mm=+ctx.month;e.cols['Sales[order_date]']=function(v){return +v.slice(5,7)===mm;};}
+  return e;
+}
+function splitDefinition(src){
+  if(/^\s*VAR\b/i.test(src))return {name:null,body:src};
+  var m=/^\s*([A-Za-z_][^=\[\]()"'<>+*\/&|,{}]*?)\s*=(?![=>])([\s\S]*)$/.exec(src);
+  if(m&&m[2].trim())return {name:m[1].trim(),body:m[2]};
+  return {name:null,body:src};
+}
+function run(src,ctx){
+  src=String(src||'').trim();
+  if(!src)throw E('اكتب صيغة DAX الأول');
+  var d=splitDefinition(src);var ast=parse(d.body);
+  var val=evalNode(ast,initialEnv(ctx));
+  if(d.name){MEASURES[d.name]=ast;}
+  return {value:val,name:d.name};
+}
+function fmt(v){
+  if(isBlank(v))return '(BLANK)';
+  if(isTable(v))return 'جدول: '+v.rows.length+' صف';
+  if(isDates(v))return 'جدول تواريخ: '+v.dates.length+' يوم';
+  if(v&&v.list)return 'قائمة قيم';
+  if(typeof v==='number'){var r=Math.round(v*1e4)/1e4;return String(r);}
+  if(typeof v==='boolean')return v?'TRUE':'FALSE';
+  return String(v);
+}
+root.DAXLAB={run:run,fmt:fmt,MEASURES:MEASURES,SALES:SALES,SALES_COLS:SALES_COLS,PRODUCTS:PRODUCTS,PRODUCTS_COLS:PRODUCTS_COLS,isBlank:isBlank,reset:function(){Object.keys(MEASURES).forEach(function(k){delete MEASURES[k];});}};
+})(typeof window!=='undefined'?window:globalThis);
+
+var DAX_CHALLENGES=[
+{t:'إجمالي الإيراد',q:'اكتب صيغة بتطلع إجمالي الإيراد (revenue) لكل الطلبات.',exp:59000,sol:'SUM(Sales[revenue])'},
+{t:'عدد الطلبات',q:'اكتب صيغة بتعد صفوف جدول Sales.',exp:12,sol:'COUNTROWS(Sales)'},
+{t:'متوسط قيمة الطلب',q:'اكتب صيغة بتطلع متوسط الإيراد للطلب الواحد.',exp:59000/12,sol:'AVERAGE(Sales[revenue])'},
+{t:'عدد العملاء',q:'كام عميل مختلف في الداتا؟',exp:5,sol:'DISTINCTCOUNT(Sales[customer])'},
+{t:'إجمالي الربح',q:'الربح = revenue ناقص cost لكل صف ثم المجموع.',exp:14930,sol:'SUMX(Sales, Sales[revenue] - Sales[cost])'},
+{t:'هامش الربح',q:'الهامش = الربح على الإيراد. استخدم DIVIDE.',exp:14930/59000,sol:'DIVIDE(SUMX(Sales, Sales[revenue] - Sales[cost]), SUM(Sales[revenue]))'},
+{t:'إيراد القاهرة',q:'إيراد مدينة Cairo بس، باستخدام CALCULATE.',exp:20000,sol:'CALCULATE(SUM(Sales[revenue]), Sales[city] = "Cairo")'},
+{t:'الطلبات الكبيرة',q:'كام طلب إيراده أكبر من 5000؟',exp:3,sol:'CALCULATE(COUNTROWS(Sales), Sales[revenue] > 5000)'},
+{t:'نسبة Tech من الإجمالي',q:'إيراد فئة Tech مقسوم على إجمالي كل الإيراد (استخدم ALL في المقام).',exp:39300/59000,sol:'DIVIDE(CALCULATE(SUM(Sales[revenue]), Sales[category] = "Tech"), CALCULATE(SUM(Sales[revenue]), ALL(Sales)))'},
+{t:'إيراد مورد FurniCo',q:'إيراد المنتجات اللي المورد بتاعها FurniCo، باستخدام العلاقة مع جدول Products.',exp:19700,sol:'CALCULATE(SUM(Sales[revenue]), Products[supplier] = "FurniCo")'},
+{t:'ربح لابتوب',q:'ربح منتج Laptop بس.',exp:8200,sol:'CALCULATE(SUMX(Sales, Sales[revenue] - Sales[cost]), Sales[product_name] = "Laptop")'},
+{t:'إيراد فبراير بدالة تواريخ',q:'استخدم DATESBETWEEN عشان تحسب إيراد من 2025-02-01 لـ 2025-02-28.',exp:19000,sol:'CALCULATE(SUM(Sales[revenue]), DATESBETWEEN(\'Calendar\'[Date], DATE(2025,2,1), DATE(2025,2,28)))'},
+{t:'YTD لما مارس مختار',q:'الـ Selector على شهر 3. احسب الإيراد من أول السنة لحد آخر مارس.',ctx:{month:'3'},exp:51100,sol:'TOTALYTD(SUM(Sales[revenue]), \'Calendar\'[Date])'},
+{t:'الشهر السابق',q:'الـ Selector على شهر 3. احسب إيراد الشهر اللي قبله.',ctx:{month:'3'},exp:19000,sol:'CALCULATE(SUM(Sales[revenue]), DATEADD(\'Calendar\'[Date], -1, MONTH))'},
+{t:'نصيب المدينة المختارة',q:'الـ Selector على Cairo. احسب نصيبها من إجمالي كل المدن (نسبة بين 0 و1).',ctx:{city:'Cairo'},exp:20000/59000,sol:'DIVIDE(SUM(Sales[revenue]), CALCULATE(SUM(Sales[revenue]), ALL(Sales)))'}
+];
+
+/* معمل DAX: UI */
+(function(){
+'use strict';
+var D=window.DAXLAB;
+var LS='powerbi-zero-lab-v1';
+var solved={};try{solved=JSON.parse(localStorage.getItem(LS)||'{}')||{};}catch(e){solved={};}
+function save(){try{localStorage.setItem(LS,JSON.stringify(solved));}catch(e){}}
+var lab=document.getElementById('lab');
+var input=document.getElementById('fx-input'),out=document.getElementById('fx-output');
+document.getElementById('lab-link').onclick=function(){document.getElementById('hero').style.display='none';document.getElementById('lesson').style.display='none';lab.hidden=false;window.scrollTo(0,0);};
+document.getElementById('home-link').onclick=function(){lab.hidden=true;document.getElementById('lesson').style.display='none';document.getElementById('hero').style.display='block';};
+document.getElementById('start-btn').onclick=function(){document.querySelector('.nav-item').click();};
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+/* model preview */
+(function(){
+  function tbl(name,cols,rows){var h='<div class="dx-tname">'+name+'</div><table class="fx-grid"><tr>'+cols.map(function(c){return '<th>'+c+'</th>';}).join('')+'</tr>';
+    rows.forEach(function(r){h+='<tr>'+r.map(function(c){return '<td>'+c+'</td>';}).join('')+'</tr>';});return h+'</table>';}
+  document.getElementById('fx-sheet').innerHTML=tbl('Sales (Fact)',D.SALES_COLS,D.SALES)+tbl('Products (Dimension)',D.PRODUCTS_COLS,D.PRODUCTS)+
+   '<p class="small">العلاقة: <code>Products[product_name]</code> 1 ← * <code>Sales[product_name]</code>. وCalendar بيتعامل معاه المعمل كجدول أيام 2025 كاملة مربوط بـ <code>Sales[order_date]</code>.</p>';
+})();
+var selCity=document.getElementById('sel-city'),selCat=document.getElementById('sel-category'),selMonth=document.getElementById('sel-month');
+function ctx(){return {city:selCity.value,category:selCat.value,month:selMonth.value};}
+function setCtx(c){c=c||{};selCity.value=c.city||'all';selCat.value=c.category||'all';selMonth.value=c.month||'all';}
+var cur=-1;
+var chHost=document.getElementById('dx-challenges'),chInfo=document.getElementById('dx-current'),solBtn=document.getElementById('dx-sol-btn'),solBox=document.getElementById('dx-sol');
+function renderChallenges(){
+  chHost.innerHTML='';var n=0;
+  DAX_CHALLENGES.forEach(function(c,i){
+    var b=document.createElement('button');b.type='button';b.className='dx-ch'+(solved[i]?' done':'')+(i===cur?' active':'');
+    b.textContent=(solved[i]?'✓ ':'')+(i+1)+'. '+c.t;if(solved[i])n++;
+    b.onclick=function(){cur=i;setCtx(c.ctx);solBox.hidden=true;solBox.textContent='';solBtn.hidden=false;input.value='';renderChallenges();showCur();input.focus();};
+    chHost.appendChild(b);
+  });
+  document.getElementById('dx-score').textContent='حليت '+n+' من '+DAX_CHALLENGES.length+' تحدي';
+}
+function showCur(){
+  if(cur<0){chInfo.hidden=true;return;}
+  var c=DAX_CHALLENGES[cur];chInfo.hidden=false;
+  chInfo.innerHTML='<b>تحدي '+(cur+1)+': '+esc(c.t)+'</b><br>'+esc(c.q)+(c.ctx?'<br><span class="small">الـ Selectors اتظبطت لوحدها حسب التحدي.</span>':'');
+}
+solBtn.onclick=function(){if(cur<0)return;solBox.textContent=DAX_CHALLENGES[cur].sol;solBox.hidden=false;};
+function addLine(f,res,cls){
+  var line=document.createElement('div');line.className='fx-line';
+  line.innerHTML='<div class="fx-f"></div><div class="fx-r '+cls+'"></div>';
+  line.querySelector('.fx-f').textContent=f;line.querySelector('.fx-r').textContent=res;
+  out.prepend(line);return line;
+}
+function chips(){
+  var host=document.getElementById('dx-measures');var names=Object.keys(D.MEASURES);
+  host.innerHTML=names.length?'Measures اللي عرفتها: '+names.map(function(n){return '<code>['+esc(n)+']</code>';}).join(' '):'';
+}
+function run(){
+  var f=input.value.trim();var c=ctx();
+  try{
+    var r=D.run(f,c);var txt=(r.name?'['+r.name+'] اتسجل = ':'= ')+D.fmt(r.value);
+    var line=addLine(f,txt,'fx-ok');
+    if(cur>=0&&typeof r.value==='number'){
+      var ch=DAX_CHALLENGES[cur];var ok=Math.abs(r.value-ch.exp)<1e-6;
+      var v=document.createElement('div');v.className='dx-verdict '+(ok?'ok':'no');
+      v.textContent=ok?'✅ صح! الناتج مطابق للمطلوب في التحدي.':'❌ الناتج مش مطابق للمطلوب. راجع الشرط والفلتر، أو اطلع على الحل.';
+      line.appendChild(v);
+      if(ok){solved[cur]=true;save();renderChallenges();}
+    }else if(cur>=0){
+      var v2=document.createElement('div');v2.className='dx-verdict no';v2.textContent='❌ التحدي محتاج ناتج رقم، والصيغة دي رجعت حاجة تانية.';line.appendChild(v2);
+    }
+  }catch(e){
+    addLine(f,e&&e.dax?('خطأ: '+e.message):'خطأ في الصيغة: راجع الأقواس والأسماء','fx-err');
+  }
+  chips();
+}
+document.getElementById('run-fx').onclick=run;
+input.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();run();}});
+document.getElementById('reset-fx').onclick=function(){out.innerHTML='';D.reset();chips();};
+document.getElementById('reset-lab').onclick=function(){if(confirm('تمسح تقدم التحديات؟')){solved={};save();renderChallenges();}};
+document.querySelectorAll('.fx-example').forEach(function(b){b.onclick=function(){input.value=b.getAttribute('data-fx');cur=-1;renderChallenges();showCur();run();};});
+renderChallenges();showCur();
+})();
+
+</script>
+</body>
+</html>
